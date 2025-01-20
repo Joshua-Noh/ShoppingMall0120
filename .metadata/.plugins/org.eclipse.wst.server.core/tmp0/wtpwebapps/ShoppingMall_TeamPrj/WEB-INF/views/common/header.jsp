@@ -30,7 +30,7 @@
        <!-- <a href="#"><h3>로그인</h3></a> -->
        <c:choose>
           <c:when test="${isLogOn == true  && member!= null}">
-            <h3>환영합니다. ${member.name }님!</h3>
+            <h3>환영합니다. ${member.user_name}님!</h3>
             <a href="${contextPath}/member/logout.do"><h3>로그아웃</h3></a>
           </c:when>
           <c:otherwise>

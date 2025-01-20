@@ -1,21 +1,13 @@
 INDEX VERSION 1.131
-D:\workspace_yjj\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3073828723.index
+D:\project\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\970517325.index
 \ShoppingMall_TeamPrj\src\main\java
-D:\workspace_yjj\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\970517325.index
+D:\project\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3073828723.index
 \ShoppingMall_TeamPrj\src\main\java
-D:\workspace_yjj\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\968282314.index
-\samplePrj\src\main\java
-D:\workspace_yjj\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3588065777.index
-\samplePrj\src\main\java
-D:\workspace_yjj\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3586554669.index
+D:\project\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1087303940.index
 \ShoppingMall_TeamPrj\src\main\java
-D:\workspace_yjj\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3313358112.index
-\samplePrj\src\main\java
-D:\workspace_yjj\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\760710922.index
+D:\project\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3586554669.index
 \ShoppingMall_TeamPrj\src\main\java
-D:\workspace_yjj\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1087303940.index
+D:\project\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2309911644.index
 \ShoppingMall_TeamPrj\src\main\java
-D:\workspace_yjj\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2309911644.index
+D:\project\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\760710922.index
 \ShoppingMall_TeamPrj\src\main\java
-D:\workspace_yjj\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\408191862.index
-\samplePrj\src\main\resources

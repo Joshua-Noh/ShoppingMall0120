@@ -21,8 +21,8 @@ public class MainController {
 	public ModelAndView main(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		String viewName=(String)request.getAttribute("viewName");
 		ModelAndView mav=new ModelAndView();
-		//mav.setViewName("/main/main");
-		mav.setViewName(viewName);
+		mav.setViewName("/main/main");
+//		mav.setViewName(viewName);
 		System.out.println("viewName : "+ viewName);
 		return mav;
 	}
