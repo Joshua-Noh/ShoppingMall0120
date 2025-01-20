@@ -1,0 +1,8 @@
+127.0.0.1 - - [16/Jan/2025:16:34:26 +0900] "GET / HTTP/1.1" 404 807
+0:0:0:0:0:0:0:1 - - [16/Jan/2025:16:34:45 +0900] "GET /samplePrj/main/main.do HTTP/1.1" 200 252
+127.0.0.1 - - [16/Jan/2025:16:42:11 +0900] "GET / HTTP/1.1" 404 807
+0:0:0:0:0:0:0:1 - - [16/Jan/2025:16:42:30 +0900] "GET /ShoppingMall_TeamPrj/main/main.do HTTP/1.1" 404 721
+0:0:0:0:0:0:0:1 - - [16/Jan/2025:16:42:33 +0900] "GET /ShoppingMall_TeamPrj/main/main.do HTTP/1.1" 404 721
+0:0:0:0:0:0:0:1 - - [16/Jan/2025:16:43:22 +0900] "GET /ShoppingMall_TeamPrj/main/main.do HTTP/1.1" 404 721
+127.0.0.1 - - [16/Jan/2025:16:46:52 +0900] "GET / HTTP/1.1" 404 807
+0:0:0:0:0:0:0:1 - - [16/Jan/2025:16:47:00 +0900] "GET /ShoppingMall_TeamPrj/main/main.do HTTP/1.1" 200 252

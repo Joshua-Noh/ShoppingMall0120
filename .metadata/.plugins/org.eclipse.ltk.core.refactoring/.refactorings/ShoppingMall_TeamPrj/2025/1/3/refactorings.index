@@ -1,0 +1,40 @@
+1737004789056	Move 'index.jsp' to 'main'
+1737004876922	Move 'index.jsp' to 'webapp'
+1737005013865	Copy file
+1737005307361	Copy compilation unit
+1737077007172	Delete element
+1737077018775	Delete element
+1737077291112	Delete elements
+1737078721024	Delete elements
+1737078979965	Rename type 'GoodsController'
+1737079003925	Rename compilation unit 'GoodsControllerImpl.java'
+1737079093517	Delete elements
+1737079134679	Rename type 'BoardController'
+1737079143754	Rename type 'BoardControllerImpl'
+1737079888597	Rename package 'com.shop.ShoppingMall_TeamPrj.category.controller'
+1737079939086	Rename type 'categoryController'
+1737079950245	Rename compilation unit 'categoryControllerImpl.java'
+1737080274425	Rename type 'MemberService'
+1737080282154	Rename type 'MemberServiceImpl'
+1737081239792	Delete elements
+1737081411735	Rename type 'BoardDAO'
+1737081418139	Rename type 'BoardDAOImpl'
+1737081423918	Rename type 'goodsService'
+1737081428803	Rename type 'goodsServiceImpl'
+1737081434414	Rename type 'goodsControllerImpl'
+1737081439075	Rename type 'goodsController'
+1737081501611	Rename type 'ArticleVO'
+1737091165311	Copy file
+1737091376210	Copy file
+1737092709718	Copy folders
+1737092715828	Delete elements
+1737092721459	Delete elements
+1737092725697	Delete elements
+1737092730782	Delete element
+1737092795306	Copy files
+1737098522874	Copy folders
+1737098533880	Delete elements
+1737098538991	Delete elements
+1737098543021	Delete elements
+1737098547614	Delete element
+1737099966644	Delete element

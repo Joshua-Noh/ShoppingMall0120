@@ -1,0 +1,44 @@
+package com.shop.ShoppingMall_TeamPrj.goods.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.shop.ShoppingMall_TeamPrj.goods.dao.GoodsDAO;
+import com.shop.ShoppingMall_TeamPrj.goods.vo.GoodsVO;
+
+
+
+@Service("memberService")
+@Transactional(propagation = Propagation.REQUIRED)
+public class goodsServiceImpl implements GoodsService {
+	@Autowired
+	private GoodsDAO goodsDAO;
+
+	@Override
+	public List goodsList() throws DataAccessException {
+		List goodsList = null;
+		goodsList = goodsDAO.selectGoodsList();
+		return goodsList;
+	}
+
+	@Override
+	public int addMember(MemberVO member) throws DataAccessException {
+		return memberDAO.insertMember(member);
+	}
+
+	@Override
+	public int removeMember(String id) throws DataAccessException {
+		return memberDAO.deleteMember(id);
+	}
+	
+	@Override
+	public MemberVO login(MemberVO memberVO) throws Exception{
+		return memberDAO.loginById(memberVO);
+	}
+
+}
