@@ -49,17 +49,56 @@ public class CartControllerImpl  implements CartController{
 	@Override
 	@RequestMapping(value= "/myCartList.do", method = {RequestMethod.GET})
 	public ModelAndView myCartList(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String viewName = (String)request.getAttribute("viewName");
-		ModelAndView mav = new ModelAndView(viewName);
-		HttpSession session=request.getSession();
-		MemberVO memberVO=(MemberVO)session.getAttribute("memberInfo");
-		int member_id=memberVO.getUser_id();
-		cartVO.setUser_id(member_id);
-		Map<String ,List> cartMap=cartService.myCartList(cartVO);
-		session.setAttribute("cartMap", cartMap);
-		return mav;
-		
+	    HttpSession session = request.getSession(false); // 기존 세션 가져오기
+	    if (session == null) {
+	        System.out.println("세션이 없습니다. 로그인 페이지로 이동합니다.");
+	        return new ModelAndView("redirect:/member/loginForm.do");
+	    }
+
+	    // 세션에 저장된 memberInfo 확인
+	    MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
+	    if (memberVO == null) {
+	        System.out.println("세션에 memberInfo가 없습니다. 로그인 페이지로 이동합니다.");
+	        return new ModelAndView("redirect:/member/loginForm.do");
+	    } else {
+	        // Debugging: memberInfo 확인
+	        System.out.println("세션에서 가져온 사용자 정보: ID=" + memberVO.getUser_id());
+	    }
+
+	    // cartVO 확인
+	    if (cartVO == null) {
+	        System.out.println("cartVO가 null입니다. 기본 생성자로 초기화합니다.");
+	        cartVO = new CartVO();
+	    }
+	    cartVO.setUser_id(memberVO.getUser_id());
+
+	    // cartService 확인
+	    if (cartService == null) {
+	        throw new NullPointerException("cartService가 주입되지 않았습니다.");
+	    }
+
+	    // 장바구니 정보 조회
+	    Map<String, List> cartMap = cartService.myCartList(cartVO);
+	    if (cartMap == null || cartMap.isEmpty()) {
+	        System.out.println("장바구니가 비어 있습니다.");
+	        ModelAndView mav = new ModelAndView("cart/myCartList");
+	        mav.addObject("message", "장바구니가 비어 있습니다.");
+	        return mav;
+	    }
+
+	 // Debugging: cartMap 확인
+	    System.out.println("장바구니 데이터:");
+	    for (Iterator<Map.Entry<String, List>> it = cartMap.entrySet().iterator(); it.hasNext(); ) {
+	        Map.Entry<String, List> entry = it.next();
+	        System.out.println(entry.getKey() + ": " + entry.getValue());
+	    }
+
+	    session.setAttribute("cartMap", cartMap); // 세션에 장바구니 데이터 저장
+	    return new ModelAndView("cart/myCartList");
+
 	}
+
+
 	
 	@RequestMapping(value="/addMyCart.do" ,method = RequestMethod.POST,produces = "application/text; charset=utf8")
 	public  @ResponseBody String addMyCart(@RequestParam("product_id") int product_id,
