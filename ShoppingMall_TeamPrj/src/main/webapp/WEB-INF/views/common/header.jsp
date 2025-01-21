@@ -1,99 +1,177 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"
-    isELIgnored="false" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8" isELIgnored="false"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
-  request.setCharacterEncoding("UTF-8");
-%> 
+	request.setCharacterEncoding("UTF-8");
+%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>헤더</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-            color: #333;
-        }
+<meta charset="UTF-8">
+<title>헤더</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #000;
-            padding: 10px 20px;
-            border-bottom: 2px solid #ffffff;
-        }
-
-        .logo {
-            font-size: 20px;
-            font-weight: bold;
-            color: #ffffff;
-        }
-
-        .nav-buttons {
-            flex: 1;
-            text-align: center;
-        }
-
-        .nav-buttons a {
-            margin: 0 15px;
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .nav-buttons a:hover {
-            color: #ff4500;
-            text-decoration: underline;
-        }
-
-        .auth-buttons button {
-            margin-left: 10px;
-            padding: 5px 15px;
-            border: 1px solid #fff;
-            background-color: transparent;
-            color: #fff;
-            border-radius: 5px;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        .auth-buttons button:hover {
-            background-color: #ffffff;
-            color: #000;
-        }
-        
-        .auth-buttons span {
-    	color: #ffffff;
-		}
-        
-    </style>
 </head>
+<style>
+/* 공통 헤더 스타일 */
+.header {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff; /* 헤더 배경 흰색 */
+    border-bottom: 1px solid #eaeaea; /* 헤더 하단 구분선 */
+    width: 100%;
+    padding: 10px 0;
+}
+
+/* 상단 섹션 */
+.top-header {
+    display: flex;
+    justify-content: space-between; /* 로고 왼쪽, 검색/로그인 오른쪽 */
+    align-items: center; /* 수직 중앙 정렬 */
+    padding: 0 280px; /* 좌우 공백을 40px로 설정 (이전보다 증가) */
+}
+
+.logo img {
+    max-height: 50px; /* 로고 크기 조정 */
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+    transform: scale(1.1); /* 로고 확대 효과 */
+}
+
+/* 검색창 */
+.search-bar {
+    display: flex;
+    align-items: center;
+    position: relative; /* 돋보기를 검색창 내부에 배치 */
+    width: 300px;
+    height: 40px;
+    margin-left: auto; /* 검색창을 오른쪽으로 */
+}
+
+/* 검색 입력창 */
+.search-bar input {
+    flex: 1;
+    padding: 10px 15px 10px 40px; /* 왼쪽에 돋보기 공간 확보 */
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+    font-size: 14px;
+    height: 100%;
+}
+
+/* 돋보기 버튼 */
+.search-bar button {
+    position: absolute;
+    left: 10px; /* 돋보기를 검색창 내부 왼쪽에 고정 */
+    top: 28%;
+    transform: translateY(-50%); /* 수직 가운데 정렬 */
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.search-bar button i {
+    font-size: 18px; /* 돋보기 아이콘 크기 */
+    color: #333;
+}
+
+
+
+/* 로그인/회원가입 버튼 */
+.auth-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.auth-buttons button {
+    padding: 8px 15px;
+    border: 1px solid #333;
+    background-color: transparent;
+    color: #333;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.auth-buttons button:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+/* 하단 섹션 */
+.bottom-header {
+    display: flex;
+    justify-content: flex-start; /* 왼쪽 정렬 */
+    align-items: center;
+    padding: 8px 20px;
+    background-color: #ffffff;
+    padding: 8px 280px; /* 좌우 공백을 늘림 (기존 20px에서 60px로 조정) */
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 15px; /* 카테고리 간격 */
+}
+
+.nav-buttons a {
+    color: #000; /* 텍스트 검정색 */
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    position: relative;
+    padding-bottom: 5px;
+}
+
+.nav-buttons a:hover {
+    color: #000; /* 텍스트 색상 유지 */
+}
+
+.nav-buttons a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #000; /* 밑줄 검정색 */
+    transition: width 0.3s ease;
+}
+
+.nav-buttons a:hover::after {
+    width: 100%; /* 밑줄 확장 */
+}
+
+</style>
 <body>
-    <div class="header">
+<div class="header">
+    <!-- 상단 섹션 -->
+    <div class="top-header">
         <!-- 로고 -->
         <div class="logo">
-            <a href="${contextPath}/main.do">My Shop</a>
+            <a href="<%= request.getContextPath() %>/main/main.do">
+                <img src="<%= request.getContextPath() %>/resources/image/NOIR_LOGO.png" alt="My Shop Logo">
+            </a>
         </div>
 
-        <!-- 네비게이션 -->
-        <div class="nav-buttons">
-            <a href="${contextPath}/category.do?category_id=1">신상품</a>
-            <a href="${contextPath}/category.do?category_id=2">상의</a>
-            <a href="${contextPath}/category.do?category_id=3">하의</a>
+        <!-- 검색창 -->
+        <div class="search-bar">
+            <form action="<%= request.getContextPath() %>/search.do" method="get">
+                <button type="submit"><i class="fas fa-search"></i></button>
+                <input type="text" name="query" placeholder="검색어를 입력하세요">
+            </form>
         </div>
 
-        <!-- 로그인/로그아웃 -->
+        <!-- 로그인/회원가입 -->
         <div class="auth-buttons">
             <c:choose>
-                <c:when test="${isLogOn == true && member != null}">
+                <c:when test="${isLogOn}">
                     <span>환영합니다, ${member.user_name}님!</span>
                     <button onclick="location.href='${contextPath}/member/logout.do'">로그아웃</button>
                 </c:when>
@@ -104,5 +182,19 @@
             </c:choose>
         </div>
     </div>
+    <!-- 하단 섹션 -->
+    <div class="bottom-header">
+        <div class="nav-buttons">
+            <a href="<%= request.getContextPath() %>/category.do?category_id=1">신상품</a>
+            <a href="<%= request.getContextPath() %>/category.do?category_id=2">상의</a>
+            <a href="<%= request.getContextPath() %>/category.do?category_id=3">하의</a>
+            <a href="<%= request.getContextPath() %>/category.do?category_id=4">아우터</a>
+            <a href="<%= request.getContextPath() %>/category.do?category_id=5">신발</a>
+            <a href="<%= request.getContextPath() %>/category.do?category_id=6">특가세일</a>
+            <a href="<%= request.getContextPath() %>/myCartList.do">장바구니</a> <!-- 장바구니 추가 -->
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

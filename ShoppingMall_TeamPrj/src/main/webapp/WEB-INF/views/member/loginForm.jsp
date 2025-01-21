@@ -7,29 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>쇼핑몰 로그인</title>
 <style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
-}
 
-.navbar {
-    background-color: #333;
-    color: white;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #000;
-    padding: 10px 20px;
-    border-bottom: 2px solid #ffffff;
-}
 .navbar a {
     color: white;
     text-decoration: none;
@@ -101,15 +79,6 @@ body {
     background-color: #e0e0e0;
 }
 
-.footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-}
 </style>
 </head>
 <body>

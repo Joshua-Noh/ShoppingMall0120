@@ -1,28 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"
-    isELIgnored="false"    
-    %>
-<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>    
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:set var="contextPath"  value="${pageContext.request.contextPath}"  />
-<ul>
-	<li><a href="#">회사소개</a></li>
-	<li><a href="#">이용약관</a></li>
-	<li><a href="#">개인정보취급방침</a></li>
-	<li><a href="#">제휴/도서홍보</a></li>
-	<li><a href="#">광고센터</a></li>
-	<li><a href="#">고객만족센터</a></li>
-	<li class="no_line"><a href="#">찾아오시는길</a></li>
-</ul>
-<div class="clear"></div>
-<a href="#"><img width="147px"  height="62px" alt="Booktopia" src="${contextPath}/resources/image/Booktopia_Logo2.jpg" /></a>
-<div style="padding-left:200px">
-	 ㈜북토피아 <br>
-	 대표이사: 이병승   <br>
-	 주소 : 우편번호 03133 서울시 종로구 종로3 <br>  
-	 사업자등록번호 : 102-81-11111 <br>
-	 서울특별시 통신판매업신고번호 : 제 666호 ▶사업자정보확인   개인정보보호최고책임자 : 김길동 privacy@google.co.kr <br>
-	 대표전화 : 1544-1544 (발신자 부담전화)   팩스 : 0502-977-7777 (지역번호공통) <br>
-	 COPYRIGHT(C) 북토피아 BOOK CENTRE ALL RIGHTS RESERVED.
-</div>
+    isELIgnored="false" %>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
+<!-- 푸터 -->
+<div style="background-color: #000; color: #fff; padding: 20px; text-align: center; font-size: 14px; line-height: 1.6;">
+
+    <!-- 로고 및 간단 소개 -->
+    <div style="margin-bottom: 10px;">
+        <a href="${contextPath}/main.do">
+            <img width="100px" height="40px" alt="Noir Logo" src="${contextPath}/resources/image/Noir_Logo.jpg" />
+        </a>
+        <p style="margin-top: 5px;">Noir - 당신의 스타일을 완성하는 남성 쇼핑몰</p>
+    </div>
+
+    <!-- 주요 링크 -->
+    <div style="margin-bottom: 10px;">
+        <a href="#" style="color: #fff; text-decoration: none; margin: 0 10px;">회사소개</a> |
+        <a href="#" style="color: #fff; text-decoration: none; margin: 0 10px;">이용약관</a> |
+        <a href="#" style="color: #fff; text-decoration: none; margin: 0 10px;">개인정보처리방침</a> |
+        <a href="#" style="color: #fff; text-decoration: none; margin: 0 10px;">고객센터</a>
+    </div>
+
+    <!-- 회사 정보 -->
+    <div style="font-size: 12px; color: #aaa;">
+        <p>주소: 대전광역시 둔산동, 코리아IT</p>
+        <p>대표전화: 1544-0000 | 팩스: 0505-123-4567</p>
+        <p>사업자등록번호: 123-45-67890</p>
+        <p>© 2025 Noir. All Rights Reserved.</p>
+    </div>
+
+</div>
