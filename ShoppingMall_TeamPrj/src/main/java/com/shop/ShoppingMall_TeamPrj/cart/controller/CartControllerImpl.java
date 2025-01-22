@@ -143,7 +143,7 @@ public class CartControllerImpl  implements CartController{
 	    session.setAttribute("cartMap", cartMap);  // 세션 갱신
 
 	    // 장바구니 페이지로 리다이렉트
-	    return new ModelAndView("redirect:/myCartList.do");
+	    return new ModelAndView("redirect:/cart/myCartList.do");
 	}
 
 
