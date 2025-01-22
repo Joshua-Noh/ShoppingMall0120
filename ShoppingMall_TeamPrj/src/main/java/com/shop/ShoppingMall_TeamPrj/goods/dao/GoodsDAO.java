@@ -14,6 +14,10 @@ public interface GoodsDAO {
 	public List selectGoodsNewList() throws DataAccessException;
 	
 	public GoodsVO selectGoods(int product_id) throws DataAccessException;
+
+	// 1월 22일 추가내역 풀 이후 주석 삭제하셔도 무방합니다.
+	public List<String> selectImageFiles(int product_id) throws DataAccessException;
+
 	/*
 	 * public int insertNewArticle(Map articleMap) throws DataAccessException;
 	 * public void insertReplyArticle(Map articleMap) throws DataAccessException;

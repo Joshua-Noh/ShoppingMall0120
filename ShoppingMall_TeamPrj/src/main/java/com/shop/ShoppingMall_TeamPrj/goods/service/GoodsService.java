@@ -12,6 +12,10 @@ public interface GoodsService {
 	 public List<GoodsVO> goodsNewList() throws Exception;
 	 
 	 public GoodsVO detailInfo(int product_id) throws Exception;
+	 
+	 //1월 22일 추가내역
+	 public List<String> getImageFiles(int product_id) throws Exception;
+
 		/*
 		 * public int addMember(MemberVO memberVO) throws DataAccessException; public
 		 * int removeMember(String id) throws DataAccessException; public MemberVO

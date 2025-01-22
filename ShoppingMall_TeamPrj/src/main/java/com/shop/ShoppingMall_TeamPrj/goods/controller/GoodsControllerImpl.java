@@ -59,18 +59,20 @@ public class GoodsControllerImpl  implements GoodsController{
 		return mav;
 		
 	}
-	
+	// 1월 22일 추가내역
 	@Override
 	@RequestMapping(value= "/goods/detailInfo.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView detailInfo(@RequestParam("product_id") int product_id, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String viewName = (String)request.getAttribute("viewName");
-		goodsVO = goodsService.detailInfo(product_id);
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(viewName);
-		mav.addObject("goods", goodsVO);
-		return mav;
-		
+	    String viewName = (String) request.getAttribute("viewName");
+	    GoodsVO goodsVO = goodsService.detailInfo(product_id);
+	    List<String> imageFiles = goodsService.getImageFiles(product_id);
+	    
+	    ModelAndView mav = new ModelAndView(viewName);
+	    mav.addObject("goods", goodsVO);
+	    mav.addObject("imageFiles", imageFiles);
+	    return mav;
 	}
+
 	
 //	
 //	//@Override

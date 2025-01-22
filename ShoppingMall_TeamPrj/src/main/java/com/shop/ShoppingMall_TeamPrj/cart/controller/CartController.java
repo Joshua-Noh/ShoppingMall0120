@@ -16,10 +16,12 @@ public interface CartController {
     public @ResponseBody String addMyCart(@RequestParam("product_id") int product_id, HttpServletRequest request, HttpServletResponse response) throws Exception;
 
  // 장바구니 상품 수량 수정
-    public ModelAndView updateCartQuantity(@RequestParam("cart_id") int cart_id, @RequestParam("quantity") int quantity, HttpServletRequest request, HttpServletResponse response) throws Exception;
-
+    public ModelAndView updateCartQuantity(int cart_id, int quantity, int product_id, HttpServletRequest request,
+			HttpServletResponse response) throws Exception;
     // 장바구니 상품 삭제
     public ModelAndView deleteCartItem(@RequestParam("cart_id") int cart_id, HttpServletRequest request, HttpServletResponse response) throws Exception;
+
+	
 }
 
 

@@ -32,6 +32,13 @@ public class GoodsDAOImpl implements GoodsDAO {
 	public GoodsVO selectGoods(int product_id) throws DataAccessException {
 		return sqlSession.selectOne("mapper.goods.selectGoods", product_id);
 	}
+	
+	// 1월 22일 추가내역 풀 이후 주석 삭제하셔도 무방합니다.
+	@Override
+	public List<String> selectImageFiles(int product_id) throws DataAccessException {
+	    return sqlSession.selectList("mapper.goods.selectImageFiles", product_id);
+	}
+
 
 	/*
 	 * @Override public int insertNewArticle(Map articleMap) throws
