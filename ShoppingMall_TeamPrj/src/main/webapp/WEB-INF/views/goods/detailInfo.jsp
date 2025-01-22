@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"   isELIgnored="false"  %>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
-
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <%
   request.setCharacterEncoding("UTF-8");
@@ -15,6 +15,14 @@
   <script src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
-   <h1>메인 페이지입니다!!</h1>
+   <div>${goods.product_name }</div>
+   <div>${goods.price }</div>
+   <div>${goods.size }</div>
+   	<div>
+   		<figure>
+			<img alt="HTML5 &amp; CSS3"
+				src="${contextPath}/common/thumbnails.do?product_id=${goods.product_id}&fileName=${goods.fileName}">
+		</figure>
+	</div>
 </body>
 </html>

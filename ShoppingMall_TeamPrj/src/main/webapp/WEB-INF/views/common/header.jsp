@@ -172,7 +172,7 @@
         <div class="auth-buttons">
             <c:choose>
                 <c:when test="${isLogOn}">
-                    <span>환영합니다, ${memberinfo.user_name}님!</span>
+                    <span>환영합니다, ${memberInfo.user_name}님!</span>
                     <button onclick="location.href='${contextPath}/mypage/myPageMain.do'">내 정보</button>
                     <button onclick="location.href='${contextPath}/member/logout.do'">로그아웃</button>
                 </c:when>

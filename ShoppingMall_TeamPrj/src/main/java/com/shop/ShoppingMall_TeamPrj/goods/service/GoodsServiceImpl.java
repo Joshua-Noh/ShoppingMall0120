@@ -37,13 +37,6 @@ public class GoodsServiceImpl implements GoodsService {
 		GoodsVO goodsVO = goodsDAO.selectGoods(product_id);
 		return goodsVO;
 	}
-	
-	// 1월 22일 추가내역
-	@Override
-	public List<String> getImageFiles(int product_id) throws Exception {
-	    return goodsDAO.selectImageFiles(product_id);
-	}
-
 
 	/*
 	 * @Override public int addMember(MemberVO member) throws DataAccessException {

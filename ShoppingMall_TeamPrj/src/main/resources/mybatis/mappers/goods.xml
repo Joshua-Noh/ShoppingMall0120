@@ -11,6 +11,7 @@
         <result property="price" column="price" />
         <result property="size" column="size" />
         <result property="created_at" column="created_at" />
+        <result property="fileName" column="fileName" />
 	</resultMap> 
 	<!-- 
 	<resultMap id="memResult" type="java.util.HashMap">
@@ -34,11 +35,15 @@
       ]]>
 	</select>
 	
-	<select id="selectGoods" resultType="goodsVO" parameterType="int">
+	<select id="selectGoods" resultMap="goodsResult" parameterType="int">
     <![CDATA[
-      SELECT * from products
-      where product_id = #{product_id}		
-    ]]>
+      	SELECT g.*, d.fileName 
+		FROM products g
+		JOIN detail_image d ON g.product_id = d.product_id
+		WHERE d.filetype = 'main_image'
+		  AND g.product_id = #{product_id}
+		ORDER BY g.product_id
+		]]>
   </select>
     
   <insert id="insertMember"  parameterType="memberVO">
@@ -71,13 +76,4 @@
 		where id=#{id} and pwd=#{pwd}		
 	]]>
   </select>
-  
-  <select id="selectImageFiles" resultType="string" parameterType="int">
-    <![CDATA[
-        SELECT fileName
-        FROM detail_image
-        WHERE product_id = #{product_id}
-    ]]>
-</select>
-  
 </mapper>

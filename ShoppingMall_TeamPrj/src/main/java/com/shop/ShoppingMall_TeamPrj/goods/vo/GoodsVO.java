@@ -14,7 +14,7 @@ public class GoodsVO {
 	private int category_id ;
 	private int price ;
 	private String size ;
-	private String imageFileName;
+	private String fileName;
 	private Date created_at;
 	
 	
@@ -63,25 +63,12 @@ public class GoodsVO {
 		this.size = size;
 	}
 
-	public String getImageFileName() {
-		try {
-			if (imageFileName != null && imageFileName.length() != 0) {
-				imageFileName = URLDecoder.decode(imageFileName, "UTF-8");
-			}
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		return imageFileName;
+	public String getFileName() {
+		return fileName;
 	}
 
-	public void setImageFileName(String imageFileName) {
-		try {
-			if(imageFileName!= null && imageFileName.length()!=0) {
-				this.imageFileName = URLEncoder.encode(imageFileName,"UTF-8");
-			}
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 	
 	
