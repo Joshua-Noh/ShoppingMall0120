@@ -120,5 +120,47 @@ public class CartControllerImpl  implements CartController{
 			return "add_success";
 		}
 	}
-	
+
+	@Override
+	@RequestMapping(value = "/updateCartQuantity.do", method = RequestMethod.POST)
+	public ModelAndView updateCartQuantity(@RequestParam("cart_id") int cart_id, @RequestParam("quantity") int quantity, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	    HttpSession session = request.getSession();
+	    memberVO = (MemberVO) session.getAttribute("memberInfo");
+
+	    // cartVO 설정
+	    cartVO.setCart_id(cart_id);
+	    cartVO.setQuantity(quantity);
+	    cartVO.setUser_id(memberVO.getUser_id());
+
+	    // 수량 업데이트 (수량 업데이트를 로그로 출력)
+	    System.out.println("Updating cart quantity for Cart ID: " + cart_id + " with quantity: " + quantity);
+
+	    // 수량 업데이트
+	    cartService.updateCartQuantity(cartVO);
+
+	    // DB에서 갱신된 장바구니 데이터를 다시 조회하여 세션에 업데이트
+	    Map<String, List> cartMap = cartService.myCartList(cartVO);  // 장바구니 다시 조회
+	    session.setAttribute("cartMap", cartMap);  // 세션 갱신
+
+	    // 장바구니 페이지로 리다이렉트
+	    return new ModelAndView("redirect:/myCartList.do");
+	}
+
+
+
+	@Override
+	@RequestMapping(value = "/deleteCartItem.do", method = RequestMethod.POST)
+	public ModelAndView deleteCartItem(@RequestParam("cart_id") int cart_id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	    HttpSession session = request.getSession();
+	    memberVO = (MemberVO) session.getAttribute("memberInfo");
+
+	    cartVO.setCart_id(cart_id);
+	    cartVO.setUser_id(memberVO.getUser_id());
+
+	    cartService.deleteCartItem(cart_id);
+
+	    return new ModelAndView("redirect:/myCartList.do");
+	}
+
+
 }

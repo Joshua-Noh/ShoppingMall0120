@@ -11,43 +11,47 @@ import com.shop.ShoppingMall_TeamPrj.cart.vo.CartVO;
 import com.shop.ShoppingMall_TeamPrj.goods.vo.GoodsVO;
 
 @Repository("cartDAO")
-public class CartDAOImpl  implements  CartDAO{
-	@Autowired
-	private SqlSession sqlSession;
-	
-	public List<CartVO> selectCartList(CartVO cartVO) throws DataAccessException {
-		List<CartVO> cartList =(List)sqlSession.selectList("mapper.cart.selectCartList",cartVO);
-		return cartList;
-	}
+public class CartDAOImpl implements CartDAO {
+    @Autowired
+    private SqlSession sqlSession;
 
-	public List<GoodsVO> selectGoodsList(List<CartVO> cartList) throws DataAccessException {
-		
-		List<GoodsVO> myGoodsList;
-		myGoodsList = sqlSession.selectList("mapper.cart.selectGoodsList",cartList);
-		return myGoodsList;
-	}
-	public boolean selectCountInCart(CartVO cartVO) throws DataAccessException {
-		String  result =sqlSession.selectOne("mapper.cart.selectCountInCart",cartVO);
-		return Boolean.parseBoolean(result);
-	}
+    // 1. selectCartList 메서드 수정
+    public List selectCartList(CartVO cartVO) throws DataAccessException {  // List<CartVO> -> List로 변경
+        List cartList = sqlSession.selectList("mapper.cart.selectCartList", cartVO);
+        return cartList;
+    }
 
-	public void insertGoodsInCart(CartVO cartVO) throws DataAccessException{
-		int cart_id=selectMaxCartId();
-		cartVO.setCart_id(cart_id);
-		sqlSession.insert("mapper.cart.insertGoodsInCart",cartVO);
-	}
-	
-	public void updateCartGoodsQty(CartVO cartVO) throws DataAccessException{
-		sqlSession.insert("mapper.cart.updateCartGoodsQty",cartVO);
-	}
-	
-	public void deleteCartGoods(int cart_id) throws DataAccessException{
-		sqlSession.delete("mapper.cart.deleteCartGoods",cart_id);
-	}
+    public List selectGoodsList(List productIds) throws DataAccessException {
+        List myGoodsList = sqlSession.selectList("mapper.cart.selectGoodsList", productIds);
+        return myGoodsList;
+    }
 
-	private int selectMaxCartId() throws DataAccessException{
-		int cart_id =sqlSession.selectOne("mapper.cart.selectMaxCartId");
-		return cart_id;
-	}
+    // 3. selectCountInCart 메서드 수정
+    public boolean selectCountInCart(CartVO cartVO) throws DataAccessException {
+        String result = sqlSession.selectOne("mapper.cart.selectCountInCart", cartVO);
+        return Boolean.parseBoolean(result);
+    }
 
+    // 4. insertGoodsInCart 메서드 수정
+    public void insertGoodsInCart(CartVO cartVO) throws DataAccessException {
+        int cart_id = selectMaxCartId();
+        cartVO.setCart_id(cart_id);
+        sqlSession.insert("mapper.cart.insertGoodsInCart", cartVO);
+    }
+
+    // 5. updateCartGoodsQty 메서드 수정
+    public void updateCartQuantity(CartVO cartVO) throws DataAccessException {
+        sqlSession.insert("mapper.cart.updateCartQuantity", cartVO);
+    }
+
+    // 6. deleteCartGoods 메서드 수정
+    public void deleteCartItem(int cart_id) throws DataAccessException {
+        sqlSession.delete("mapper.cart.deleteCartItem", cart_id);
+    }
+
+    // 7. selectMaxCartId 메서드 수정
+    private int selectMaxCartId() throws DataAccessException {
+        int cart_id = sqlSession.selectOne("mapper.cart.selectMaxCartId");
+        return cart_id;
+    }
 }
