@@ -19,35 +19,19 @@
 			value="/WEB-INF/views/main/main.jsp" />
 	</definition>
 
-
-	<definition name="/goodsList" extends="baseLayout">
-		<put-attribute name="title" value="상품 목록창" />
-		<put-attribute name="body"
-			value="/WEB-INF/views/goods/goodsList.jsp" />
-	</definition>
-
-
-
-	<definition name="/detailInfo" extends="baseLayout">
-		<put-attribute name="title" value="상품 상세 정보 창" />
-		<put-attribute name="body"
-			value="/WEB-INF/views/goods/detailInfo.jsp" />
-	</definition>
-	
 	<definition name="/member/addMemberForm"
 		extends="baseLayout">
 		<put-attribute name="title" value="회원 등록" />
 		<put-attribute name="body"
 			value="/WEB-INF/views/member/addMemberForm.jsp" />
 	</definition>
-	
+
 	<definition name="/member/loginForm"
 		extends="baseLayout">
 		<put-attribute name="title" value="로그인 폼" />
 		<put-attribute name="body"
 			value="/WEB-INF/views/member/loginForm.jsp" />
 	</definition>
-
 	<!-- <definition name="/member/memberForm" extends="baseLayout"> <put-attribute 
 		name="title" value="회원등록창" /> <put-attribute name="body" value="/WEB-INF/views/member/memberForm.jsp" 
 		/> </definition> <definition name="/member/viewDetail" extends="baseLayout"> 

@@ -173,11 +173,12 @@
             <c:choose>
                 <c:when test="${isLogOn}">
                     <span>환영합니다, ${member.user_name}님!</span>
+                    <button onclick="location.href='${contextPath}/mypage/myPageMain.do'">내 정보</button>
                     <button onclick="location.href='${contextPath}/member/logout.do'">로그아웃</button>
                 </c:when>
                 <c:otherwise>
                     <button onclick="location.href='${contextPath}/member/loginForm.do'">로그인</button>
-                    <button onclick="location.href='${contextPath}/member/signupForm.do'">회원가입</button>
+                    <button onclick="location.href='${contextPath}/member/addMemberForm.do'">회원가입</button>
                 </c:otherwise>
             </c:choose>
         </div>
@@ -185,13 +186,13 @@
     <!-- 하단 섹션 -->
     <div class="bottom-header">
         <div class="nav-buttons">
-            <a href="<%= request.getContextPath() %>/category.do?category_id=1">신상품</a>
-            <a href="<%= request.getContextPath() %>/category.do?category_id=2">상의</a>
-            <a href="<%= request.getContextPath() %>/category.do?category_id=3">하의</a>
+            <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=0">신상품</a>
+            <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=1">상의</a>
+            <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=2">하의</a>
             <a href="<%= request.getContextPath() %>/category.do?category_id=4">아우터</a>
             <a href="<%= request.getContextPath() %>/category.do?category_id=5">신발</a>
             <a href="<%= request.getContextPath() %>/category.do?category_id=6">특가세일</a>
-            <a href="<%= request.getContextPath() %>/myCartList.do">장바구니</a> <!-- 장바구니 추가 -->
+            <a href="<%= request.getContextPath() %>/cart/myCartList.do">장바구니</a> <!-- 장바구니 추가 -->
         </div>
     </div>
 </div>

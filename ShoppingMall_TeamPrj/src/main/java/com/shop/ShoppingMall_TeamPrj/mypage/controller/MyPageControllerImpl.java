@@ -22,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 //import com.shop.ShoppingMall_TeamPrj.common.base.BaseController;
 import com.shop.ShoppingMall_TeamPrj.member.vo.MemberVO;
 import com.shop.ShoppingMall_TeamPrj.mypage.service.MyPageService;
-//import com.shop.ShoppingMall_TeamPrj.order.vo.OrderVO;
+import com.shop.ShoppingMall_TeamPrj.order.vo.OrderVO;
 
 @Controller("myPageController")
 @RequestMapping(value="/mypage")
@@ -33,26 +33,26 @@ public class MyPageControllerImpl implements MyPageController{
 	@Autowired
 	private MemberVO memberVO;
 	
-//	@Override
-//	@RequestMapping(value="/myPageMain.do" ,method = RequestMethod.GET)
-//	public ModelAndView myPageMain(@RequestParam(required = false,value="message")  String message,
-//			   HttpServletRequest request, HttpServletResponse response)  throws Exception {
-//		HttpSession session=request.getSession();
-//		session=request.getSession();
-//		session.setAttribute("side_menu", "my_page"); //마이페이지 사이드 메뉴로 설정한다.
-//		
-//		String viewName=(String)request.getAttribute("viewName");
-//		ModelAndView mav = new ModelAndView(viewName);
-//		memberVO=(MemberVO)session.getAttribute("memberInfo");
-//		int member_id=memberVO.getUser_id();
-//		
-//		//List<OrderVO> myOrderList=myPageService.listMyOrderGoods(member_id);
-//		
-//		mav.addObject("message", message);
-//		mav.addObject("myOrderList", myOrderList);
-//
-//		return mav;
-//	}
+	@Override
+	@RequestMapping(value="/myPageMain.do" ,method = RequestMethod.GET)
+	public ModelAndView myPageMain(@RequestParam(required = false,value="message")  String message,
+			   HttpServletRequest request, HttpServletResponse response)  throws Exception {
+		HttpSession session=request.getSession();
+		session=request.getSession();
+		session.setAttribute("side_menu", "my_page"); //마이페이지 사이드 메뉴로 설정한다.
+		
+		String viewName=(String)request.getAttribute("viewName");
+		ModelAndView mav = new ModelAndView(viewName);
+		memberVO=(MemberVO)session.getAttribute("memberInfo");
+		int member_id=memberVO.getUser_id();
+		
+		List<OrderVO> myOrderList=myPageService.listMyOrderGoods(member_id);
+		
+		mav.addObject("message", message);
+		mav.addObject("myOrderList", myOrderList);
+
+		return mav;
+	}
 //	
 //	@Override
 //	@RequestMapping(value="/myOrderDetail.do" ,method = RequestMethod.GET)
@@ -101,16 +101,16 @@ public class MyPageControllerImpl implements MyPageController{
 //		return mav;
 //	}	
 //	
-//	@Override
-//	@RequestMapping(value="/cancelMyOrder.do" ,method = RequestMethod.POST)
-//	public ModelAndView cancelMyOrder(@RequestParam("order_id")  String order_id,
-//			                         HttpServletRequest request, HttpServletResponse response)  throws Exception {
-//		ModelAndView mav = new ModelAndView();
-//		myPageService.cancelOrder(order_id);
-//		mav.addObject("message", "cancel_order");
-//		mav.setViewName("redirect:/mypage/myPageMain.do");
-//		return mav;
-//	}
+	@Override
+	@RequestMapping(value="/cancelMyOrder.do" ,method = RequestMethod.POST)
+	public ModelAndView cancelMyOrder(@RequestParam("order_id")  int order_id,
+			                         HttpServletRequest request, HttpServletResponse response)  throws Exception {
+		ModelAndView mav = new ModelAndView();
+		myPageService.cancelOrder(order_id);
+		mav.addObject("message", "cancel_order");
+		mav.setViewName("redirect:/mypage/myPageMain.do");
+		return mav;
+	}
 //	
 //	@Override
 //	@RequestMapping(value="/myDetailInfo.do" ,method = RequestMethod.GET)

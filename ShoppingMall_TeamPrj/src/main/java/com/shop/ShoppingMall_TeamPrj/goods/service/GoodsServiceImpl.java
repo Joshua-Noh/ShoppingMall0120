@@ -25,6 +25,12 @@ public class GoodsServiceImpl implements GoodsService {
 		goodsList = goodsDAO.selectGoodsList(category_id);
 		return goodsList;
 	}
+	@Override
+	public List<GoodsVO> goodsNewList() throws Exception {
+		List goodsList = null;
+		goodsList = goodsDAO.selectGoodsNewList();
+		return goodsList;
+	}
 	
 	@Override
 	public GoodsVO detailInfo(int product_id) throws Exception {

@@ -11,6 +11,8 @@ import com.shop.ShoppingMall_TeamPrj.goods.vo.GoodsVO;
 public interface GoodsDAO {
 	public List selectGoodsList(int category_id) throws DataAccessException;
 	
+	public List selectGoodsNewList() throws DataAccessException;
+	
 	public GoodsVO selectGoods(int product_id) throws DataAccessException;
 	/*
 	 * public int insertNewArticle(Map articleMap) throws DataAccessException;

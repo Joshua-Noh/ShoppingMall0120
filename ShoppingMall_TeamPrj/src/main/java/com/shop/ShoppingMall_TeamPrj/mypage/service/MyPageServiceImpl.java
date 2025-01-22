@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.shop.ShoppingMall_TeamPrj.member.vo.MemberVO;
 import com.shop.ShoppingMall_TeamPrj.mypage.dao.MyPageDAO;
 import com.shop.ShoppingMall_TeamPrj.mypage.vo.MyPageVO;
-//import com.shop.ShoppingMall_TeamPrj.order.vo.OrderVO;
+import com.shop.ShoppingMall_TeamPrj.order.vo.OrderVO;
 
 @Service("myPageService")
 @Transactional(propagation=Propagation.REQUIRED)
@@ -22,9 +22,9 @@ public class MyPageServiceImpl  implements MyPageService{
 	@Autowired
 	private MyPageDAO myPageDAO;
 
-//	public List<OrderVO> listMyOrderGoods(int member_id) throws Exception{
-//		return myPageDAO.selectMyOrderGoodsList(member_id);
-//	}
+	public List<OrderVO> listMyOrderGoods(int member_id) throws Exception{
+		return myPageDAO.selectMyOrderGoodsList(member_id);
+	}
 //	
 //	public List findMyOrderInfo(String order_id) throws Exception{
 //		return myPageDAO.selectMyOrderInfo(order_id);
@@ -40,9 +40,9 @@ public class MyPageServiceImpl  implements MyPageService{
 //		 return myPageDAO.selectMyDetailInfo(member_id);
 //	}
 //	
-//	public void cancelOrder(String order_id) throws Exception{
-//		myPageDAO.updateMyOrderCancel(order_id);
-//	}
+	public void cancelOrder(int order_id) throws Exception{
+		myPageDAO.updateMyOrderCancel(order_id);
+	}
 //	public MemberVO myDetailInfo(String member_id) throws Exception{
 //		return myPageDAO.selectMyDetailInfo(member_id);
 //	}

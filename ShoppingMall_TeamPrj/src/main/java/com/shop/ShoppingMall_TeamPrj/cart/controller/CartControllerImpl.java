@@ -47,7 +47,7 @@ public class CartControllerImpl  implements CartController{
 	private CartVO cartVO;
 	  
 	@Override
-	@RequestMapping(value= "/myCartList.do", method = {RequestMethod.GET})
+	@RequestMapping(value= "/cart/myCartList.do", method = {RequestMethod.GET})
 	public ModelAndView myCartList(HttpServletRequest request, HttpServletResponse response) throws Exception {
 	    HttpSession session = request.getSession(false); // 기존 세션 가져오기
 	    if (session == null) {
@@ -100,7 +100,7 @@ public class CartControllerImpl  implements CartController{
 
 
 	
-	@RequestMapping(value="/addMyCart.do" ,method = RequestMethod.POST,produces = "application/text; charset=utf8")
+	@RequestMapping(value="/cart/addMyCart.do" ,method = RequestMethod.POST,produces = "application/text; charset=utf8")
 	public  @ResponseBody String addMyCart(@RequestParam("product_id") int product_id,
 			                    HttpServletRequest request, HttpServletResponse response)  throws Exception{
 		HttpSession session=request.getSession();
@@ -122,7 +122,7 @@ public class CartControllerImpl  implements CartController{
 	}
 
 	@Override
-	@RequestMapping(value = "/updateCartQuantity.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/cart/updateCartQuantity.do", method = RequestMethod.POST)
 	public ModelAndView updateCartQuantity(@RequestParam("cart_id") int cart_id, @RequestParam("quantity") int quantity, HttpServletRequest request, HttpServletResponse response) throws Exception {
 	    HttpSession session = request.getSession();
 	    memberVO = (MemberVO) session.getAttribute("memberInfo");
@@ -149,7 +149,7 @@ public class CartControllerImpl  implements CartController{
 
 
 	@Override
-	@RequestMapping(value = "/deleteCartItem.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/cart/deleteCartItem.do", method = RequestMethod.POST)
 	public ModelAndView deleteCartItem(@RequestParam("cart_id") int cart_id, HttpServletRequest request, HttpServletResponse response) throws Exception {
 	    HttpSession session = request.getSession();
 	    memberVO = (MemberVO) session.getAttribute("memberInfo");

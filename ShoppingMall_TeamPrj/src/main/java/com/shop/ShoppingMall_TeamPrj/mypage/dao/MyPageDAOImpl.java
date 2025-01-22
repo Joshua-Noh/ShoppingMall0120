@@ -10,17 +10,17 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.shop.ShoppingMall_TeamPrj.member.vo.MemberVO;
-//import com.shop.ShoppingMall_TeamPrj.order.vo.OrderVO;
+import com.shop.ShoppingMall_TeamPrj.order.vo.OrderVO;
 
 @Repository("myPageDAO")
 public class MyPageDAOImpl implements MyPageDAO{
 	@Autowired
 	private SqlSession sqlSession;
 	
-//	public List<OrderVO> selectMyOrderGoodsList(int member_id) throws DataAccessException{
-//		List<OrderVO> orderGoodsList=(List)sqlSession.selectList("mapper.mypage.selectMyOrderGoodsList",member_id);
-//		return orderGoodsList;
-//	}
+	public List<OrderVO> selectMyOrderGoodsList(int member_id) throws DataAccessException{
+		List<OrderVO> orderGoodsList=(List)sqlSession.selectList("mapper.mypage.selectMyOrderGoodsList",member_id);
+		return orderGoodsList;
+	}
 //	
 //	public List selectMyOrderInfo(String order_id) throws DataAccessException{
 //		List myOrderList=(List)sqlSession.selectList("mapper.mypage.selectMyOrderInfo",order_id);
@@ -42,7 +42,7 @@ public class MyPageDAOImpl implements MyPageDAO{
 //		
 //	}
 //	
-//	public void updateMyOrderCancel(String order_id) throws DataAccessException{
-//		sqlSession.update("mapper.mypage.updateMyOrderCancel",order_id);
-//	}
+	public void updateMyOrderCancel(int order_id) throws DataAccessException{
+		sqlSession.update("mapper.mypage.updateMyOrderCancel",order_id);
+	}
 }

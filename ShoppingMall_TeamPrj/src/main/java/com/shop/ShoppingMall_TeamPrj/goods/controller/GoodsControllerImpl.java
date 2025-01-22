@@ -44,10 +44,15 @@ public class GoodsControllerImpl  implements GoodsController{
 	private GoodsVO goodsVO;
 	  
 	@Override
-	@RequestMapping(value= "/goodsList.do", method = {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value= "/goods/goodsList.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView goodsList(@RequestParam("category_id") int category_id, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String viewName = (String)request.getAttribute("viewName");
-		List goodsList = goodsService.goodsList(category_id);
+		List goodsList = null;
+		if (category_id == 0) {
+			goodsList = goodsService.goodsNewList();
+		} else {
+			goodsList = goodsService.goodsList(category_id);
+		}
 		ModelAndView mav = new ModelAndView(viewName);
 		System.out.println("goodsList : "+ goodsList);
 		mav.addObject("goodsList", goodsList);
@@ -56,7 +61,7 @@ public class GoodsControllerImpl  implements GoodsController{
 	}
 	
 	@Override
-	@RequestMapping(value= "/detailInfo.do", method = {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value= "/goods/detailInfo.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView detailInfo(@RequestParam("product_id") int product_id, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String viewName = (String)request.getAttribute("viewName");
 		goodsVO = goodsService.detailInfo(product_id);

@@ -15,7 +15,7 @@ public class GoodsVO {
 	private int price ;
 	private String size ;
 	private String imageFileName;
-	private String created_at;
+	private Date created_at;
 	
 	
 	public GoodsVO() {
@@ -86,11 +86,11 @@ public class GoodsVO {
 	
 	
 
-	public String getCreated_at() {
+	public Date getCreated_at() {
 		return created_at;
 	}
 
-	public void setCreated_at(String created_at) {
+	public void setCreated_at(Date created_at) {
 		this.created_at = created_at;
 	}
 

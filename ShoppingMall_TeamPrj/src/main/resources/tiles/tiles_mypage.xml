@@ -3,7 +3,12 @@
        "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
 <tiles-definitions>
-    <definition name="/mypage/myPageMain" extends="baseLayout">
+	<definition name="myPageLayout"
+		template="/WEB-INF/views/common/myPageLayout.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="body" value="" />
+	</definition>
+    <definition name="/mypage/myPageMain" extends="myPageLayout">
        <put-attribute name="title" value="마이페이지 메인" />
        <put-attribute name="body" value="/WEB-INF/views/mypage/myPageMain.jsp" />
     </definition>

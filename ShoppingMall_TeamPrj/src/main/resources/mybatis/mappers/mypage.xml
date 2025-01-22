@@ -5,26 +5,29 @@
 
 <mapper namespace="mapper.mypage">
 <!-- 리절트 맵 정의 -->
-<!-- 
+
 	<resultMap id="orderGoodsResult" type="orderVO">
 		<result property="order_id" column="order_id" />
 		<result property="user_id" column="user_id" />
 		<result property="product_id" column="product_id" />
+		<result property="product_name" column="product_name" />
 		<result property="quantity" column="quantity" />
 		<result property="order_date" column="order_date" />
+		<result property="delivery_state" column="delivery_state" />
 		<result property="total_price" column="total_price" />
 	</resultMap> 
 
 	
 	 <select id="selectMyOrderGoodsList" resultMap="orderGoodsResult"  parameterType="int"  >
 	    <![CDATA[
-			select * from orders
-            where user_id=#{user_id}
-            order by order_date desc
+			select * from orders o
+			join products p on o.product_id = p.product_id
+            where o.user_id=#{user_id}
+            order by o.order_date desc
 		]]>
 	</select>
 	
-
+<!-- 
 	<select id="selectMyOrderInfo" resultMap="orderGoodsResult"   parameterType="String"  >
 	    <![CDATA[
 		    select * from t_shopping_order
@@ -111,12 +114,12 @@
 			where member_id=#{member_id}
     	]]>
 	</select>	
-	
-	<update id="updateMyOrderCancel" parameterType="String">
-	   update t_shopping_order
+	 -->
+	<update id="updateMyOrderCancel" parameterType="int">
+	   update order
 	 	  set delivery_state='cancel_order'
 	   where order_id=#{order_id}
 	</update>
 		
-	 -->	
+		
 </mapper>

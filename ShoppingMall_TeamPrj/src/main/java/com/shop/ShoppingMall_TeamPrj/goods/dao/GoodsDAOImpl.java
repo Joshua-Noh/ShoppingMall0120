@@ -22,6 +22,11 @@ public class GoodsDAOImpl implements GoodsDAO {
 		List<GoodsVO> goodsList = sqlSession.selectList("mapper.goods.selectGoodsList", category_id);
 		return goodsList;
 	}
+	@Override
+	public List selectGoodsNewList() throws DataAccessException {
+		List<GoodsVO> goodsList = sqlSession.selectList("mapper.goods.selectGoodsNewList");
+		return goodsList;
+	}
 	
 	@Override
 	public GoodsVO selectGoods(int product_id) throws DataAccessException {
