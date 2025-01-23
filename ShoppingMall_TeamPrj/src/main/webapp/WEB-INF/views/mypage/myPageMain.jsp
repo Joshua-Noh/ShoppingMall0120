@@ -32,7 +32,7 @@
     transform: scale(1.1); /* 로고 확대 효과 */
 }
   .list_view {
-	width: 100%; color: rgb(51, 51, 51); font-size: 0.75em; margin-top: 20px; border-top-color: rgb(51, 51, 51); border-top-width: 2px; border-top-style: solid; border-collapse: collapse;
+	text-align: center; width: 100%; color: rgb(51, 51, 51); font-size: 0.75em; margin-top: 20px; border-top-color: rgb(51, 51, 51); border-top-width: 2px; border-top-style: solid; border-collapse: collapse;
 }
 
 .list_view tr {
@@ -42,6 +42,7 @@
   .list_view td {
 	margin: 0px; padding: 10px 0px; border-bottom-color: rgb(153, 153, 153); border-bottom-width: 1px; border-bottom-style: dotted;
 }
+
   </style>
   
   <c:if test="${message=='cancel_order'}">
@@ -85,14 +86,14 @@ function fn_cancel_order(order_id){
                 <img src="<%= request.getContextPath() %>/resources/image/NOIR_LOGO.png" alt="My Shop Logo">
             </a>
         </div></header>
-   	<h1>최근주문내역</h1>
+   	<h1>최근주문내역<a href="#"> <IMG  src="${contextPath}/resources/image/btn_more_see.jpg">  </a></h1>
    	<table class="list_view" align=center>
 			<tr style="background:black" color:"white" >
-				<td>주문번호</td>
-				<td>주문일자</td>
-				<td>주문상품</td>
-				<td>주문상태</td>
-				<td>주문취소</td>
+				<td style="color: white;">주문번호</td>
+				<td style="color: white;">주문일자</td>
+				<td style="color: white;">주문상품</td>
+				<td style="color: white;">주문상태</td>
+				<td style="color: white;">주문취소</td>
 			</tr>
       <c:choose>
          <c:when test="${ empty myOrderList  }">
@@ -104,6 +105,7 @@ function fn_cancel_order(order_id){
         </c:when>
         <c:otherwise>
 	      <c:forEach var="item" items="${myOrderList }"  varStatus="i">
+	      <tr>
 	       	<td>${item.order_id }</td>
 	       	<td>${item.order_date }</td>
 	       	<td>${item.product_name }</td>
@@ -116,6 +118,7 @@ function fn_cancel_order(order_id){
 			       주문취소
 			    </c:when>
 		    </c:choose>
+		    </td>
 		    	<td>
 				  <c:choose>
 				   <c:when test="${item.delivery_state=='delivery_prepared'}">
@@ -126,8 +129,62 @@ function fn_cancel_order(order_id){
 				   </c:otherwise>
 				  </c:choose>
 				</td>
+			</tr>
           </c:forEach>
         </c:otherwise>
       </c:choose>
+      <br><br><br>	
+<h1>나의 정보
+    <a href="#"> <img  src="${contextPath}/resources/image/btn_more_see.jpg" />  </a>
+</h1>
+<table border=0 width=100% cellpadding=10 cellspacing=10>
+	<tr>
+    <td>
+	   <button onclick="location.href='${contextPath}/member/updateMemberForm.do'">정보 변경</button>
+   </td>
+   </tr>
+	<tr>
+    <td>
+	   이름:
+   </td>
+    <td>
+	   <strong>${memberInfo.user_name }</strong>
+   </td>
+   </tr>
+  	<tr>
+    <td>
+	   이메일:
+   </td>
+    <td>
+	   <strong>${memberInfo.email }</strong>
+   </td>
+   </tr>
+   <tr>
+    <td>
+	   전화번호 
+   </td>
+    <td>
+	   <strong>${memberInfo.phone_number }</strong>
+   </td>
+   </tr>
+   <tr>
+    <td>
+	  주소 
+   </td>
+    <td>
+		<strong>${memberInfo.address }</strong>
+   </td>
+   </tr>
+   <tr>
+    <td>
+	  생년월일 
+   </td>
+    <td>
+		<strong>${memberInfo.date_of_birth }</strong>
+   </td>
+   </tr>
+</table>
+      
+      
 </body>
 </html>

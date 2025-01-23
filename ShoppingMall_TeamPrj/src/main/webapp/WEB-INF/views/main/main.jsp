@@ -97,7 +97,8 @@
 		<h2>BEST SELLER</h2>
 		<div class="product-list">
 			<div class="product">
-				<div class="image"></div>
+				<img alt="HTML5 &amp; CSS3"
+				src="${contextPath}/common/thumbnails.do?product_id=2&fileName=포토샵 무작정 따라하기_메인.jpg">
 				<div class="name">상품이름</div>
 				<div class="price">상품가격</div>
 			</div>

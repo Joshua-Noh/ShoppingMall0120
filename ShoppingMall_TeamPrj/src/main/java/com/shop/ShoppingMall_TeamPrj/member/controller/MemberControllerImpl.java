@@ -60,7 +60,7 @@ public class MemberControllerImpl implements MemberController {
         return mav;
     }
 
-    @RequestMapping(value = "/member/management", method = RequestMethod.GET)
+    @RequestMapping(value = "/member/updateMemberForm.do", method = RequestMethod.GET)
     public ModelAndView showMemberManagement(HttpServletRequest request, HttpServletResponse response) throws Exception {
         List<MemberVO> membersList = memberService.listMembers(); // 회원 목록 가져오기
         ModelAndView mav = new ModelAndView("member/memberManagement");

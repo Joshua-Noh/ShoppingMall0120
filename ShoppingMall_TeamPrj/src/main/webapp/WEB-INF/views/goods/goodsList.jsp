@@ -18,7 +18,8 @@
 </head>
 <body>
 	<c:forEach var="item" items="${goodsList }">
-	   			<div class="image"></div>
+	   			<img alt="HTML5 &amp; CSS3"
+				src="${contextPath}/common/thumbnails.do?product_id=${item.product_id}&fileName=${item.fileName}">
 				<div class="name"><a href="${contextPath}/goods/detailInfo.do?product_id=${item.product_id}">상품이름</a></div>
 				<div class="price">상품가격</div>
   </c:forEach>

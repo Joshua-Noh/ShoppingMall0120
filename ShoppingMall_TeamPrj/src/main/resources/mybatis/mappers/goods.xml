@@ -25,7 +25,12 @@
 
 	<select id="selectGoodsList" resultMap="goodsResult" parameterType="int">
       <![CDATA[
-         select * from products where category_id = #{category_id} order by created_at desc	 	
+         SELECT g.*, d.fileName 
+		FROM products g
+		JOIN detail_image d ON g.product_id = d.product_id
+		WHERE d.filetype = 'main_image'
+		  AND g.category_id = #{category_id}
+		ORDER BY g.product_id 	
       ]]>
 	</select>
 	
