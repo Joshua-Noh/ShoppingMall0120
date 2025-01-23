@@ -23,7 +23,9 @@ public class CartDAOImpl implements CartDAO {
 
     public List selectGoodsList(List productIds) throws DataAccessException {
         List myGoodsList = sqlSession.selectList("mapper.cart.selectGoodsList", productIds);
+        System.out.println("productIds 4시30분 : " + productIds);  // productIds 값 확인
         return myGoodsList;
+        
     }
 
     // 3. selectCountInCart 메서드 수정
@@ -54,4 +56,9 @@ public class CartDAOImpl implements CartDAO {
         int cart_id = sqlSession.selectOne("mapper.cart.selectMaxCartId");
         return cart_id;
     }
+    @Override
+    public CartVO selectCartItem(CartVO cartVO) throws DataAccessException {
+        return sqlSession.selectOne("mapper.cart.selectCartItem", cartVO);
+    }
+
 }

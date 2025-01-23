@@ -30,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.shop.ShoppingMall_TeamPrj.cart.service.CartService;
 import com.shop.ShoppingMall_TeamPrj.cart.vo.CartVO;
+import com.shop.ShoppingMall_TeamPrj.goods.vo.GoodsVO;
 //import com.shop.ShoppingMall_TeamPrj.goods.vo.ImageVO;
 import com.shop.ShoppingMall_TeamPrj.member.vo.MemberVO;
 
@@ -47,78 +48,78 @@ public class CartControllerImpl  implements CartController{
 	private CartVO cartVO;
 	  
 	@Override
-	@RequestMapping(value= "/cart/myCartList.do", method = {RequestMethod.GET})
+	@RequestMapping(value = "/cart/myCartList.do", method = {RequestMethod.GET})
 	public ModelAndView myCartList(HttpServletRequest request, HttpServletResponse response) throws Exception {
 	    HttpSession session = request.getSession(false); // 기존 세션 가져오기
 	    if (session == null) {
-	        System.out.println("세션이 없습니다. 로그인 페이지로 이동합니다.");
 	        return new ModelAndView("redirect:/member/loginForm.do");
 	    }
 
 	    // 세션에 저장된 memberInfo 확인
-	    MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
+	    memberVO = (MemberVO) session.getAttribute("memberInfo");
 	    if (memberVO == null) {
-	        System.out.println("세션에 memberInfo가 없습니다. 로그인 페이지로 이동합니다.");
 	        return new ModelAndView("redirect:/member/loginForm.do");
-	    } else {
-	        // Debugging: memberInfo 확인
-	        System.out.println("세션에서 가져온 사용자 정보: ID=" + memberVO.getUser_id());
 	    }
 
-	    // cartVO 확인
-	    if (cartVO == null) {
-	        System.out.println("cartVO가 null입니다. 기본 생성자로 초기화합니다.");
-	        cartVO = new CartVO();
-	    }
 	    cartVO.setUser_id(memberVO.getUser_id());
-
-	    // cartService 확인
-	    if (cartService == null) {
-	        throw new NullPointerException("cartService가 주입되지 않았습니다.");
-	    }
 
 	    // 장바구니 정보 조회
 	    Map<String, List> cartMap = cartService.myCartList(cartVO);
 	    if (cartMap == null || cartMap.isEmpty()) {
-	        System.out.println("장바구니가 비어 있습니다.");
 	        ModelAndView mav = new ModelAndView("cart/myCartList");
 	        mav.addObject("message", "장바구니가 비어 있습니다.");
 	        return mav;
 	    }
 
-	 // Debugging: cartMap 확인
-	    System.out.println("장바구니 데이터:");
-	    for (Iterator<Map.Entry<String, List>> it = cartMap.entrySet().iterator(); it.hasNext(); ) {
-	        Map.Entry<String, List> entry = it.next();
-	        System.out.println(entry.getKey() + ": " + entry.getValue());
+	    // 총합 계산
+	    double totalPrice = 0;
+	    List<CartVO> myCartList = cartMap.get("myCartList");
+	    List<GoodsVO> myGoodsList = cartMap.get("myGoodsList");
+
+	    for (int i = 0; i < myCartList.size(); i++) {
+	        CartVO cartItem = myCartList.get(i);
+	        GoodsVO goodsItem = myGoodsList.get(i);
+	        totalPrice += cartItem.getQuantity() * goodsItem.getPrice(); // 상품 가격 * 수량
 	    }
+
+	    // totalPrice를 세션에 별도로 저장
+	    session.setAttribute("totalPrice", totalPrice);
 
 	    session.setAttribute("cartMap", cartMap); // 세션에 장바구니 데이터 저장
 	    return new ModelAndView("cart/myCartList");
-
 	}
 
 
+
+
+
 	
-	@RequestMapping(value="/cart/addMyCart.do" ,method = RequestMethod.POST,produces = "application/text; charset=utf8")
-	public  @ResponseBody String addMyCart(@RequestParam("product_id") int product_id,
-			                    HttpServletRequest request, HttpServletResponse response)  throws Exception{
-		HttpSession session=request.getSession();
-		memberVO=(MemberVO)session.getAttribute("memberInfo");
-		int member_id=memberVO.getUser_id();
-		
-		cartVO.setUser_id(member_id);
-		//카트 등록전에 이미 등록된 제품인지 판별한다.
-		cartVO.setProduct_id(product_id);
-		cartVO.setUser_id(member_id);
-		boolean isAreadyExisted=cartService.findCartGoods(cartVO);
-		System.out.println("isAreadyExisted:"+isAreadyExisted);
-		if(isAreadyExisted==true){
-			return "already_existed";
-		}else{
-			cartService.addGoodsInCart(cartVO);
-			return "add_success";
-		}
+	@RequestMapping(value = "/cart/addMyCart.do", method = RequestMethod.POST, produces = "application/text; charset=utf8")
+	public @ResponseBody String addMyCart(@RequestParam("product_id") int product_id,
+	                                      @RequestParam("quantity") int quantity,
+	                                      HttpServletRequest request, HttpServletResponse response) throws Exception {
+	    HttpSession session = request.getSession();
+	    memberVO = (MemberVO) session.getAttribute("memberInfo");
+
+	    if (memberVO == null) {
+	        return "login_required"; // 로그인 필요
+	    }
+
+	    int member_id = memberVO.getUser_id();
+	    cartVO.setUser_id(member_id);
+	    cartVO.setProduct_id(product_id);
+
+	    CartVO existingCartItem = cartService.findCartItem(cartVO);
+	    if (existingCartItem != null) {
+	        int updatedQuantity = existingCartItem.getQuantity() + quantity;
+	        cartVO.setQuantity(updatedQuantity);
+	        cartService.updateCartQuantity(cartVO);
+	        return "quantity_updated";
+	    } else {
+	        cartVO.setQuantity(quantity);
+	        cartService.addGoodsInCart(cartVO);
+	        return "add_success";
+	    }
 	}
 
 	@Override
@@ -173,6 +174,22 @@ public class CartControllerImpl  implements CartController{
 	    return new ModelAndView("redirect:/myCartList.do");
 	}
 
+	@RequestMapping(value = "/cart/checkout.do", method = RequestMethod.GET)
+	public ModelAndView toOrderPage(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	    HttpSession session = request.getSession(false);
+	    
+	    if (session == null) {
+	        return new ModelAndView("redirect:/member/loginForm.do");
+	    }
+	    
+	    // 세션에서 장바구니 정보 가져오기
+	    Map<String, List> cartMap = (Map<String, List>) session.getAttribute("cartMap");
+	    if (cartMap == null || cartMap.isEmpty()) {
+	        return new ModelAndView("redirect:/cart/myCartList.do");
+	    }
 
+	    // 주문 확인 페이지로 이동하면서 장바구니 정보 전달
+	    return new ModelAndView("order/orderPage", "cartMap", cartMap);
+	}
 
 }

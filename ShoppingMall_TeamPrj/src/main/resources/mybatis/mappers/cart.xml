@@ -38,15 +38,14 @@
         SELECT p.*, d.fileName 
         FROM products p 
         JOIN detail_image d ON p.product_id = d.product_id
-        WHERE d.fileType = 'image/jpeg'
-          AND p.product_id IN
+        WHERE d.fileType = 'main_image'
+        AND p.product_id IN
     ]]>
     <foreach item="item" collection="list" open="(" separator="," close=")">
         #{item}
     </foreach>
     ORDER BY p.created_at DESC
 </select>
-
 
     <!-- 장바구니에 해당 상품이 있는지 확인 -->
     <select id="selectCountInCart" resultType="String" parameterType="cartVO">
@@ -59,12 +58,12 @@
     </select>
 
     <!-- 장바구니에 상품 추가 -->
-    <insert id="insertGoodsInCart" parameterType="cartVO">
-        <![CDATA[
-        INSERT INTO cart (cart_id, user_id, product_id)
-        VALUES (#{cart_id}, #{user_id}, #{product_id})
-        ]]>
-    </insert>
+<insert id="insertGoodsInCart" parameterType="cartVO">
+  <![CDATA[
+  INSERT INTO cart (cart_id, user_id, product_id, quantity)
+  VALUES (#{cart_id}, #{user_id}, #{product_id}, #{quantity})
+  ]]>
+</insert>
 
     <!-- 장바구니 상품 수량 업데이트 -->
     <update id="updateCartQuantity" parameterType="cartVO">
@@ -91,5 +90,12 @@
         FROM cart
         ]]>
     </select>
+    <select id="selectCartItem" parameterType="cartVO" resultType="CartVO">
+    SELECT cart_id, user_id, product_id, quantity
+    FROM cart
+    WHERE user_id = #{user_id}
+      AND product_id = #{product_id}
+</select>
+    
 
 </mapper>

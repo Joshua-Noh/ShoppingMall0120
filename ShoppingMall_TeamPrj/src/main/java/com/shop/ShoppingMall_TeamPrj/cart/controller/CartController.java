@@ -13,7 +13,9 @@ public interface CartController {
     public ModelAndView myCartList(HttpServletRequest request, HttpServletResponse response) throws Exception;
     
     // 장바구니에 상품 추가
-    public @ResponseBody String addMyCart(@RequestParam("product_id") int product_id, HttpServletRequest request, HttpServletResponse response) throws Exception;
+    public @ResponseBody String addMyCart(@RequestParam("product_id") int product_id,
+            @RequestParam("quantity") int quantity,
+            HttpServletRequest request, HttpServletResponse response) throws Exception;
 
  // 장바구니 상품 수량 수정
     public ModelAndView updateCartQuantity(int cart_id, int quantity, int product_id, HttpServletRequest request,

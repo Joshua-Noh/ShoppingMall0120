@@ -45,7 +45,7 @@ public class CartServiceImpl implements CartService {
         // 4. 상품 정보 조회
         List myGoodsList = cartDAO.selectGoodsList(productIds);  // List<GoodsVO> -> List로 변경
         System.out.println("조회된 상품 수: " + myGoodsList.size());  // 디버깅 코드
-
+   
         // 5. cartMap에 cartList와 goodsList를 넣어 반환
         cartMap.put("myCartList", myCartList); // CartVO 객체들이 담긴 리스트
         cartMap.put("myGoodsList", myGoodsList); // GoodsVO 객체들이 담긴 리스트
@@ -58,9 +58,11 @@ public class CartServiceImpl implements CartService {
     }
 
     // 기타 메서드들도 제네릭을 사용하지 않도록 수정되었습니다.
-    public boolean findCartGoods(CartVO cartVO) throws Exception {
-        return cartDAO.selectCountInCart(cartVO);
+    @Override
+    public CartVO findCartItem(CartVO cartVO) throws Exception {
+        return cartDAO.selectCartItem(cartVO);
     }
+
 
     public void addGoodsInCart(CartVO cartVO) throws Exception {
         cartDAO.insertGoodsInCart(cartVO);

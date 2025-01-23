@@ -2,23 +2,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-
-<%
-    // 세션에서 memberInfo 가져오기
-    Object memberInfo = session.getAttribute("memberInfo");
-    if (memberInfo == null) {
-        // 세션이 없으면 로그인 페이지로 리다이렉트
-        response.sendRedirect(request.getContextPath() + "/member/loginForm.do");
-        return;
-    }
-%>
+<%@ page import="java.util.Map, java.util.List" %>
 
 <html>
 <head>
     <title>장바구니</title>
 </head>
 <body>
-    <!-- 사용자 이름 출력 -->
     <h1>${sessionScope.memberInfo.user_name}님 장바구니입니다.</h1>
 
     <table border="1">
@@ -33,34 +23,64 @@
         </thead>
         <tbody>
             <c:forEach var="cartItem" items="${cartMap.myCartList}">
-                <c:set var="goodsItem" value="${cartMap.myGoodsList[fn:indexOf(cartMap.myGoodsList, cartItem.product_id)]}" />
+                <!-- 상품 정보 찾기 -->
+                <c:set var="goodsItem" value="${null}" />
+                <c:forEach var="goods" items="${cartMap.myGoodsList}">
+                    <c:if test="${goods.product_id == cartItem.product_id}">
+                        <c:set var="goodsItem" value="${goods}" />
+                    </c:if>
+                </c:forEach>
+                
+                <!-- 상품 정보 출력 -->
                 <tr>
-                    <td>${goodsItem.product_name}</td> <!-- 상품명 출력 -->
-                    <td><fmt:formatNumber value="${goodsItem.price}" type="currency" /></td> <!-- 가격 출력 -->
+                    <td>
+                        <c:if test="${empty goodsItem}">
+                            상품 정보 없음
+                        </c:if>
+                        <c:if test="${!empty goodsItem}">
+                            ${goodsItem.product_name}
+                        </c:if>
+                    </td> <!-- 상품명 출력 -->
+
+                    <td>
+                        <c:if test="${empty goodsItem}">
+                            가격 정보 없음
+                        </c:if>
+                        <c:if test="${!empty goodsItem}">
+                            <fmt:formatNumber value="${goodsItem.price}" type="currency" />
+                        </c:if>
+                    </td> <!-- 가격 출력 -->
+
                     <td>
                         <form action="updateCartQuantity.do" method="post">
                             <input type="hidden" name="cart_id" value="${cartItem.cart_id}" />
                             <input type="number" name="quantity" value="${cartItem.quantity}" min="1" />
+                            <input type="hidden" name="product_id" value="${cartItem.product_id}" />
                             <button type="submit">수정</button>
                         </form>
-                    </td>
-                    <td><fmt:formatNumber value="${cartItem.quantity * goodsItem.price}" type="currency" /></td> <!-- 총 가격 -->
+                    </td> <!-- 수량 수정 -->
+
+                    <td>
+                        <fmt:formatNumber value="${cartItem.quantity * goodsItem.price}" type="currency" />
+                    </td> <!-- 총 가격 -->
+
                     <td>
                         <form action="deleteCartItem.do" method="post">
                             <input type="hidden" name="cart_id" value="${cartItem.cart_id}" />
                             <button type="submit">삭제</button>
                         </form>
-                    </td>
+                    </td> <!-- 삭제 버튼 -->
                 </tr>
             </c:forEach>
         </tbody>
     </table>
-    <h2>
-        장바구니 합계:
-        <fmt:formatNumber value="${cartMap.totalPrice}" type="currency" />
+
+    <h2>장바구니 합계: 
+        <fmt:formatNumber value="${totalPrice}" type="currency" />
     </h2>
+
     <form action="checkout.do" method="post">
-        <button type="submit">결제하기</button>
+        <button type="submit">주문하기</button>
     </form>
 </body>
 </html>
