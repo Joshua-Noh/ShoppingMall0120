@@ -23,4 +23,10 @@
 		<put-attribute name="body"
 			value="/WEB-INF/views/goods/detailInfo.jsp" />
 	</definition>
+	
+	<definition name="/goods/searchGoods" extends="baseLayout">
+		<put-attribute name="title" value="검색 창" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/goods/searchGoods.jsp" />
+	</definition>
 </tiles-definitions>

@@ -72,6 +72,16 @@ public class GoodsControllerImpl  implements GoodsController{
 		
 	}
 	
+	@RequestMapping(value="/goods/searchGoods.do" ,method = RequestMethod.GET)
+	public ModelAndView searchGoods(@RequestParam("searchWord") String searchWord,
+			                       HttpServletRequest request, HttpServletResponse response) throws Exception{
+		String viewName=(String)request.getAttribute("viewName");
+		List<GoodsVO> goodsList=goodsService.searchGoods(searchWord);
+		ModelAndView mav = new ModelAndView(viewName);
+		mav.addObject("goodsList", goodsList);
+		return mav;
+		
+	}
 //	
 //	//@Override
 //	@RequestMapping(value= "/board/listImages.do", method = {RequestMethod.GET, RequestMethod.POST})

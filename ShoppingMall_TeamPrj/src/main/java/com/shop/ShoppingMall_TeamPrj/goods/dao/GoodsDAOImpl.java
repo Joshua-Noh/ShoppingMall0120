@@ -33,6 +33,11 @@ public class GoodsDAOImpl implements GoodsDAO {
 		return sqlSession.selectOne("mapper.goods.selectGoods", product_id);
 	}
 
+	@Override
+	public ArrayList selectGoodsBySearchWord(String searchWord) throws DataAccessException{
+		ArrayList list=(ArrayList)sqlSession.selectList("mapper.goods.selectGoodsBySearchWord",searchWord);
+		 return list;
+	}
 	/*
 	 * @Override public int insertNewArticle(Map articleMap) throws
 	 * DataAccessException { int articleNO = selectNewArticleNO();

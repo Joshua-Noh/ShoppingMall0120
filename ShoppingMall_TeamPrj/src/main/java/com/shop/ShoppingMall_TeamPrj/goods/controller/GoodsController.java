@@ -15,6 +15,8 @@ public interface GoodsController {
 	public ModelAndView goodsList(@RequestParam("category_id") int category_id, HttpServletRequest request, HttpServletResponse response) throws Exception;
 	
 	public ModelAndView detailInfo(@RequestParam("product_id") int product_id, HttpServletRequest request, HttpServletResponse response) throws Exception;
+	
+	public ModelAndView searchGoods(@RequestParam("searchWord") String searchWord,HttpServletRequest request, HttpServletResponse response) throws Exception;
 	/*
 	 * public ResponseEntity addNewArticle(MultipartHttpServletRequest
 	 * multipartRequest,HttpServletResponse response) throws Exception;

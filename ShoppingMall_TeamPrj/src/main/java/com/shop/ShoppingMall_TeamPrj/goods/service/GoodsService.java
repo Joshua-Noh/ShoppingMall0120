@@ -12,6 +12,8 @@ public interface GoodsService {
 	 public List<GoodsVO> goodsNewList() throws Exception;
 	 
 	 public GoodsVO detailInfo(int product_id) throws Exception;
+	 
+	 public List<GoodsVO> searchGoods(String searchWord) throws Exception;
 		/*
 		 * public int addMember(MemberVO memberVO) throws DataAccessException; public
 		 * int removeMember(String id) throws DataAccessException; public MemberVO

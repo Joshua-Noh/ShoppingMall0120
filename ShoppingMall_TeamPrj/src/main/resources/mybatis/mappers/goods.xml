@@ -81,4 +81,14 @@
 		where id=#{id} and pwd=#{pwd}		
 	]]>
   </select>
+     <select id="selectGoodsBySearchWord" resultMap="goodsResult"   parameterType="String"  >
+     <![CDATA[
+        SELECT p.product_id, p.product_name, p.price, d.fileName
+        FROM products p
+        JOIN detail_image d ON p.product_id = d.product_id
+        WHERE p.product_name LIKE CONCAT('%', #{searchWord}, '%')
+          AND d.fileType = 'main_image'
+        ORDER BY p.created_at DESC
+		]]>
+	</select>
 </mapper>

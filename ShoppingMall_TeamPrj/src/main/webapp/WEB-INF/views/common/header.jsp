@@ -6,7 +6,31 @@
 	request.setCharacterEncoding("UTF-8");
 %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
-
+<script type="text/javascript">
+	var loopSearch=true;
+	function keywordSearch(){
+		if(loopSearch==false)
+			return;
+	 var value=document.frmSearch.searchWord.value;
+		$.ajax({
+			type : "get",
+			async : true, //false인 경우 동기식으로 처리한다.
+			url : "${contextPath}/goods/keywordSearch.do",
+			data : {keyword:value},
+			success : function(data, textStatus) {
+			    var jsonInfo = JSON.parse(data);
+				displayResult(jsonInfo);
+			},
+			error : function(data, textStatus) {
+				alert("에러가 발생했습니다."+data);
+			},
+			complete : function(data, textStatus) {
+				//alert("작업을완료 했습니다");
+				
+			}
+		}); //end ajax	
+	}
+	</script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -160,14 +184,23 @@
             </a>
         </div>
 
-        <!-- 검색창 -->
-        <div class="search-bar">
-            <form action="<%= request.getContextPath() %>/search.do" method="get">
-                <button type="submit"><i class="fas fa-search"></i></button>
-                <input type="text" name="query" placeholder="검색어를 입력하세요">
-            </form>
-        </div>
-
+	<div class="search-bar">
+    <!-- 검색어 입력 및 제출 -->
+    <form name="frmSearch" action="<%= request.getContextPath() %>/goods/searchGoods.do" method="get">
+        <!-- 검색 버튼 -->
+        <button type="submit" name="search" class="btn1">
+            <i class="fas fa-search"></i> <!-- 아이콘 추가 -->
+        </button>
+        <!-- 검색어 입력 -->
+        <input 
+            name="searchWord" 
+            class="main_input" 
+            type="text" 
+            placeholder="검색어를 입력하세요" 
+            onKeyUp="keywordSearch()" 
+        >
+    	</form>
+	 </div>
         <!-- 로그인/회원가입 -->
         <div class="auth-buttons">
             <c:choose>

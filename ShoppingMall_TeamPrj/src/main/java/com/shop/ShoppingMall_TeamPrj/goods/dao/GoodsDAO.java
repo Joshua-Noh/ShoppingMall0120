@@ -14,6 +14,9 @@ public interface GoodsDAO {
 	public List selectGoodsNewList() throws DataAccessException;
 	
 	public GoodsVO selectGoods(int product_id) throws DataAccessException;
+	public List<GoodsVO> selectGoodsBySearchWord(String searchWord) throws DataAccessException;
+	
+	
 	/*
 	 * public int insertNewArticle(Map articleMap) throws DataAccessException;
 	 * public void insertReplyArticle(Map articleMap) throws DataAccessException;

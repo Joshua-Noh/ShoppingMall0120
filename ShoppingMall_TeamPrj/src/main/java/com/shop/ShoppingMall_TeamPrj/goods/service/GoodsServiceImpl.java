@@ -37,6 +37,10 @@ public class GoodsServiceImpl implements GoodsService {
 		GoodsVO goodsVO = goodsDAO.selectGoods(product_id);
 		return goodsVO;
 	}
+	public List<GoodsVO> searchGoods(String searchWord) throws Exception{
+		List goodsList=goodsDAO.selectGoodsBySearchWord(searchWord);
+		return goodsList;
+	}
 
 	/*
 	 * @Override public int addMember(MemberVO member) throws DataAccessException {
