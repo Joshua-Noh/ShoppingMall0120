@@ -16,6 +16,7 @@
 	 <typeAlias type="com.shop.ShoppingMall_TeamPrj.mypage.vo.MyPageVO"  alias="mypageVO" />
 	 <typeAlias type="com.shop.ShoppingMall_TeamPrj.admin.vo.AdminVO"  alias="AdminVO" />
 	 <typeAlias type="com.shop.ShoppingMall_TeamPrj.order.vo.OrderVO"  alias="orderVO" />
+	 <typeAlias type="com.shop.ShoppingMall_TeamPrj.admin.vo.ProductVO"  alias="ProductVO" />
 	 
 	</typeAliases>
 </configuration>
