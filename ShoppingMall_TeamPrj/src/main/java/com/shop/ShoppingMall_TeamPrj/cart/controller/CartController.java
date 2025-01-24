@@ -22,7 +22,9 @@ public interface CartController {
 			HttpServletResponse response) throws Exception;
     // 장바구니 상품 삭제
     public ModelAndView deleteCartItem(@RequestParam("cart_id") int cart_id, HttpServletRequest request, HttpServletResponse response) throws Exception;
-
+    
+    // 장바구니 내역 주문 페이지로 전달
+    public ModelAndView checkout(HttpServletRequest request, HttpServletResponse response) throws Exception;
 	
 }
 

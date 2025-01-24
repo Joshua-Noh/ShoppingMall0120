@@ -191,5 +191,24 @@ public class CartControllerImpl  implements CartController{
 	    // 주문 확인 페이지로 이동하면서 장바구니 정보 전달
 	    return new ModelAndView("order/orderPage", "cartMap", cartMap);
 	}
+	
+	@RequestMapping(value = "/cart/checkout.do", method = RequestMethod.POST)
+	public ModelAndView checkout(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	    ModelAndView mav = new ModelAndView();
+	    
+	    // 세션에서 장바구니 데이터 가져오기
+	    Map<String, Object> cartMap = (Map<String, Object>) request.getSession().getAttribute("cartMap");
+
+	    // ModelAndView에 데이터 추가
+	    if (cartMap != null) {
+	        mav.addObject("myCartList", cartMap.get("myCartList"));
+	        mav.addObject("myGoodsList", cartMap.get("myGoodsList"));
+	        mav.addObject("totalPrice", cartMap.get("totalPrice"));
+	    }
+	    
+	    // myOrder.jsp로 이동
+	    mav.setViewName("order/myOrder");
+	    return mav;
+	}
 
 }
