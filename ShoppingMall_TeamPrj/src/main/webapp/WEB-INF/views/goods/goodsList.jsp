@@ -12,17 +12,17 @@
 <!-- body 부분 -->
 <div class="container">
     <div class="goods-container">
-        <c:forEach var="item" items="${goodsList}">
-            <div class="goods-item">
-                <img alt="상품 이미지" src="${contextPath}/common/thumbnails.do?product_id=${item.product_id}&fileName=${item.fileName}">
-                <div class="name">
-                    <a href="${contextPath}/goods/detailInfo.do?product_id=${item.product_id}">
-                        ${item.product_name}
-                    </a>
-                </div>
-                <div class="price">
-                    ${item.price}
-                </div>
+	        <c:forEach var="item" items="${goodsList}">
+	            <div class="goods-item">
+	                <img alt="상품 이미지" src="${contextPath}/common/thumbnails.do?product_id=${item.product_id}&fileName=${item.fileName}">
+	                <div class="name">
+	                    <a href="${contextPath}/goods/detailInfo.do?product_id=${item.product_id}">
+	                        ${item.product_name}
+	                    </a>
+	                </div>
+	                <div class="price">
+	                    ${item.price}
+	                </div>
             </div>
         </c:forEach>
     </div>

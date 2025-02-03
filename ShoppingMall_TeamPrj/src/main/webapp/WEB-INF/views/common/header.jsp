@@ -220,11 +220,16 @@
     <div class="bottom-header">
         <div class="nav-buttons">
             <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=0">신상품</a>
-            <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=1">상의</a>
-            <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=2">하의</a>
-            <a href="<%= request.getContextPath() %>/category.do?category_id=4">아우터</a>
-            <a href="<%= request.getContextPath() %>/category.do?category_id=5">신발</a>
-            <a href="<%= request.getContextPath() %>/category.do?category_id=6">특가세일</a>
+            <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=1">티셔츠</a>
+            <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=2">셔츠/블라우스</a>
+            <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=3">니트/스웨터</a>
+            <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=4">팬츠</a>
+            <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=5">스커트</a>
+            <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=6">재킷</a>
+            <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=7">코트</a>
+            <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=8">원피스</a>
+            <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=9">정장</a>
+            <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=10">스포츠웨어</a>
             <a href="<%= request.getContextPath() %>/cart/myCartList.do">장바구니</a> <!-- 장바구니 추가 -->
         </div>
     </div>

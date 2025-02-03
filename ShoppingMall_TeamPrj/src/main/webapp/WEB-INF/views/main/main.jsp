@@ -171,7 +171,7 @@
     <div class="slide"><img src="${pageContext.request.contextPath}/resources/image/main2.jpg" alt="이미지 2"></div>
     <div class="slide"><img src="${pageContext.request.contextPath}/resources/image/main3.jpg" alt="이미지 3"></div>
     <div class="slide"><img src="${pageContext.request.contextPath}/resources/image/main4.jpg" alt="이미지 4"></div>
-    <div class="slide"><img src="${pageContext.request.contextPath}/resources/image/main5.jpg" alt="이미지 5"></div>\
+    <div class="slide"><img src="${pageContext.request.contextPath}/resources/image/main5.jpg" alt="이미지 5"></div>
     <div class="slide"><img src="${pageContext.request.contextPath}/resources/image/main1.jpg" alt="이미지 1"></div>
     <div class="slide"><img src="${pageContext.request.contextPath}/resources/image/main2.jpg" alt="이미지 2"></div>
     <div class="slide"><img src="${pageContext.request.contextPath}/resources/image/main3.jpg" alt="이미지 3"></div>
@@ -323,12 +323,14 @@
 				<div class="price">상품가격</div>
 			</div>
 			<div class="product">
+			
 				<div class="image"></div>
 				<div class="name">상품이름</div>
 				<div class="price">상품가격</div>
 			</div>
 		</div>
 	</div>
+
 
 	<div class="event-banner">이벤트 배너</div>
 

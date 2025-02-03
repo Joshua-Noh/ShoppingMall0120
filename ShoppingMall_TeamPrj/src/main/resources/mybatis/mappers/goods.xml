@@ -35,11 +35,15 @@
 	</select>
 	
 	<select id="selectGoodsNewList" resultMap="goodsResult">
-      <![CDATA[
-         select * from products order by created_at desc	 	
-      ]]>
-	</select>
-	
+    <![CDATA[
+         SELECT g.*, d.fileName 
+         FROM products g
+         JOIN detail_image d ON g.product_id = d.product_id
+         WHERE d.filetype = 'main_image'
+         ORDER BY g.created_at DESC
+    ]]>
+</select>
+
 	<select id="selectGoods" resultMap="goodsResult" parameterType="int">
     <![CDATA[
       	SELECT g.*, d.fileName 
