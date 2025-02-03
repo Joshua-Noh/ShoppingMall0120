@@ -13,12 +13,20 @@ public class MemberVO {
     private String address;         // 배송 주소
     private Date date_of_birth;     // 생년월일
     private Date join_date;         // 가입 날짜
-    private String gender;          // 성별 (Male, Female, Other)
+    private String gender;
+    private String role ;// 성별 (Male, Female, Other)
     
     // ===== 카카오 소셜 로그인 관련 필드 추가 =====
     private Long kakaoId;           // 카카오에서 받은 고유 아이디
     private String joinType;        // 가입 유형 ("kakao" 또는 "normal" 등)
     
+    
+    public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
     // 기존 getter/setter
     public int getUser_id() {
         return user_id;

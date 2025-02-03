@@ -113,38 +113,82 @@ public class MemberControllerImpl implements MemberController {
         return mav;
     }
     
-    @Override
-    @RequestMapping(value = "/member/login.do", method = RequestMethod.POST)
-    public ModelAndView login(@ModelAttribute("member") MemberVO member, RedirectAttributes rAttr, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ModelAndView mav = new ModelAndView();
-        memberVO = memberService.login(member);
-        
-        if (memberVO == null) {
-            System.out.println("로그인 실패: memberVO가 null입니다.");
-        } else {
-            System.out.println("로그인 성공: " + memberVO.getUser_id());
-        }
-        
-        if (memberVO != null) {
-            HttpSession session = request.getSession();
-            session.setAttribute("memberInfo", memberVO);
-            session.setAttribute("isLogOn", true);
-            
-            String action = (String) session.getAttribute("action");
-            session.removeAttribute("action");
-            if (action != null) {
-                mav.setViewName("redirect:" + action);
-            } else {
-                mav.setViewName("redirect:/main/main.do");
-            }
-        } else {
-            rAttr.addAttribute("result", "loginFailed");
-            mav.setViewName("redirect:/member/loginForm.do");
-        }
-        
-        return mav;
-    }
+//    @Override
+//    @RequestMapping(value = "/member/login.do", method = RequestMethod.POST)
+//    public ModelAndView login(@ModelAttribute("member") MemberVO member, RedirectAttributes rAttr, HttpServletRequest request, HttpServletResponse response) throws Exception {
+//        ModelAndView mav = new ModelAndView();
+//        memberVO = memberService.login(member);
+//        
+//        if (memberVO == null) {
+//            System.out.println("로그인 실패: memberVO가 null입니다.");
+//        } else {
+//            System.out.println("로그인 성공: " + memberVO.getUser_id());
+//        }
+//        
+//        if (memberVO != null) {
+//            HttpSession session = request.getSession();
+//            session.setAttribute("memberInfo", memberVO);
+//            session.setAttribute("isLogOn", true);
+//            
+//            String action = (String) session.getAttribute("action");
+//            session.removeAttribute("action");
+//            if (action != null) {
+//                mav.setViewName("redirect:" + action);
+//            } else {
+//                mav.setViewName("redirect:/main/main.do");
+//            }
+//        } else {
+//            rAttr.addAttribute("result", "loginFailed");
+//            mav.setViewName("redirect:/member/loginForm.do");
+//        }
+//        
+//        return mav;
+//    }
+//    
     
+	
+	   @Override
+	    @RequestMapping(value = "/member/login.do", method = RequestMethod.POST)
+	    public ModelAndView login(@ModelAttribute("member") MemberVO member,
+	                              RedirectAttributes rAttr,
+	                              HttpServletRequest request, HttpServletResponse response) throws Exception {
+	        ModelAndView mav = new ModelAndView();
+	        memberVO = memberService.login(member);
+
+	        // 로그인 성공/실패 확인
+	        if (memberVO == null) {
+	            System.out.println("로그인 실패: memberVO가 null입니다.");
+	        } else {
+	            System.out.println("로그인 성공: " + memberVO.getUser_id());
+	        }
+
+	        if (memberVO != null) {
+	            HttpSession session = request.getSession();
+	            session.setAttribute("memberInfo", memberVO); // 로그인 정보를 세션에 저장
+	            session.setAttribute("isLogOn", true); // 로그인 상태 저장
+
+	            String action = (String) session.getAttribute("action");
+	            session.removeAttribute("action");
+
+	            if (action != null) {
+	                mav.setViewName("redirect:" + action);
+	            } else {
+	                // 관리자 여부 확인
+	                if ("ADMIN".equals(memberVO.getRole())) {
+	                    mav.setViewName("redirect:/admin/listProducts.do"); // 관리자 페이지로 이동
+	                } else {
+	                    mav.setViewName("redirect:/main/main.do"); // 일반 사용자 마이페이지로 이동
+	                }
+	            }
+
+	        } else {
+	            rAttr.addAttribute("result", "loginFailed");
+	            mav.setViewName("redirect:/member/loginForm.do");
+	        }
+
+	        return mav;
+	    }
+
     @Override
     @RequestMapping(value = "/member/logout.do", method = RequestMethod.GET)
     public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws Exception {

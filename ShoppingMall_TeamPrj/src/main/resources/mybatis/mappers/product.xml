@@ -23,7 +23,7 @@
         price,
         size,
         created_at AS createdAt
-    FROM products
+    FROM products LIMIT 5
     ]]>
 </select>
 
