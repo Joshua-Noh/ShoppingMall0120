@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,13 +7,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>회원 등록</title>
 <style>
-body {
-font-family: Arial, sans-serif;
-margin: 0;
-padding: 0;
-background-color: #f9f9f9;
-}
-
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+    }
     .navbar {
         background-color: #333;
         color: white;
@@ -23,18 +21,15 @@ background-color: #f9f9f9;
         justify-content: space-between;
         align-items: center;
     }
-
     .navbar a {
         color: white;
         text-decoration: none;
         margin: 0 10px;
         font-size: 16px;
     }
-
     .navbar a:hover {
         text-decoration: underline;
     }
-
     .register-container {
         background-color: white;
         width: 500px;
@@ -44,30 +39,25 @@ background-color: #f9f9f9;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         text-align: left;
     }
-
     .register-container h2 {
         text-align: center;
         margin-bottom: 20px;
         font-size: 20px;
         color: #333;
     }
-
     .register-container form {
         font-size: 14px;
     }
-
     .form-group {
         display: flex;
         align-items: center;
         margin-bottom: 15px;
     }
-
     .form-group label {
         width: 100px;
         font-size: 14px;
         color: #333;
     }
-
     .form-group input, .form-group select {
         flex: 1;
         padding: 8px;
@@ -75,7 +65,6 @@ background-color: #f9f9f9;
         border-radius: 4px;
         font-size: 14px;
     }
-
     .register-container button {
         width: 100%;
         padding: 10px;
@@ -87,25 +76,28 @@ background-color: #f9f9f9;
         background-color: #333;
         color: white;
     }
-
     .register-container button:hover {
         background-color: #555;
     }
+    /* 카카오 회원가입 버튼 스타일 */
+    .kakao-signup {
+        display: block;
+        width: 45%;
+        max-width: 300px;
+        margin: 20px auto;
+    }
 </style>
-
-
-
 </head>
 <body>
 <div class="navbar">
-<div class="logo">
-<a href="<c:url value='/main/main.do'/>">쇼핑몰 로고</a>
+    <div class="logo">
+        <a href="<c:url value='/main/main.do'/>">쇼핑몰 로고</a>
+    </div>
 </div>
-</div>
-
 
 <div class="register-container">
     <h2>회원 등록</h2>
+    <!-- 일반 회원가입 폼 -->
     <form action="${pageContext.request.contextPath}/member/addMember.do" method="post">
         <div class="form-group">
             <label for="user_name">이름:</label>
@@ -141,9 +133,17 @@ background-color: #f9f9f9;
         </div>
         <button type="submit">등록</button>
     </form>
+    
+    <!-- 구분선 또는 안내 메시지 -->
+    <hr style="margin:20px 0;" />
+    <p style="text-align:center;">또는</p>
+    
+    <!-- 카카오 소셜 회원가입 버튼 -->
+    <div>
+        <a href="<c:url value='/member/kakaoLogin.do'/>">
+            <img class="kakao-signup" src="<c:url value='/resources/image/kakao_add_button.png'/>" alt="카카오로 회원가입" />
+        </a>
+    </div>
 </div>
-
-
-
 </body>
 </html>

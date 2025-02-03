@@ -3,8 +3,8 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.member">
-    <resultMap id="memResult" type="java.util.HashMap">
-		<result property="user_id" column="user_id" />
+    <resultMap id="memResult" type="com.shop.ShoppingMall_TeamPrj.member.vo.MemberVO">
+        <result property="user_id" column="user_id" />
         <result property="user_name" column="user_name" />
         <result property="password" column="password" />
         <result property="email" column="email" />
@@ -13,24 +13,28 @@
         <result property="date_of_birth" column="date_of_birth" />
         <result property="join_date" column="join_date" />
         <result property="gender" column="gender" />
-	</resultMap> 
-	
-<select id="selectAllMemberList" resultMap="memResult">
-    SELECT 
-        user_id, 
-        user_name,
-        password, 
-        email, 
-        phone_number, 
-        address, 
-        date_of_birth, 
-        join_date, 
-        gender
-    FROM users
-</select>
+        <!-- 카카오 관련 컬럼 추가 -->
+        <result property="kakaoId" column="kakao_id"/>
+        <result property="joinType" column="join_type"/>
+    </resultMap> 
+    
+    <select id="selectAllMemberList" resultMap="memResult">
+        SELECT 
+            user_id, 
+            user_name,
+            password, 
+            email, 
+            phone_number, 
+            address, 
+            date_of_birth, 
+            join_date, 
+            gender,
+            kakao_id,
+            join_type
+        FROM users
+    </select>
 
-
-<insert id="insertMember" parameterType="com.shop.ShoppingMall_TeamPrj.member.vo.MemberVO">
+    <insert id="insertMember" parameterType="com.shop.ShoppingMall_TeamPrj.member.vo.MemberVO">
         INSERT INTO users (
             user_name,
             password,
@@ -39,7 +43,9 @@
             address,
             date_of_birth,
             join_date,
-            gender
+            gender,
+            kakao_id,
+            join_type
         ) VALUES (
             #{user_name},
             #{password},
@@ -48,31 +54,56 @@
             #{address},
             #{date_of_birth},
             NOW(),
-            #{gender}
+            #{gender},
+            #{kakaoId},
+            #{joinType}
         )
     </insert>
     
+    <update id="updateMember" parameterType="com.shop.ShoppingMall_TeamPrj.member.vo.MemberVO">
+        UPDATE users
+        SET 
+            user_name = #{user_name},
+            email = #{email},
+            phone_number = #{phone_number},
+            address = #{address},
+            date_of_birth = #{date_of_birth},
+            gender = #{gender}
+        WHERE user_id = #{user_id}
+    </update>
     
-  <update id="updateMember" parameterType="com.shop.ShoppingMall_TeamPrj.member.vo.MemberVO">
-    UPDATE users
-    SET 
-        user_name = #{user_name},
-        email = #{email},
-        phone_number = #{phone_number},
-        address = #{address},
-        date_of_birth = #{date_of_birth},
-        gender = #{gender}
-    WHERE user_id = #{user_id}
-</update>
-  
-  <delete id="deleteMember" parameterType="String">
-    DELETE FROM users WHERE user_id = #{id}
-</delete>
+    <delete id="deleteMember" parameterType="String">
+        DELETE FROM users WHERE user_id = #{id}
+    </delete>
     
     <select id="loginById" parameterType="java.util.Map" resultType="com.shop.ShoppingMall_TeamPrj.member.vo.MemberVO">
-    SELECT * 
-    FROM users
-    WHERE email = #{email}
-      AND password = #{password}
+        SELECT * 
+        FROM users
+        WHERE email = #{email}
+          AND password = #{password}
+    </select>
+    
+    <!-- 카카오 ID로 회원 조회를 위한 새로운 select 문 추가 -->
+    <select id="selectMemberByKakaoId" parameterType="long" resultMap="memResult">
+        SELECT 
+            user_id, 
+            user_name,
+            password, 
+            email, 
+            phone_number, 
+            address, 
+            date_of_birth, 
+            join_date, 
+            gender,
+            kakao_id,
+            join_type
+        FROM users
+        WHERE kakao_id = #{kakaoId}
+    </select>
+    
+    <select id="findMemberByPhone" parameterType="String" resultType="com.shop.ShoppingMall_TeamPrj.member.vo.MemberVO">
+    SELECT * FROM users
+    WHERE phone_number = #{phone}
 </select>
+    
 </mapper>
