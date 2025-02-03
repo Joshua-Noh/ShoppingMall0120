@@ -180,7 +180,7 @@
         <!-- 로고 -->
         <div class="logo">
             <a href="<%= request.getContextPath() %>/main/main.do">
-                <img src="<%= request.getContextPath() %>/resources/image/NOIR_LOGO.png" alt="My Shop Logo">
+                <img src="<%= request.getContextPath() %>/resources/image/하얀 로고.png" alt="My Shop Logo">
             </a>
         </div>
 

@@ -333,6 +333,6 @@
 	<div class="event-banner">이벤트 배너</div>
 
 	<div class="footer">footer</div>
-
+<script src="${pageContext.request.contextPath}/resources/js/slider.js"></script>
 </body>
 </html>
