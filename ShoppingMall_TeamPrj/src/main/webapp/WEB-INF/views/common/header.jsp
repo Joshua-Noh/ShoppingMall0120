@@ -37,80 +37,73 @@
 <meta charset="UTF-8">
 <title>헤더</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-</head>
 <style>
-/* 공통 헤더 스타일 */
+/* ✅ 헤더 전체 구조 */
 .header {
     display: flex;
     flex-direction: column;
-    background-color: #ffffff; /* 헤더 배경 흰색 */
-    border-bottom: 1px solid #eaeaea; /* 헤더 하단 구분선 */
+    background-color: #ffffff;
+    border-bottom: 1px solid #eaeaea;
     width: 100%;
-    padding: 10px 0;
+    position: relative; /* 검색창을 절대 위치로 놓기 위한 기준 */
 }
 
-/* 상단 섹션 */
+/* ✅ 상단 섹션 (로고, 검색창, 로그인) */
 .top-header {
     display: flex;
-    justify-content: space-between; /* 로고 왼쪽, 검색/로그인 오른쪽 */
-    align-items: center; /* 수직 중앙 정렬 */
-    padding: 0 280px; /* 좌우 공백을 40px로 설정 (이전보다 증가) */
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 280px;
 }
 
+/* ✅ 로고 */
 .logo img {
-    max-height: 50px; /* 로고 크기 조정 */
+    max-height: 50px;
     cursor: pointer;
     transition: transform 0.3s ease;
 }
 
 .logo img:hover {
-    transform: scale(1.1); /* 로고 확대 효과 */
+    transform: scale(1.1);
 }
 
-/* 검색창 */
+/* ✅ 검색창 */
 .search-bar {
+ 	position: absolute; /* 절대 위치 설정 */
+ 	 left: 50%; /* 왼쪽에서 50% 위치 */
     display: flex;
     align-items: center;
-    position: relative; /* 돋보기를 검색창 내부에 배치 */
+    transform: translateX(-50%); /* 가운데 정렬 */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
     width: 300px;
-    height: 40px;
-    margin-left: auto; /* 검색창을 오른쪽으로 */
+
 }
 
-/* 검색 입력창 */
 .search-bar input {
     flex: 1;
-    padding: 10px 15px 10px 40px; /* 왼쪽에 돋보기 공간 확보 */
-    border: 1px solid #ccc;
-    border-radius: 20px;
+    padding: 10px;
+    border: none;
     outline: none;
-    font-size: 14px;
-    height: 100%;
 }
 
-/* 돋보기 버튼 */
 .search-bar button {
-    position: absolute;
-    left: 10px; /* 돋보기를 검색창 내부 왼쪽에 고정 */
-    top: 28%;
-    transform: translateY(-50%); /* 수직 가운데 정렬 */
-    background: none;
+    background-color: black;
+    color: white;
     border: none;
+    padding: 10px;
     cursor: pointer;
 }
 
-.search-bar button i {
-    font-size: 18px; /* 돋보기 아이콘 크기 */
-    color: #333;
+.search-bar button:hover {
+    background-color: #333;
 }
 
-
-
-/* 로그인/회원가입 버튼 */
+/* ✅ 로그인 & 회원가입 */
 .auth-buttons {
     display: flex;
-    gap: 8px;
+    gap: 10px;
 }
 
 .auth-buttons button {
@@ -118,7 +111,7 @@
     border: 1px solid #333;
     background-color: transparent;
     color: #333;
-    border-radius: 20px;
+    border-radius: 5px;
     font-size: 14px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -129,23 +122,22 @@
     color: #fff;
 }
 
-/* 하단 섹션 */
+/* ✅ 하단 섹션 (카테고리) */
 .bottom-header {
     display: flex;
-    justify-content: flex-start; /* 왼쪽 정렬 */
     align-items: center;
-    padding: 8px 20px;
+    padding: 10px 280px;
     background-color: #ffffff;
-    padding: 8px 280px; /* 좌우 공백을 늘림 (기존 20px에서 60px로 조정) */
 }
 
+/* ✅ 카테고리 정렬 */
 .nav-buttons {
     display: flex;
-    gap: 15px; /* 카테고리 간격 */
+    gap: 20px;
 }
 
 .nav-buttons a {
-    color: #000; /* 텍스트 검정색 */
+    color: #000;
     text-decoration: none;
     font-size: 16px;
     font-weight: bold;
@@ -154,9 +146,10 @@
 }
 
 .nav-buttons a:hover {
-    color: #000; /* 텍스트 색상 유지 */
+    color: #000;
 }
 
+/* ✅ hover 시 밑줄 효과 */
 .nav-buttons a::after {
     content: '';
     position: absolute;
@@ -164,18 +157,19 @@
     left: 0;
     width: 0;
     height: 2px;
-    background-color: #000; /* 밑줄 검정색 */
+    background-color: #000;
     transition: width 0.3s ease;
 }
 
 .nav-buttons a:hover::after {
-    width: 100%; /* 밑줄 확장 */
+    width: 100%;
 }
-
 </style>
+</head>
 <body>
+
 <div class="header">
-    <!-- 상단 섹션 -->
+    <!-- ✅ 상단 섹션 -->
     <div class="top-header">
         <!-- 로고 -->
         <div class="logo">
@@ -184,12 +178,12 @@
             </a>
         </div>
 
-	<div class="search-bar">
+<div class="search-bar">
     <!-- 검색어 입력 및 제출 -->
     <form name="frmSearch" action="<%= request.getContextPath() %>/goods/searchGoods.do" method="get">
         <!-- 검색 버튼 -->
         <button type="submit" name="search" class="btn1">
-            <i class="fas fa-search"></i> <!-- 아이콘 추가 -->
+            <i class="fas fa-search"></i> <!-- 돋보기 아이콘 -->
         </button>
         <!-- 검색어 입력 -->
         <input 
@@ -197,10 +191,13 @@
             class="main_input" 
             type="text" 
             placeholder="검색어를 입력하세요" 
-            onKeyUp="keywordSearch()" 
+            onkeyup="keywordSearch()" 
+            autocomplete="off"
         >
-    	</form>
-	 </div>
+        <!-- 자동완성 결과를 표시할 영역 -->
+        <div id="searchResults" class="autocomplete-results"></div>
+    </form>
+</div>
         <!-- 로그인/회원가입 -->
         <div class="auth-buttons">
             <c:choose>
@@ -216,7 +213,8 @@
             </c:choose>
         </div>
     </div>
-    <!-- 하단 섹션 -->
+
+    <!-- ✅ 하단 섹션 (카테고리 메뉴) -->
     <div class="bottom-header">
         <div class="nav-buttons">
             <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=0">신상품</a>
@@ -230,7 +228,7 @@
             <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=8">원피스</a>
             <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=9">정장</a>
             <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=10">스포츠웨어</a>
-            <a href="<%= request.getContextPath() %>/cart/myCartList.do">장바구니</a> <!-- 장바구니 추가 -->
+            <a href="<%= request.getContextPath() %>/cart/myCartList.do">장바구니</a>
         </div>
     </div>
 </div>
