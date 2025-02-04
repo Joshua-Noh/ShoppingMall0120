@@ -94,7 +94,7 @@ public class CartControllerImpl  implements CartController{
 
 
 	
-	@RequestMapping(value = "/cart/addMyCart.do", method = RequestMethod.POST, produces = "application/text; charset=utf8")
+	@RequestMapping(value = "/cart/addMyCart.do", method = RequestMethod.POST, produces = "text/plain; charset=utf-8")
 	public @ResponseBody String addMyCart(@RequestParam("product_id") int product_id,
 	                                      @RequestParam("quantity") int quantity,
 	                                      HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -121,6 +121,7 @@ public class CartControllerImpl  implements CartController{
 	        return "add_success";
 	    }
 	}
+
 
 	@Override
 	@RequestMapping(value = "/cart/updateCartQuantity.do", method = RequestMethod.POST)
