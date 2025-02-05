@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/customerCenter/consultation")
@@ -53,26 +54,28 @@ public class ConsultationController {
         return "customerCenter/consultation/consultationForm";
     }
     
-    // 상담 문의 제출 처리
-    @RequestMapping("/submit.do")
+ // 상담 문의 제출 처리
+    @RequestMapping(value="/submit.do", method=RequestMethod.POST)
     public String submitConsultation(HttpServletRequest request, ConsultationVO consultationVO) {
         System.out.println("ConsultationController: submitConsultation 메서드 시작");
         HttpSession session = request.getSession();
-        Integer userId = (Integer) session.getAttribute("user_id");
-        System.out.println("ConsultationController: session user_id = " + userId);
-        
-        // 만약 consultationVO가 null이면 바인딩 오류가 있을 수 있습니다.
-        if (consultationVO == null) {
-            System.out.println("ConsultationController: consultationVO가 null입니다!");
-        } else {
-            System.out.println("ConsultationController: 상담 문의 제목 = " + consultationVO.getSubject());
-            consultationVO.setUserId(userId);
+        Integer userId = (Integer) session.getAttribute("user_id"); 
+       
+        if (userId == null) {
+            System.out.println("ConsultationController: 세션에 user_id가 없습니다. 로그인 후 이용해 주세요.");
+            // 로그인하지 않은 경우 상담 페이지로 리다이렉트하며, 쿼리 파라미터 error=loginRequired 전달
+            return "redirect:list.do?error=loginRequired";
         }
         
+        System.out.println("ConsultationController: session user_id = " + userId);
+        System.out.println("ConsultationController: 상담 문의 제목 = " + consultationVO.getSubject());
+        consultationVO.setUserId(userId);
         consultationService.submitConsultation(consultationVO);
         System.out.println("ConsultationController: 상담 문의 제출 완료");
         return "redirect:list.do";
     }
+
+
     
     // 상담 상세보기
     @RequestMapping("/detail.do")

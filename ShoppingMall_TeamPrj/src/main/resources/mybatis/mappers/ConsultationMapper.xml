@@ -34,9 +34,10 @@
 
   <!-- 상담 내역 삽입 -->
   <insert id="insertConsultation" parameterType="com.shop.ShoppingMall_TeamPrj.customerCenter.vo.ConsultationVO">
-    INSERT INTO consultation_log (user_id, subject, message, status)
-    VALUES (#{userId}, #{subject}, #{message}, #{status})
-  </insert>
+  INSERT INTO consultation_log (user_id, subject, message)
+  VALUES (#{userId}, #{subject}, #{message})
+</insert>
+
 
   <!-- 상담 내역 수정 -->
   <update id="updateConsultation" parameterType="com.shop.ShoppingMall_TeamPrj.customerCenter.vo.ConsultationVO">

@@ -14,6 +14,16 @@
        th { background: #000; color: #fff; }
        a { text-decoration: none; color: blue; }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>
+      $(document).ready(function(){
+          // URL 파라미터에서 error 파라미터를 확인
+          var params = new URLSearchParams(window.location.search);
+          if (params.get("error") === "loginRequired") {
+              alert("상담 문의를 작성하려면 로그인이 필요합니다.");
+          }
+      });
+    </script>
 </head>
 <body>
   <div class="container">

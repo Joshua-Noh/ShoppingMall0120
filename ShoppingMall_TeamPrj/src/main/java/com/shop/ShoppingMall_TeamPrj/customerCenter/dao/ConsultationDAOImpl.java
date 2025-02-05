@@ -1,6 +1,7 @@
 package com.shop.ShoppingMall_TeamPrj.customerCenter.dao;
 
 import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
@@ -12,14 +13,16 @@ import com.shop.ShoppingMall_TeamPrj.customerCenter.vo.ConsultationVO;
 public class ConsultationDAOImpl implements ConsultationDAO {
 
     private JdbcTemplate jdbcTemplate;
-    
-    // 기본 생성자 추가
+
+    // 기본 생성자 (없으면 Spring이 기본 생성자를 호출할 수 없음)
     public ConsultationDAOImpl() {
         // 기본 생성자; DataSource는 setter로 주입받음.
     }
     
-    // DataSource를 주입받는 setter
+    // DataSource 주입을 위한 setter
+    @Autowired
     public void setDataSource(DataSource dataSource) {
+        System.out.println("ConsultationDAOImpl: setDataSource 호출됨");
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
     
@@ -54,9 +57,14 @@ public class ConsultationDAOImpl implements ConsultationDAO {
     }
     
     public void insertConsultation(ConsultationVO consultation) {
-        String sql = "INSERT INTO consultation_log (user_id, subject, message, status) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, new Object[] { consultation.getUserId(), consultation.getSubject(), consultation.getMessage(), consultation.getStatus() });
+        String sql = "INSERT INTO consultation_log (user_id, subject, message) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql, new Object[] {
+            consultation.getUserId(),
+            consultation.getSubject(),
+            consultation.getMessage()
+        });
     }
+
     
     public void updateConsultation(ConsultationVO consultation) {
         String sql = "UPDATE consultation_log SET subject=?, message=?, reply=?, status=? WHERE consultation_id=?";
