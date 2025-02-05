@@ -1,167 +1,217 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" isELIgnored="false" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8" isELIgnored="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ page import="java.util.Map, java.util.List" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Page - 주문내역 및 내 정보</title>
+  
+  <!-- Google Fonts: Oswald (제목), Roboto (본문) -->
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Material Symbols Outlined -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
   <style>
-    /* 기본 스타일 */
+    /* 기본 리셋 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    /* body: 화이트 배경, 기본 텍스트는 검정 */
     body {
-        margin: 0;
-        background-color: #f8f9fa;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        color: #333;
+      background-color: #fff;
+      color: #000;
+      font-family: 'Roboto', sans-serif;
+      line-height: 1.6;
     }
     
-    /* 헤더 스타일 */
-    header {
-        background-color: #000;
-        padding: 15px 30px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    /* 메인 컨테이너 - Noir 스타일 (블랙 앤 화이트 톤) */
+    .container2 {
+      max-width: 800px;
+      margin: 80px auto 40px;
+      padding: 30px 20px;
+      background-color: #fff;
+      border: 2px solid #000;
+      border-radius: 8px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+      opacity: 0;
+      transform: translateY(30px);
     }
-    .top-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .logo img {
-        max-height: 50px;
-        cursor: pointer;
-        transition: transform 0.3s ease;
-    }
-    .logo img:hover {
-        transform: scale(1.1);
+    .container2:hover {
+      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+      transform: translateY(0);
     }
     
-    /* 컨테이너 스타일 */
-    .container {
-        max-width: 800px;
-        margin: 40px auto;
-        padding: 20px;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-    
-    /* 제목 스타일 */
+    /* 제목 스타일: Oswald, 검정 텍스트, 아래 언더라인 */
     h1 {
-        font-size: 24px;
-        color: #333;
-        margin-bottom: 20px;
-        border-bottom: 2px solid #ddd;
-        padding-bottom: 10px;
+      font-family: 'Oswald', sans-serif;
+      font-size: 2.4rem;
+      color: #000;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #000;
+      padding-bottom: 10px;
+      text-align: center;
+      position: relative;
     }
     h1 a {
-        float: right;
-        font-size: 14px;
-        color: #000;
-        text-decoration: none;
-        transition: text-decoration 0.3s;
+      float: right;
+      font-size: 0.9rem;
+      color: #000;
+      text-decoration: none;
+      transition: text-decoration 0.3s;
     }
     h1 a:hover {
-        text-decoration: underline;
+      text-decoration: underline;
     }
     
-    /* 테이블 스타일 */
+    /* 주문내역 테이블 스타일 */
     table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
     }
     table thead {
-        background-color: #000;
-        color: #fff;
+      background-color: #000;
+      color: #fff;
     }
     table thead th {
-        padding: 10px;
-        font-size: 14px;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #000;
     }
     table tbody tr {
-        border-bottom: 1px dotted #999;
+      border: 1px dotted #000;
     }
     table tbody td {
-        padding: 10px;
-        text-align: center;
-        font-size: 14px;
-        color: #333;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+      border: 1px solid #000;
+      background-color: #fff;
+      color: #000;
+    }
+    table tbody tr:hover td {
+      background-color: #f2f2f2;
     }
     
-    /* 버튼 스타일 */
+    /* 버튼 스타일 - 검정 배경, 흰색 텍스트 */
     button, input[type="button"] {
-        padding: 8px 16px;
-        background-color: #000;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 14px;
-        transition: background-color 0.3s;
+      padding: 8px 16px;
+      background-color: #000;
+      color: #fff;
+      border: 1px solid #000;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s, color 0.3s;
     }
     button:hover, input[type="button"]:hover {
-        background-color: #333;
+      background-color: #fff;
+      color: #000;
+    }
+    
+    /* 총 합계 스타일 */
+    .total-price {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #000;
+      text-align: right;
+      margin-bottom: 30px;
     }
     
     /* 정보 테이블 스타일 */
     .info-table {
-        width: 100%;
-        border-collapse: collapse;
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
     }
     .info-table td {
-        padding: 10px;
-        font-size: 14px;
+      padding: 10px;
+      font-size: 14px;
+      color: #000;
+      border-bottom: 1px solid #000;
     }
     .info-table tr:not(:last-child) td {
-        border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid #000;
+    }
+    
+    /* 반응형 */
+    @media (max-width: 768px) {
+      .container2 {
+        width: 95%;
+        margin-top: 100px;
+        padding: 20px;
+      }
+      table, th, td {
+        font-size: 0.85rem;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+    }
+    
+    /* fade-in 애니메이션 (CSS 애니메이션 활용) */
+    .fade-in {
+      animation: fadeInUp 0.8s forwards;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
   
-  <!-- 주문 취소 후 메시지 출력 -->
-  <c:if test="${message=='cancel_order'}">
-    <script>
-      window.onload = function(){
-        alert("주문을 취소했습니다.");
-      }
-    </script>
-  </c:if>
-  
+  <!-- 주문 취소 스크립트 -->
   <script>
-    function fn_cancel_order(order_id){
-        var answer = confirm("주문을 취소하시겠습니까?");
-        if(answer){
-            var formObj = document.createElement("form");
-            var i_order_id = document.createElement("input"); 
-            
-            i_order_id.name = "order_id";
-            i_order_id.value = order_id;
-            formObj.appendChild(i_order_id);
-            document.body.appendChild(formObj); 
-            formObj.method = "post";
-            formObj.action = "${contextPath}/mypage/cancelMyOrder.do";
-            formObj.submit();    
-        }
+    function fn_cancel_order(order_id) {
+      var answer = confirm("주문을 취소하시겠습니까?");
+      if(answer) {
+          var formObj = document.createElement("form");
+          var i_order_id = document.createElement("input");
+          i_order_id.name = "order_id";
+          i_order_id.value = order_id;
+          formObj.appendChild(i_order_id);
+          document.body.appendChild(formObj);
+          formObj.method = "post";
+          formObj.action = "${contextPath}/mypage/cancelMyOrder.do";
+          formObj.submit();
+      }
     }
+    
+    document.addEventListener("DOMContentLoaded", function () {
+      // 주문내역 영역과 나의 정보 영역 모두에 fade-in 효과 적용
+      var orderContainer = document.getElementById('orderContainer');
+      if(orderContainer){
+        orderContainer.classList.add('fade-in');
+      }
+      var infoContainer = document.getElementById('infoContainer');
+      if(infoContainer){
+        infoContainer.classList.add('fade-in');
+      }
+    });
   </script>
+  
 </head>
 <body>
-  <header>
-    <div class="top-header">
-      <div class="logo">
-        <a href="${contextPath}/main/main.do">
-          <img src="${contextPath}/resources/image/NOIR_LOGO.png" alt="My Shop Logo">
-        </a>
-      </div>
-    </div>
-  </header>
+  <!-- 헤더/푸터는 Tiles 레이아웃에서 처리된다고 가정 -->
   
-  <!-- 최근 주문내역 영역 -->
-  <div class="container">
+  <!-- 최근 주문내역 영역 (container2) -->
+  <div class="container2" id="orderContainer">
     <h1>
       최근 주문내역 
-      <a href="${contextPath}/mypage/moreOrders.do">
-        더보기 <img src="${contextPath}/resources/image/btn_more_see.jpg" alt="더보기">
+      <a href="${contextPath}/mypage/moreOrders.do" style="font-size:0.9rem; color:#000; text-decoration:none;">
+        더보기 <img src="${contextPath}/resources/image/btn_more_see.jpg" alt="더보기" style="vertical-align: middle;"/>
       </a>
     </h1>
     <table>
@@ -178,11 +228,11 @@
         <c:choose>
           <c:when test="${empty myOrderList}">
             <tr>
-              <td colspan="5"><strong>주문한 상품이 없습니다.</strong></td>
+              <td colspan="5" style="color:#000;"><strong>주문한 상품이 없습니다.</strong></td>
             </tr>
           </c:when>
           <c:otherwise>
-            <c:forEach var="item" items="${myOrderList}" varStatus="i">
+            <c:forEach var="item" items="${myOrderList}">
               <tr>
                 <td>${item.order_id}</td>
                 <td>${item.order_date}</td>
@@ -216,14 +266,17 @@
         </c:choose>
       </tbody>
     </table>
+    <div class="total-price">
+      총 합계: <fmt:formatNumber value="${totalPrice}" type="currency" />
+    </div>
   </div>
   
-  <!-- 나의 정보 영역 -->
-  <div class="container">
+  <!-- 나의 정보 영역 (container2로 동일하게 사용) -->
+  <div class="container2" id="infoContainer">
     <h1>
       나의 정보 
-      <a href="${contextPath}/mypage/moreInfo.do">
-        더보기 <img src="${contextPath}/resources/image/btn_more_see.jpg" alt="더보기">
+      <a href="${contextPath}/mypage/moreInfo.do" style="font-size:0.9rem; color:#000; text-decoration:none;">
+        더보기 <img src="${contextPath}/resources/image/btn_more_see.jpg" alt="더보기" style="vertical-align: middle;"/>
       </a>
     </h1>
     <table class="info-table">
@@ -255,15 +308,7 @@
     </table>
   </div>
   
-  <!-- 추가 기능 추천 -->
-  <!-- 
-       추가하면 좋은 기능들:
-       1. **검색 및 필터링**: 주문내역 영역 상단에 날짜별, 상태별 검색/필터 기능을 추가하여 원하는 주문만 쉽게 찾을 수 있음.
-       2. **페이지네이션**: 주문내역이 많을 경우, 페이지네이션을 도입하여 목록을 분할해서 보여주기.
-       3. **주문 상세보기 모달**: 주문번호를 클릭하면 주문 상세 정보를 모달 창으로 보여주는 기능.
-       4. **실시간 알림**: 주문 상태 변경이나 새 주문 발생 시 실시간 알림(예: 웹소켓, 폴링 등)을 추가하여 사용자에게 업데이트 제공.
-       5. **프로필 이미지 업로드**: 나의 정보 영역에 프로필 이미지를 추가하고, 이미지를 업로드 및 변경할 수 있는 기능.
-       6. **테마 전환**: 다크 모드/라이트 모드를 선택할 수 있는 토글 스위치를 제공하여 사용자 환경에 맞게 테마 변경 기능.
-  -->
+  <!-- 푸터는 Tiles 레이아웃에서 처리된다고 가정 -->
+  
 </body>
 </html>

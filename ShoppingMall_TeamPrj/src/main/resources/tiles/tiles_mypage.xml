@@ -3,27 +3,36 @@
        "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
 <tiles-definitions>
-	<definition name="myPageLayout"
-		template="/WEB-INF/views/common/myPageLayout.jsp">
-		<put-attribute name="title" value="" />
-		<put-attribute name="body" value="" />
-	</definition>
-    <definition name="/mypage/myPageMain" extends="myPageLayout">
+    <!-- 기본 레이아웃: 헤더와 푸터를 포함 -->
+    <definition name="baseLayout" template="/WEB-INF/views/common/layout.jsp">
+        <put-attribute name="title" value=""/>
+        <put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
+        <put-attribute name="body" value=""/>
+        <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
+    </definition>
+    
+
+    <!-- 마이페이지 메인 페이지 -->
+    <definition name="/mypage/myPageMain" extends="baseLayout">
        <put-attribute name="title" value="마이페이지 메인" />
        <put-attribute name="body" value="/WEB-INF/views/mypage/myPageMain.jsp" />
     </definition>
+    
+    <!-- 내 주문 상세 페이지 -->
     <definition name="/mypage/myOrderDetail" extends="baseLayout">
        <put-attribute name="title" value="내 주문 상세 페이지" />
        <put-attribute name="body" value="/WEB-INF/views/mypage/myOrderDetail.jsp" />
-     </definition>
-      <definition name="/mypage/listMyOrderHistory" extends="baseLayout">
-       <put-attribute name="title" value="내 주문 상세 페이지" />
+    </definition>
+    
+    <!-- 내 주문 내역 페이지 -->
+    <definition name="/mypage/listMyOrderHistory" extends="baseLayout">
+       <put-attribute name="title" value="내 주문 내역" />
        <put-attribute name="body" value="/WEB-INF/views/mypage/listMyOrderHistory.jsp" />
-     </definition>
-     <definition name="/mypage/myDetailInfo" extends="baseLayout">
+    </definition>
+    
+    <!-- 내 정보 상세 페이지 -->
+    <definition name="/mypage/myDetailInfo" extends="baseLayout">
        <put-attribute name="title" value="내 정보 상세 페이지" />
        <put-attribute name="body" value="/WEB-INF/views/mypage/myDetailInfo.jsp" />
-     </definition>
+    </definition>
 </tiles-definitions>
-
-

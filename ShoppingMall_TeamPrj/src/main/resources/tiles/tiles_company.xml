@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+    <!-- 기본 레이아웃 정의 -->
+    <definition name="baseLayout" template="/WEB-INF/views/common/layout.jsp">
+        <put-attribute name="title" value=""/>
+        <put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
+        <put-attribute name="body" value=""/>
+        <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
+    </definition>
+
+    <!-- 회사 소개 정의 -->
+    <definition name="company/introduction" extends="baseLayout">
+        <put-attribute name="title" value="회사 소개"/>
+        <put-attribute name="body" value="/WEB-INF/views/company/introduction.jsp"/>
+    </definition>
+
+    <!-- 약관 정의 (이름 변경) -->
+    <definition name="company/terms" extends="baseLayout">
+        <put-attribute name="title" value="약관"/>
+        <put-attribute name="body" value="/WEB-INF/views/company/terms.jsp"/>
+    </definition>
+    
+    <!-- 개인정보처리방침 정의 -->
+    <definition name="company/privacy" extends="baseLayout">
+        <put-attribute name="title" value="개인정보처리방침"/>
+        <put-attribute name="body" value="/WEB-INF/views/company/privacy.jsp"/>
+    </definition>
+    
+</tiles-definitions>
