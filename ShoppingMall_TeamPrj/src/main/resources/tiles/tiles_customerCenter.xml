@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+    <!-- 기본 레이아웃 정의 -->
+    <definition name="baseLayout" template="/WEB-INF/views/common/layout.jsp">
+        <put-attribute name="title" value=""/>
+        <put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
+        <put-attribute name="body" value=""/>
+        <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
+    </definition>
+
+    <!-- 고객센터 메인 페이지 -->
+    <definition name="customerCenter/customerCenter" extends="baseLayout">
+        <put-attribute name="title" value="고객센터"/>
+        <put-attribute name="body" value="/WEB-INF/views/customerCenter/customerCenter.jsp"/>
+    </definition>
+
+    <!-- 1:1 상담 게시판 -->
+    <definition name="customerCenter/consultation/listConsultations" extends="baseLayout">
+        <put-attribute name="title" value="1:1 상담 게시판"/>
+        <put-attribute name="body" value="/WEB-INF/views/customerCenter/consultation/listConsultations.jsp"/>
+    </definition>
+    <definition name="customerCenter/consultation/consultationForm" extends="baseLayout">
+        <put-attribute name="title" value="상담 문의 작성"/>
+        <put-attribute name="body" value="/WEB-INF/views/customerCenter/consultation/consultationForm.jsp"/>
+    </definition>
+    <definition name="customerCenter/consultation/consultationDetail" extends="baseLayout">
+        <put-attribute name="title" value="상담 문의 상세보기"/>
+        <put-attribute name="body" value="/WEB-INF/views/customerCenter/consultation/consultationDetail.jsp"/>
+    </definition>
+
+    <!-- FAQ 게시판 -->
+    <definition name="customerCenter/faq/listFaq" extends="baseLayout">
+        <put-attribute name="title" value="FAQ 게시판"/>
+        <put-attribute name="body" value="/WEB-INF/views/customerCenter/faq/listFaq.jsp"/>
+    </definition>
+    <definition name="customerCenter/faq/faqForm" extends="baseLayout">
+        <put-attribute name="title" value="FAQ 등록/수정"/>
+        <put-attribute name="body" value="/WEB-INF/views/customerCenter/faq/faqForm.jsp"/>
+    </definition>
+    <definition name="customerCenter/faq/faqDetail" extends="baseLayout">
+        <put-attribute name="title" value="FAQ 상세보기"/>
+        <put-attribute name="body" value="/WEB-INF/views/customerCenter/faq/faqDetail.jsp"/>
+    </definition>
+
+    <!-- 실시간 채팅 -->
+    <definition name="customerCenter/chat/chatRoom" extends="baseLayout">
+        <put-attribute name="title" value="실시간 채팅"/>
+        <put-attribute name="body" value="/WEB-INF/views/customerCenter/chat/chatRoom.jsp"/>
+    </definition>
+</tiles-definitions>

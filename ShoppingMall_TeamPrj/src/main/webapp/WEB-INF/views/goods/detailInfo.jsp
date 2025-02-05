@@ -210,6 +210,7 @@
     </div>
 
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
     // 장바구니 AJAX 처리

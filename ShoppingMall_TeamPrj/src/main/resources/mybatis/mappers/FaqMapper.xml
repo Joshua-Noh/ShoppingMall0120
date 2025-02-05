@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.shop.ShoppingMall_TeamPrj.customerCenter.dao.FaqDAO">
+
+  <!-- FAQ VO 결과 매핑 -->
+  <resultMap id="FaqResultMap" type="com.shop.ShoppingMall_TeamPrj.customerCenter.vo.FaqVO">
+    <id property="faqId" column="faq_id" />
+    <result property="question" column="question" />
+    <result property="answer" column="answer" />
+    <result property="createdAt" column="created_at" />
+    <result property="updatedAt" column="updated_at" />
+  </resultMap>
+
+  <!-- FAQ 전체 목록 조회 -->
+  <select id="getAllFaq" resultMap="FaqResultMap">
+    SELECT * FROM faq ORDER BY created_at DESC
+  </select>
+
+  <!-- FAQ 상세 조회 -->
+  <select id="getFaq" resultMap="FaqResultMap" parameterType="int">
+    SELECT * FROM faq WHERE faq_id = #{faqId}
+  </select>
+
+  <!-- FAQ 삽입 -->
+  <insert id="insertFaq" parameterType="com.shop.ShoppingMall_TeamPrj.customerCenter.vo.FaqVO">
+    INSERT INTO faq (question, answer)
+    VALUES (#{question}, #{answer})
+  </insert>
+
+  <!-- FAQ 수정 -->
+  <update id="updateFaq" parameterType="com.shop.ShoppingMall_TeamPrj.customerCenter.vo.FaqVO">
+    UPDATE faq
+    SET question = #{question},
+        answer = #{answer}
+    WHERE faq_id = #{faqId}
+  </update>
+
+  <!-- FAQ 삭제 -->
+  <delete id="deleteFaq" parameterType="int">
+    DELETE FROM faq WHERE faq_id = #{faqId}
+  </delete>
+
+</mapper>

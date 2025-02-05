@@ -16,6 +16,8 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!-- Material Symbols Outlined -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  <!-- 네이버 지도 API 스크립트 (Client ID: z1jfmxsy6g) -->
+  <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=z1jfmxsy6g"></script>
 
   <style>
     /* 기본 설정 */
@@ -114,6 +116,13 @@
       border-radius: 10px;
       margin-bottom: 20px;
     }
+    /* 지도 섹션 스타일 */
+    #map2 {
+      width: 100%;
+      height: 400px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
     @media (max-width: 768px) {
       .info-box {
         flex: 1 1 100%;
@@ -179,10 +188,17 @@
         </div>
       </div>
     </section>
+
+    <!-- 찾아오시는 길 섹션 -->
+    <section class="directions">
+      <h2>찾아오시는 길</h2>
+      <div id="map2"></div>
+    </section>
   </div>
   
-  <!-- JavaScript: 섹션 페이드인 애니메이션 -->
+  <!-- JavaScript: 섹션 페이드인 애니메이션 및 네이버 지도 초기화 -->
   <script>
+    // 섹션 페이드인 애니메이션
     document.addEventListener("DOMContentLoaded", function () {
       const sections = document.querySelectorAll("section");
       const observer = new IntersectionObserver((entries) => {
@@ -200,8 +216,27 @@
         section.style.transition = "opacity 0.6s ease, transform 0.6s ease";
         observer.observe(section);
       });
+
+      // 네이버 지도 초기화
+      initMap2();
     });
+
+    // 네이버 지도 초기화 함수
+    function initMap2() {
+      var directionLocation = new naver.maps.LatLng(36.35107, 127.3797); // 대전광역시 미라클빌딩 좌표
+      var mapOptions2 = {
+        center: directionLocation,
+        zoom: 15
+      };
+      var map2 = new naver.maps.Map('map2', mapOptions2);
+      
+      // 마커 추가
+      var marker2 = new naver.maps.Marker({
+        position: directionLocation,
+        map: map2,
+        title: "찾아오시는 길: 대전광역시 미라클빌딩"
+      });
+    }
   </script>
 </body>
 </html>
-	

@@ -439,7 +439,7 @@ body {
             <li>✔ 높은 퀄리티</li>
             <li>✔ 합리적인 가격</li>
         </ul>
-        <button onclick="location.href='${pageContext.request.contextPath}/about.do'">브랜드 스토리 보기</button>
+        <button onclick="location.href='${pageContext.request.contextPath}/company/introduction'">브랜드 스토리 보기</button>
     </div>
 </div>
 
