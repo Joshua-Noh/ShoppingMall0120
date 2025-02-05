@@ -58,22 +58,45 @@ public class ConsultationController {
     @RequestMapping(value="/submit.do", method=RequestMethod.POST)
     public String submitConsultation(HttpServletRequest request, ConsultationVO consultationVO) {
         System.out.println("ConsultationController: submitConsultation 메서드 시작");
-        HttpSession session = request.getSession();
-        Integer userId = (Integer) session.getAttribute("user_id"); 
-       
+
+        // 세션이 없으면 null을 반환하도록 getSession(false) 사용
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            System.out.println("ConsultationController: 세션 자체가 존재하지 않습니다.");
+            return "redirect:list.do?error=sessionNotFound";
+        }
+        
+        // 세션에 저장된 모든 속성을 출력해봅니다.
+        System.out.println("ConsultationController: 세션에 저장된 속성 목록:");
+        java.util.Enumeration<String> attributeNames = session.getAttributeNames();
+        while (attributeNames.hasMoreElements()) {
+            String attrName = attributeNames.nextElement();
+            Object attrValue = session.getAttribute(attrName);
+            System.out.println("  - " + attrName + " = " + attrValue);
+        }
+        
+        // 필요한 속성을 개별적으로 꺼내 디버그 출력
+        Integer userId = (Integer) session.getAttribute("user_id");
+        String role = (String) session.getAttribute("role");
+        
         if (userId == null) {
             System.out.println("ConsultationController: 세션에 user_id가 없습니다. 로그인 후 이용해 주세요.");
-            // 로그인하지 않은 경우 상담 페이지로 리다이렉트하며, 쿼리 파라미터 error=loginRequired 전달
             return "redirect:list.do?error=loginRequired";
         }
         
-        System.out.println("ConsultationController: session user_id = " + userId);
+        System.out.println("ConsultationController: session user_id = " + userId + ", role = " + role);
         System.out.println("ConsultationController: 상담 문의 제목 = " + consultationVO.getSubject());
+        
+        // 상담VO에 세션에서 가져온 userId 설정
         consultationVO.setUserId(userId);
+        
+        // 실제 상담 문의 제출
         consultationService.submitConsultation(consultationVO);
         System.out.println("ConsultationController: 상담 문의 제출 완료");
+        
         return "redirect:list.do";
     }
+
 
 
     

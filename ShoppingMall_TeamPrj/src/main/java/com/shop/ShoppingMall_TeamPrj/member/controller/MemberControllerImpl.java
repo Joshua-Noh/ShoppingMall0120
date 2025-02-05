@@ -134,39 +134,79 @@ public class MemberControllerImpl implements MemberController {
 	@RequestMapping(value = "/member/login.do", method = RequestMethod.POST)
 	public ModelAndView login(@ModelAttribute("member") MemberVO member, RedirectAttributes rAttr,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
+
 		System.out.println("[DEBUG] login() 호출됨");
+
+		// 전달받은 로그인 폼의 데이터 출력
+		System.out.println("[DEBUG] 전달받은 member 정보:");
+		System.out.println("  - user_name: " + member.getUser_name());
+		System.out.println("  - password: " + member.getPassword());
+		// (비밀번호는 보안상 출력하지 않는 것이 좋으므로 실제 운영환경에서는 주의할 것)
+
 		ModelAndView mav = new ModelAndView();
+
+		// 로그인 서비스 호출
 		memberVO = memberService.login(member);
 
 		if (memberVO == null) {
 			System.out.println("[DEBUG] 로그인 실패: memberVO가 null입니다.");
 		} else {
-			System.out.println("[DEBUG] 로그인 성공: " + memberVO.getUser_id());
+			System.out.println("[DEBUG] 로그인 성공: user_id = " + memberVO.getUser_id());
+			System.out.println("[DEBUG] 회원 이름: " + memberVO.getUser_name());
+			System.out.println("[DEBUG] 회원 역할(role): " + memberVO.getRole());
 		}
 
+		// 로그인 성공 시 세션에 저장
 		if (memberVO != null) {
 			HttpSession session = request.getSession();
+
+			// 세션에 저장 전 디버그: 기존 세션 속성 출력
+			System.out.println("[DEBUG] 기존 세션 속성 확인 (로그인 전):");
+			java.util.Enumeration<String> attrNames = session.getAttributeNames();
+			while (attrNames.hasMoreElements()) {
+				String attrName = attrNames.nextElement();
+				Object attrValue = session.getAttribute(attrName);
+				System.out.println("  - " + attrName + " = " + attrValue);
+			}
+
+			// 세션에 로그인 관련 정보를 저장
 			session.setAttribute("memberInfo", memberVO);
 			session.setAttribute("user_id", memberVO.getUser_id()); // user_id 저장
-			 session.setAttribute("role", memberVO.getRole());
+			session.setAttribute("role", memberVO.getRole());
 			session.setAttribute("isLogOn", true);
+			System.out.println("[DEBUG] 세션에 로그인 정보 저장 완료:");
+			System.out.println("  - memberInfo: " + memberVO);
+			System.out.println("  - user_id: " + session.getAttribute("user_id"));
+			System.out.println("  - role: " + session.getAttribute("role"));
+			System.out.println("  - isLogOn: " + session.getAttribute("isLogOn"));
 
+			// 로그인 전에 세션에 저장된 action 값 확인
 			String action = (String) session.getAttribute("action");
-			System.out.println("[DEBUG] action: " + action);
+			System.out.println("[DEBUG] 세션에 저장된 action 값: " + action);
 			session.removeAttribute("action");
+			System.out.println("[DEBUG] action 속성 제거 후 세션 상태:");
+			attrNames = session.getAttributeNames();
+			while (attrNames.hasMoreElements()) {
+				String attrName = attrNames.nextElement();
+				Object attrValue = session.getAttribute(attrName);
+				System.out.println("  - " + attrName + " = " + attrValue);
+			}
 
+			// 리다이렉트할 URL 결정
 			if (action != null) {
+				System.out.println("[DEBUG] action 값이 존재하므로 해당 URL로 리다이렉트: " + action);
 				mav.setViewName("redirect:" + action);
 			} else {
 				if ("ADMIN".equals(memberVO.getRole())) {
-					System.out.println("[DEBUG] 관리자 로그인 detected");
+					System.out.println("[DEBUG] 관리자 로그인 detected. 관리자 전용 페이지로 리다이렉트");
 					mav.setViewName("redirect:/admin/listProducts.do");
 				} else {
-					System.out.println("[DEBUG] 일반 사용자 로그인 detected");
+					System.out.println("[DEBUG] 일반 사용자 로그인 detected. 메인 페이지로 리다이렉트");
 					mav.setViewName("redirect:/main/main.do");
 				}
 			}
 		} else {
+			System.out.println("[DEBUG] 로그인 실패 처리: RedirectAttributes에 loginFailed 메시지 추가");
 			rAttr.addAttribute("result", "loginFailed");
 			mav.setViewName("redirect:/member/loginForm.do");
 		}
@@ -177,16 +217,15 @@ public class MemberControllerImpl implements MemberController {
 	@Override
 	@RequestMapping(value = "/member/logout.do", method = RequestMethod.GET)
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
-	    System.out.println("[DEBUG] logout() 호출됨");
-	    HttpSession session = request.getSession(false);
-	    if (session != null) {
-	        session.invalidate();  // 세션 전체를 무효화하여 모든 속성 제거
-	    }
-	    ModelAndView mav = new ModelAndView();
-	    mav.setViewName("redirect:/main/main.do");
-	    return mav;
+		System.out.println("[DEBUG] logout() 호출됨");
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			session.invalidate(); // 세션 전체를 무효화하여 모든 속성 제거
+		}
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("redirect:/main/main.do");
+		return mav;
 	}
-
 
 	@RequestMapping(value = "/member/*Form.do", method = RequestMethod.GET)
 	private ModelAndView form(@RequestParam(value = "result", required = false) String result,
@@ -290,6 +329,7 @@ public class MemberControllerImpl implements MemberController {
 			System.out.println("[DEBUG] 기존 회원 발견");
 			session.setAttribute("memberInfo", existingMember);
 			session.setAttribute("isLogOn", true);
+
 			if (existingMember.getPhone_number() == null || existingMember.getPhone_number().trim().isEmpty()
 					|| existingMember.getAddress() == null || existingMember.getAddress().trim().isEmpty()
 					|| existingMember.getDate_of_birth() == null) {
@@ -311,6 +351,7 @@ public class MemberControllerImpl implements MemberController {
 			memberService.addMember(newMember);
 
 			session.setAttribute("memberInfo", newMember);
+
 			session.setAttribute("isLogOn", true);
 			session.setAttribute("isProfileComplete", false);
 			return new ModelAndView("redirect:/member/supplementRegistrationForm.do");
