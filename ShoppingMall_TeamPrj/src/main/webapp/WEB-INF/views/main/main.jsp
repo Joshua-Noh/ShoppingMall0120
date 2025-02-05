@@ -2,6 +2,7 @@
 	pageEncoding="utf-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
+
 <c:if test="${not empty sessionScope.welcomeMessage}">
 	<div style="text-align: center; color: green; margin: 20px 0;">
 		${sessionScope.welcomeMessage}</div>
@@ -16,6 +17,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>쇼핑몰 메인 페이지</title>
 <style>
+/* 전체 페이지 페이드인 효과 */
+body {
+    margin: 0;
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    animation: fadeIn 1s ease-in;
+}
+
+/* 페이드인 애니메이션 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 
 .main-image {
 	text-align: center;
@@ -30,6 +46,7 @@
 	text-align: center;
 	padding: 20px 0;
 	background-color: #f9f9f9;
+	font-size: 30px;
 }
 
 .best-seller h2 {
@@ -153,6 +170,44 @@
   background-color: rgba(0, 0, 0, 0.8);
 }
 
+.best-ranking-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.category-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.best-ranking-buttons a {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    background-color: #f8f8f8;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.best-ranking-buttons a:hover {
+    background-color: #ddd;
+}
+
+.best-ranking-buttons a.active {
+    background-color: black;
+    color: white;
+}
+
+
+
 </style>
 </head>
 <body>
@@ -165,29 +220,31 @@
   <!-- 이전 버튼 -->
   <button class="prev-btn">〈</button>
   
-  <!-- 슬라이드 컨테이너 -->
-  <div class="slides">
-    <div class="slide"><img src="${pageContext.request.contextPath}/resources/image/main1.jpg" alt="이미지 1"></div>
-    <div class="slide"><img src="${pageContext.request.contextPath}/resources/image/main2.jpg" alt="이미지 2"></div>
-    <div class="slide"><img src="${pageContext.request.contextPath}/resources/image/main3.jpg" alt="이미지 3"></div>
-    <div class="slide"><img src="${pageContext.request.contextPath}/resources/image/main4.jpg" alt="이미지 4"></div>
-    <div class="slide"><img src="${pageContext.request.contextPath}/resources/image/main5.jpg" alt="이미지 5"></div>
-    <div class="slide"><img src="${pageContext.request.contextPath}/resources/image/main1.jpg" alt="이미지 1"></div>
-    <div class="slide"><img src="${pageContext.request.contextPath}/resources/image/main2.jpg" alt="이미지 2"></div>
-    <div class="slide"><img src="${pageContext.request.contextPath}/resources/image/main3.jpg" alt="이미지 3"></div>
-    <div class="slide"><img src="${pageContext.request.contextPath}/resources/image/main4.jpg" alt="이미지 4"></div>
-    <div class="slide"><img src="${pageContext.request.contextPath}/resources/image/main5.jpg" alt="이미지 5"></div>
-  </div>
-  
+<!-- 슬라이드 컨테이너 -->
+<div class="slides">
+    <%
+        String[] images = { "main1.jpg", "main2.jpg", "main3.jpg", "main4.jpg", "main5.jpg" };
+        for (int j = 0; j < 2; j++) { // 2번 반복
+            for (int i = 0; i < images.length; i++) {
+    %>
+                <div class="slide">
+                    <img src="${pageContext.request.contextPath}/resources/image/<%= images[i] %>" alt="이미지 <%= i + 1 %>">
+                </div>
+    <%
+            }
+        }
+    %>
+</div>
+
   <!-- 다음 버튼 -->
   <button class="next-btn">〉</button>
 </div>
 
 	<div class="best-seller">
-		<h2>BEST SELLER</h2>
+		<h2>지금 눈 여겨볼 만한 베스트 셀러!</h2>
 		<div class="product-list">
 			<div class="product">
-				<img alt="HTML5 &amp; CSS3"
+				<img alt="상품이미지"
 				src="${contextPath}/common/thumbnails.do?product_id=2&fileName=포토샵 무작정 따라하기_메인.jpg">
 				<div class="name">상품이름</div>
 				<div class="price">상품가격</div>
@@ -210,131 +267,74 @@
 		</div>
 	</div>
 
-		<div class="product-list">
-			<div class="product">
-				<div class="image"></div>
-				<div class="name">상품이름</div>
-				<div class="price">상품가격</div>
-			</div>
-			<div class="product">
-				<div class="image"></div>
-				<div class="name">상품이름</div>
-				<div class="price">상품가격</div>
-			</div>
-			<div class="product">
-				<div class="image"></div>
-				<div class="name">상품이름</div>
-				<div class="price">상품가격</div>
-			</div>
-			<div class="product">
-				<div class="image"></div>
-				<div class="name">상품이름</div>
-				<div class="price">상품가격</div>
-			</div>
-		</div>
-	</div>
+<%
+    // 현재 URL의 category_id 값을 가져옴
+    String categoryId = request.getParameter("category_id");
+    if (categoryId == null) categoryId = "0"; // 기본값: 전체
 
-		<div class="product-list">
-			<div class="product">
-				<div class="image"></div>
-				<div class="name">상품이름</div>
-				<div class="price">상품가격</div>
-			</div>
-			<div class="product">
-				<div class="image"></div>
-				<div class="name">상품이름</div>
-				<div class="price">상품가격</div>
-			</div>
-			<div class="product">
-				<div class="image"></div>
-				<div class="name">상품이름</div>
-				<div class="price">상품가격</div>
-			</div>
-			<div class="product">
-				<div class="image"></div>
-				<div class="name">상품이름</div>
-				<div class="price">상품가격</div>
-			</div>
-		</div>
-	</div>
+    // 카테고리 목록을 배열로 저장
+    String[] categories = { "전체", "신상품", "티셔츠", "셔츠/블라우스", "니트/스웨터", "팬츠", "스커트", "재킷", "코트", "원피스", "정장", "스포츠웨어" };
+%>
 
-		<div class="product-list">
-			<div class="product">
-				<div class="image"></div>
-				<div class="name">상품이름</div>
-				<div class="price">상품가격</div>
-			</div>
-			<div class="product">
-				<div class="image"></div>
-				<div class="name">상품이름</div>
-				<div class="price">상품가격</div>
-			</div>
-			<div class="product">
-				<div class="image"></div>
-				<div class="name">상품이름</div>
-				<div class="price">상품가격</div>
-			</div>
-			<div class="product">
-				<div class="image"></div>
-				<div class="name">상품이름</div>
-				<div class="price">상품가격</div>
-			</div>
-		</div>
-	</div>
+<!-- BEST 랭킹 카테고리 버튼 -->
+<div class="best-ranking-buttons">
+    <div class="category-row">
+        <% for (int i = 0; i <= 5; i++) { %>
+            <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=<%= i %>"
+               class="<%= categoryId.equals(String.valueOf(i)) ? "active" : "" %>">
+                <%= categories[i] %>
+            </a>
+        <% } %>
+    </div>
 
-		<div class="product-list">
-			<div class="product">
-				<div class="image"></div>
-				<div class="name">상품이름</div>
-				<div class="price">상품가격</div>
-			</div>
-			<div class="product">
-				<div class="image"></div>
-				<div class="name">상품이름</div>
-				<div class="price">상품가격</div>
-			</div>
-			<div class="product">
-				<div class="image"></div>
-				<div class="name">상품이름</div>
-				<div class="price">상품가격</div>
-			</div>
-			<div class="product">
-				<div class="image"></div>
-				<div class="name">상품이름</div>
-				<div class="price">상품가격</div>
-			</div>
-		</div>
-	</div>
+    <div class="category-row">
+        <% for (int i = 6; i < categories.length; i++) { %>
+            <a href="<%= request.getContextPath() %>/goods/goodsList.do?category_id=<%= i %>"
+               class="<%= categoryId.equals(String.valueOf(i)) ? "active" : "" %>">
+                <%= categories[i] %>
+            </a>
+        <% } %>
+    </div>
+</div>
 
-		<div class="product-list">
-			<div class="product">
-				<div class="image"></div>
-				<div class="name">상품이름</div>
-				<div class="price">상품가격</div>
-			</div>
-			<div class="product">
-				<div class="image"></div>
-				<div class="name">상품이름</div>
-				<div class="price">상품가격</div>
-			</div>
-			<div class="product">
-				<div class="image"></div>
-				<div class="name">상품이름</div>
-				<div class="price">상품가격</div>
-			</div>
-			<div class="product">
-			
-				<div class="image"></div>
-				<div class="name">상품이름</div>
-				<div class="price">상품가격</div>
-			</div>
-		</div>
-	</div>
+<%
+    // 현재 URL의 category_id 값을 가져옴
+    categoryId = request.getParameter("category_id");
+
+    // category_id가 없거나 0이면 기본값을 "전체"로 설정
+    if (categoryId == null || categoryId.equals("0")) {
+        categoryId = "0"; // 기본값: 전체
+    }
+%>
+
+<!-- 상품 리스트 출력 -->
+<div class="product-list">
+    <c:forEach var="product" items="${productList}">
+        <c:if test="${categoryId == '0'}">
+            <div class="product">
+                <!-- 상품 이미지 -->
+                <img alt="상품이미지"
+                     src="${pageContext.request.contextPath}/common/thumbnails.do?product_id=${product.productId}">
+                <!-- 상품 정보 -->
+                <div class="name">${product.productName}</div>
+                <div class="price">${product.price}원</div>
+                <div class="size">사이즈: ${product.size}</div>
+            </div>
+        </c:if>
+    </c:forEach>
+</div>
 
 
-	<div class="event-banner">이벤트 배너</div>
 
-	<div class="footer">footer</div>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<!-- 상품 리스트 출력 -->
+<div class="product-list">
+
+</div>
+
+
 <script src="${pageContext.request.contextPath}/resources/js/slider.js"></script>
 </body>
 </html>

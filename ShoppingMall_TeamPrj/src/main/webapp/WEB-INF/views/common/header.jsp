@@ -121,6 +121,14 @@
     background-color: #333;
     color: #fff;
 }
+.auth-buttons span {
+    font-family: 'Pretendard', 'Noto Sans KR', sans-serif; /* 네비게이션과 동일한 폰트 */
+    font-size: 16px; /* 글자 크기 조절 */
+    font-weight: 600; /* 글자를 조금 두껍게 */
+    color: #333; /* 글자 색상 */
+}
+
+
 
 /* ✅ 하단 섹션 (카테고리) */
 .bottom-header {
@@ -202,7 +210,7 @@
         <div class="auth-buttons">
             <c:choose>
                 <c:when test="${isLogOn}">
-                    <span>환영합니다, ${memberInfo.user_name}님!</span>
+                    <span class="welcome-message">환영합니다, ${memberInfo.user_name}님!</span>
                     <button onclick="location.href='${contextPath}/mypage/myPageMain.do'">내 정보</button>
                     <button onclick="location.href='${contextPath}/member/logout.do'">로그아웃</button>
                 </c:when>
