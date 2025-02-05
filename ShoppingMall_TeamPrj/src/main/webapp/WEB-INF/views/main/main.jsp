@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 
 <c:if test="${not empty sessionScope.welcomeMessage}">
@@ -46,7 +47,7 @@ body {
 	text-align: center;
 	padding: 20px 0;
 	background-color: #f9f9f9;
-	font-size: 30px;
+
 }
 
 .best-seller h2 {
@@ -205,7 +206,93 @@ body {
     background-color: black;
     color: white;
 }
+.main-banner-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 40px 0;
+}
 
+.main-banner {
+    width: 60%; /* 이미지가 60% 차지 */
+    display: flex;
+    justify-content: center;
+}
+
+.main-banner img {
+    width: 90%; /* 왼쪽에서 너무 붙지 않게 */
+    object-fit: contain;
+}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+.shop-info {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.shop-info h1 {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.shop-info p {
+    font-size: 18px;
+    color: #666;
+    margin: 10px 0;
+}
+
+.shop-info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.shop-info li {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.shop-info button {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.shop-info button:hover {
+    background-color: #333;
+}
+
+.brand-intro {
+    text-align: center;
+    padding: 60px 0;
+    background-color: #111; /* 어두운 배경으로 시크한 느낌 */
+    color: white; /* 텍스트는 밝게 */
+}
+
+.brand-intro h1 {
+    font-size: 48px;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif; /* 고급스러운 느낌 */
+    margin-bottom: 10px;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+.brand-intro p {
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+    opacity: 0.8;
+    animation: fadeIn 2s ease-in-out;
+}
+
+/* 부드럽게 나타나는 효과 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
 
 </style>
@@ -276,7 +363,7 @@ body {
     String[] categories = { "전체", "신상품", "티셔츠", "셔츠/블라우스", "니트/스웨터", "팬츠", "스커트", "재킷", "코트", "원피스", "정장", "스포츠웨어" };
 %>
 
-<!-- BEST 랭킹 카테고리 버튼 -->
+<!-- BEST 랭킹 카테고리 버튼 --> 
 <div class="best-ranking-buttons">
     <div class="category-row">
         <% for (int i = 0; i <= 5; i++) { %>
@@ -325,14 +412,38 @@ body {
 </div>
 
 
-
-
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-<!-- 상품 리스트 출력 -->
-<div class="product-list">
-
+<!-- 브랜드 아이덴티티 섹션 -->
+<div class="brand-intro">
+    <h1>Timeless Elegance, NOIR</h1>
+    <p>미니멀하고 세련된 감성을 담은 특별한 패션 브랜드.</p>
 </div>
+
+
+
+<!-- 메인 배너 컨테이너 -->
+<div class="main-banner-container">
+    <!-- 왼쪽: 메인 배너 이미지 -->
+    <div class="main-banner">
+        <img src="${pageContext.request.contextPath}/resources/image/메인베너2.jpg" alt="메인 배너">
+    </div>
+
+
+    <!-- 오른쪽: 쇼핑몰 소개 -->
+    <div class="shop-info">
+        <h1>NOIR</h1>
+        <p>어둠 속 특별한 발견, NOIR.</p>
+        <p>미니멀하고 세련된 감성을 담은 패션 브랜드.</p>
+        <p>당신만의 개성을 살리는 독창적인 스타일을 만나보세요.</p>
+        <ul>
+            <li>✔ 트렌디한 디자인</li>
+            <li>✔ 높은 퀄리티</li>
+            <li>✔ 합리적인 가격</li>
+        </ul>
+        <button onclick="location.href='${pageContext.request.contextPath}/about.do'">브랜드 스토리 보기</button>
+    </div>
+</div>
+
+
 
 
 <script src="${pageContext.request.contextPath}/resources/js/slider.js"></script>
