@@ -36,11 +36,23 @@
         padding: 0;
         box-sizing: border-box;
     }
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #f9f9f9;
-        color: #333;
-    }
+
+/* 전체 페이지 페이드인 효과 */
+body {
+    margin: 0;
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    animation: fadeIn 1s ease-in;
+}
+
+/* 페이드인 애니메이션 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+
     /* 컨테이너 - 전체 페이지 영역(헤더/푸터는 Tiles로 처리) */
     .container {
         width: 1200px;
