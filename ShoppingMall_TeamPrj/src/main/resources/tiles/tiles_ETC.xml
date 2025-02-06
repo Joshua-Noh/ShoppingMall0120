@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+    <!-- 기본 레이아웃 정의 -->
+    <definition name="baseLayout" template="/WEB-INF/views/common/layout.jsp">
+        <put-attribute name="title" value=""/>
+        <put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
+        <put-attribute name="body" value=""/>
+        <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
+    </definition>
+    
+    <!-- Admin 페이지 정의 -->
+    <definition name="/admin/addProductForm" extends="baseLayout">
+        <put-attribute name="title" value="상품 추가"/>
+        <put-attribute name="body" value="/WEB-INF/views/admin/addProductForm.jsp"/>
+    </definition>
+    
+    <definition name="/admin/imageUploadForm" extends="baseLayout">
+        <put-attribute name="title" value="상품 이미지 업로드"/>
+        <put-attribute name="body" value="/WEB-INF/views/admin/imageUploadForm.jsp"/>
+    </definition>
+    
+    <definition name="/admin/listProducts" extends="baseLayout">
+        <put-attribute name="title" value="상품 목록"/>
+        <put-attribute name="body" value="/WEB-INF/views/admin/listProducts.jsp"/>
+    </definition>
+    
+    <definition name="/admin/updateProductForm" extends="baseLayout">
+        <put-attribute name="title" value="상품 정보 수정"/>
+        <put-attribute name="body" value="/WEB-INF/views/admin/updateProductForm.jsp"/>
+    </definition>
+    
+    <!-- Member 페이지 정의 -->
+    <definition name="/member/listMembers" extends="baseLayout">
+        <put-attribute name="title" value="회원 목록"/>
+        <put-attribute name="body" value="/WEB-INF/views/member/listMembers.jsp"/>
+    </definition>
+    
+    <definition name="/member/memberManagement" extends="baseLayout">
+        <put-attribute name="title" value="회원 관리"/>
+        <put-attribute name="body" value="/WEB-INF/views/member/memberManagement.jsp"/>
+    </definition>
+    
+    <definition name="/member/updateMemberForm" extends="baseLayout">
+        <put-attribute name="title" value="회원 정보 수정"/>
+        <put-attribute name="body" value="/WEB-INF/views/member/updateMemberForm.jsp"/>
+    </definition>
+</tiles-definitions>

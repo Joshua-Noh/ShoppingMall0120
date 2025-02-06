@@ -27,7 +27,8 @@ public class MemberDAOImpl implements MemberDAO {
     
     @Override
     public int updateMember(MemberVO memberVO) throws DataAccessException {
-        int result = sqlSession.insert("mapper.member.updateMember", memberVO);
+        // 업데이트는 보통 update 메서드를 사용합니다.
+        int result = sqlSession.update("mapper.member.updateMember", memberVO);
         return result;
     }
     
@@ -54,6 +55,13 @@ public class MemberDAOImpl implements MemberDAO {
     @Override
     public MemberVO findMemberByPhone(String phone) throws DataAccessException {
         MemberVO vo = sqlSession.selectOne("mapper.member.findMemberByPhone", phone);
+        return vo;
+    }
+    
+    // 신규 추가: 회원 ID로 회원 정보 조회 (일반 사용자가 본인 정보만 조회할 때 사용)
+    @Override
+    public MemberVO getMemberById(int userId) throws DataAccessException {
+        MemberVO vo = sqlSession.selectOne("mapper.member.getMemberById", userId);
         return vo;
     }
 }

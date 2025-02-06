@@ -13,20 +13,16 @@ public class MemberVO {
     private String address;         // 배송 주소
     private Date date_of_birth;     // 생년월일
     private Date join_date;         // 가입 날짜
-    private String gender;
-    private String role ;// 성별 (Male, Female, Other)
+    private String gender;          // 성별
+    private String role;            // 사용자 역할 (예: admin, user 등)
     
     // ===== 카카오 소셜 로그인 관련 필드 추가 =====
     private Long kakaoId;           // 카카오에서 받은 고유 아이디
     private String joinType;        // 가입 유형 ("kakao" 또는 "normal" 등)
     
-    
-    public String getRole() {
-		return role;
-	}
-	public void setRole(String role) {
-		this.role = role;
-	}
+    // ===== 카카오 액세스 토큰 추가 =====
+    private String accessToken;     // 카카오 로그인 후 발급받은 액세스 토큰
+
     // 기존 getter/setter
     public int getUser_id() {
         return user_id;
@@ -82,6 +78,12 @@ public class MemberVO {
     public void setGender(String gender) {
         this.gender = gender;
     }
+    public String getRole() {
+        return role;
+    }
+    public void setRole(String role) {
+        this.role = role;
+    }
     
     // ===== 카카오 소셜 로그인 관련 getter/setter =====
     public Long getKakaoId() {
@@ -95,5 +97,13 @@ public class MemberVO {
     }
     public void setJoinType(String joinType) {
         this.joinType = joinType;
+    }
+    
+    // ===== 카카오 액세스 토큰 getter/setter =====
+    public String getAccessToken() {
+        return accessToken;
+    }
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 }

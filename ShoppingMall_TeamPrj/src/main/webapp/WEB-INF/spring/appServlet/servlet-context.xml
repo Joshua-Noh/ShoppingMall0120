@@ -38,6 +38,7 @@
 				<beans:value>classpath:tiles/tiles_mypage.xml</beans:value>
 				<beans:value>classpath:tiles/tiles_company.xml</beans:value>
 				<beans:value>classpath:tiles/tiles_customerCenter.xml</beans:value>
+				<beans:value>classpath:tiles/tiles_ETC.xml</beans:value>
 			</beans:list>
 		</beans:property>
 		<beans:property name="preparerFactoryClass"

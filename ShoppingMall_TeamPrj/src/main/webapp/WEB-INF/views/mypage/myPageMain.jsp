@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8" isELIgnored="false" %>
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -303,6 +302,13 @@
       <tr>
         <td colspan="2" style="text-align:center;">
           <button onclick="location.href='${contextPath}/member/updateMemberForm.do'">정보 변경</button>
+          <!-- 관리자일 경우에만 '상품추가/변경' 버튼 추가 -->
+          <c:if test="${sessionScope.memberInfo != null and sessionScope.memberInfo.role == 'ADMIN'}">
+            <button onclick="location.href='${contextPath}/admin/listProducts.do'">상품추가 / 변경</button>
+          </c:if>
+           <c:if test="${sessionScope.memberInfo != null and sessionScope.memberInfo.role == 'ADMIN'}">
+            <button onclick="location.href='${contextPath}/member/listMembers.do'">회원목록 조회 /수정</button>
+          </c:if>
         </td>
       </tr>
     </table>

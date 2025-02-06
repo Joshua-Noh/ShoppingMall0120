@@ -15,6 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.shop.ShoppingMall_TeamPrj.admin.service.ProductService;
 import com.shop.ShoppingMall_TeamPrj.admin.vo.ProductVO;
+import com.shop.ShoppingMall_TeamPrj.member.vo.MemberVO;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,19 +60,27 @@ public class ProductControllerlmpl  implements ProductController{
         return mav;
     }
     
-	
-	@Override
-	@RequestMapping(value= "/admin/listProducts.do", method = {RequestMethod.GET, RequestMethod.POST})
-	public ModelAndView listProducts(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String viewName = (String)request.getAttribute("viewName");
-		List productList = productservice.listProducts();
-		ModelAndView mav = new ModelAndView(viewName);
-		//System.out.println("articlesList : "+ articlesList);
-		mav.addObject("productList", productList);
-		return mav;
-		
-	}
-	
+    @Override
+    @RequestMapping(value= "/admin/listProducts.do", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView listProducts(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession(false);
+     
+        if (session == null || session.getAttribute("memberInfo") == null) {
+            return new ModelAndView("redirect:/main/main.do");
+        }
+        MemberVO loginMember = (MemberVO) session.getAttribute("memberInfo");
+        if (!"ADMIN".equalsIgnoreCase(loginMember.getRole())) {
+            return new ModelAndView("redirect:/main/main.do");
+        }
+        
+      
+        String viewName = (String) request.getAttribute("viewName");
+        List productList = productservice.listProducts();
+        ModelAndView mav = new ModelAndView(viewName);
+        mav.addObject("productList", productList);
+        return mav;
+    }
+
 
     @Override
     @RequestMapping(value = "/admin/addProduct.do", method = RequestMethod.POST)
@@ -90,11 +100,11 @@ public class ProductControllerlmpl  implements ProductController{
     @RequestMapping(value = "/admin/removeProduct.do", method = RequestMethod.GET)
     public ModelAndView removeProduct(@RequestParam("productId") int id, 
                                      HttpServletRequest request, HttpServletResponse response) throws Exception {
-        // UTF-8 인코딩 설정 (이미 요청에 지정되어 있으면 생략 가능)
+        // UTF-8 �몄��� �ㅼ�� (�대�� ��泥��� 吏������� ���쇰㈃ ���� 媛���)
         request.setCharacterEncoding("utf-8");
-        // 서비스 호출하여 회원 삭제
+        // ��鍮��� �몄����� ���� ����
         productservice.removeProduct(id);
-        // 삭제 후 회원 목록 페이지로 리다이렉트
+        // ���� �� ���� 紐⑸� ���댁�濡� 由щ�ㅼ�대����
         ModelAndView mav = new ModelAndView("redirect:/admin/listProducts.do");
         return mav;
     }
@@ -105,55 +115,55 @@ public class ProductControllerlmpl  implements ProductController{
         int result = productservice.updateProduct(product);
         ModelAndView mav = new ModelAndView("redirect:/admin/listProducts.do");
         if (result > 0) {
-            mav.addObject("message", "회원 정보 수정 성공");
+            mav.addObject("message", "���� ��蹂� ���� �깃났");
         } else {
-            mav.addObject("message", "회원 정보 수정 실패");
+            mav.addObject("message", "���� ��蹂� ���� �ㅽ��");
         }
         return mav;
     }
- // ✅ 파일 저장 기본 경로 (카테고리별로 저장됨)
+ // �� ���� ���� 湲곕낯 寃쎈� (移댄��怨�由щ�濡� ���λ��)
     private static final String CURR_IMAGE_REPO_PATH = "C:\\shopping_project\\image_repo";
     
-    // ✅ 업로드 폼 페이지 이동 (상품 추가 후 리디렉션)
+    // �� ��濡��� �� ���댁� �대�� (���� 異�媛� �� 由щ������)
     @RequestMapping(value="/admin/imageUpload.do")
     public String form() {
-        return "imageUploadForm";  // `imageUploadForm.jsp`로 이동
+        return "imageUploadForm";  // `imageUploadForm.jsp`濡� �대��
     }
     
-    // ✅ 파일 업로드 처리 (카테고리 선택 후 업로드)
+    // �� ���� ��濡��� 泥�由� (移댄��怨�由� ���� �� ��濡���)
     @RequestMapping(value="/admin/upload", method = RequestMethod.POST)
     public ModelAndView upload(MultipartHttpServletRequest multipartRequest,
                                HttpServletResponse response) throws Exception {
-        // 한글 인코딩 설정
+        // ��湲� �몄��� �ㅼ��
         multipartRequest.setCharacterEncoding("utf-8");
         Map<String, Object> map = new HashMap<String, Object>(); 
         
-        // ✅ 사용자가 선택한 카테고리 가져오기
+        // �� �ъ�⑹��媛� ������ 移댄��怨�由� 媛��몄�ㅺ린
         String category = multipartRequest.getParameter("category");
         if (category == null || category.trim().isEmpty()) {
-            category = "기타";  // 기본 카테고리 설정 (예외 처리)
+            category = "湲고��";  // 湲곕낯 移댄��怨�由� �ㅼ�� (���� 泥�由�)
         }
         
-        // ✅ 파일 저장 (카테고리별 폴더에 저장)
+        // �� ���� ���� (移댄��怨�由щ� �대���� ����)
         List<String> fileList = fileProcess(multipartRequest, category);
         map.put("fileList", fileList);
         
-        // ✅ 업로드 완료 후 상품 목록으로 이동
+        // �� ��濡��� ��猷� �� ���� 紐⑸��쇰� �대��
         return new ModelAndView("redirect:/admin/listProducts.do");
     }
     
-    // ✅ 파일 저장 처리 메서드 (카테고리별 폴더 생성 후 저장)
+    // �� ���� ���� 泥�由� 硫����� (移댄��怨�由щ� �대�� ���� �� ����)
     private List<String> fileProcess(MultipartHttpServletRequest multipartRequest, String category) throws Exception {
         List<String> fileList = new ArrayList<String>();
 
-        // ✅ 카테고리 폴더 경로 설정
+        // �� 移댄��怨�由� �대�� 寃쎈� �ㅼ��
         String uploadPath = CURR_IMAGE_REPO_PATH + "\\" + category;
         File dir = new File(uploadPath);
         if (!dir.exists()) {
-            dir.mkdirs();  // 카테고리 폴더가 없으면 생성
+            dir.mkdirs();  // 移댄��怨�由� �대��媛� ���쇰㈃ ����
         }
         
-        // ✅ 업로드된 파일 처리
+        // �� ��濡����� ���� 泥�由�
         Iterator<String> fileNames = multipartRequest.getFileNames();
         while (fileNames.hasNext()) {
             String fileParameterName = fileNames.next();
@@ -161,16 +171,16 @@ public class ProductControllerlmpl  implements ProductController{
             String originalFileName = mFile.getOriginalFilename();
             fileList.add(originalFileName);
             
-            if (mFile.getSize() != 0) { // 파일이 존재하는 경우 저장
+            if (mFile.getSize() != 0) { // ���쇱�� 議댁�ы���� 寃쎌�� ����
                 File file = new File(uploadPath + "\\" + originalFileName);
                 
-                // 파일이 존재하지 않으면 부모 디렉토리 생성 후 새 파일 저장
+                // ���쇱�� 議댁�ы��吏� ���쇰㈃ 遺�紐� ������由� ���� �� �� ���� ����
                 if (!file.exists()) {
                     if (file.getParentFile().mkdirs()) {
                         file.createNewFile();
                     }
                 }
-                // ✅ 실제 파일 저장
+                // �� �ㅼ�� ���� ����
                 mFile.transferTo(file);
             }
         }

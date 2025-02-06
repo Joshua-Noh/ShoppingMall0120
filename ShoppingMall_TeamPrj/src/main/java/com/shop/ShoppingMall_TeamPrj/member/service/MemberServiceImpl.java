@@ -12,13 +12,13 @@ import com.shop.ShoppingMall_TeamPrj.member.vo.MemberVO;
 @Service("memberService")
 @Transactional(propagation = Propagation.REQUIRED)
 public class MemberServiceImpl implements MemberService {
+
     @Autowired
     private MemberDAO memberDAO;
 
     @Override
-    public List listMembers() throws DataAccessException {
-        List membersList = null;
-        membersList = memberDAO.selectAllMemberList();
+    public List<MemberVO> listMembers() throws DataAccessException {
+        List<MemberVO> membersList = memberDAO.selectAllMemberList();
         return membersList;
     }
 
@@ -33,8 +33,9 @@ public class MemberServiceImpl implements MemberService {
     }
    
     @Override
-    public int updateMember(MemberVO member) {
-        return memberDAO.updateMember(member); // 영향받은 행 수 반환
+    public int updateMember(MemberVO member) throws DataAccessException {
+        // 영향받은 행 수 반환 (예: 1이면 성공)
+        return memberDAO.updateMember(member);
     }
     
     @Override
@@ -42,7 +43,7 @@ public class MemberServiceImpl implements MemberService {
         return memberDAO.loginById(memberVO);
     }
     
-    // 추가된 메서드: 카카오 ID로 회원 조회
+    // 추가된 메서드: 카카오 ID로 회원 조회 (소셜 로그인용)
     @Override
     public MemberVO getMemberByKakaoId(Long kakaoId) throws DataAccessException {
         return memberDAO.selectMemberByKakaoId(kakaoId);
@@ -52,5 +53,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberVO findMemberByPhone(String phone) throws DataAccessException {
         return memberDAO.findMemberByPhone(phone);
+    }
+    
+    // 신규 추가: 회원 ID로 회원 정보 조회 (일반 사용자가 본인 정보만 조회할 때 사용)
+    @Override
+    public MemberVO getMemberById(int userId) throws DataAccessException {
+        return memberDAO.getMemberById(userId);
     }
 }

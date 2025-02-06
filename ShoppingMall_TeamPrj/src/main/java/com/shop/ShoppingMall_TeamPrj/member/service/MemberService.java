@@ -1,19 +1,19 @@
 package com.shop.ShoppingMall_TeamPrj.member.service;
 
 import java.util.List;
-import org.springframework.dao.DataAccessException;
 import com.shop.ShoppingMall_TeamPrj.member.vo.MemberVO;
 
 public interface MemberService {
-    public List listMembers() throws DataAccessException;
-    public int addMember(MemberVO memberVO) throws DataAccessException;
-    public int removeMember(String id) throws DataAccessException;
-    public MemberVO login(MemberVO memberVO) throws Exception;
-    public int updateMember(MemberVO member);
+    List<MemberVO> listMembers() throws Exception;
+    int addMember(MemberVO member) throws Exception;
+    int removeMember(String id) throws Exception;
+    int updateMember(MemberVO member) throws Exception;
+    MemberVO login(MemberVO member) throws Exception;
     
-    // 카카오 ID로 회원 조회하기 위한 메서드 추가
-    public MemberVO getMemberByKakaoId(Long kakaoId) throws DataAccessException;
+    // 기존 추가 메서드들
+    MemberVO getMemberByKakaoId(Long kakaoId) throws Exception;
+    MemberVO findMemberByPhone(String phone) throws Exception;
     
-    // 휴대폰 번호를 통한 회원 조회 (ID 및 비밀번호 찾기 기능에 사용)
-    public MemberVO findMemberByPhone(String phone) throws DataAccessException;
+    // 신규 추가: 회원 ID로 회원 정보 조회 (일반 사용자가 본인 정보만 조회할 때 사용)
+    MemberVO getMemberById(int userId) throws Exception;
 }
