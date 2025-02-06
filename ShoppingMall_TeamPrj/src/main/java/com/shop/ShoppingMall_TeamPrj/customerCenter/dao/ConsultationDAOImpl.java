@@ -4,30 +4,40 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import com.shop.ShoppingMall_TeamPrj.customerCenter.vo.ConsultationVO;
 
+
+
 @Repository("consultationDAO")
 public class ConsultationDAOImpl implements ConsultationDAO {
 
     private JdbcTemplate jdbcTemplate;
+    private DataSource dataSource;
 
-    // ±âº» »ı¼ºÀÚ (¾øÀ¸¸é SpringÀÌ ±âº» »ı¼ºÀÚ¸¦ È£ÃâÇÒ ¼ö ¾øÀ½)
+    // ê¸°ë³¸ ìƒì„±ì (ì—†ìœ¼ë©´ Springì´ ê¸°ë³¸ ìƒì„±ìë¥¼ í˜¸ì¶œí•  ìˆ˜ ì—†ìŒ)
     public ConsultationDAOImpl() {
-        // ±âº» »ı¼ºÀÚ; DataSource´Â setter·Î ÁÖÀÔ¹ŞÀ½.
+        // ê¸°ë³¸ ìƒì„±ì; DataSourceëŠ” setterë¡œ ì£¼ì…ë°›ìŒ.
     }
     
-    // DataSource ÁÖÀÔÀ» À§ÇÑ setter
+    // DataSource ì£¼ì…ì„ ìœ„í•œ setter
+    // DataSource ì£¼ì…ì„ ìœ„í•œ setter
     @Autowired
     public void setDataSource(DataSource dataSource) {
-        System.out.println("ConsultationDAOImpl: setDataSource È£ÃâµÊ");
+        System.out.println("ConsultationDAOImpl: setDataSource í˜¸ì¶œë¨, DataSource = " + dataSource);
+        this.dataSource = dataSource;  // ğŸ”¹ í•„ë“œì— ì €ì¥
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
+
     
-    private static final class ConsultationRowMapper implements org.springframework.jdbc.core.RowMapper {
-        public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+    private static final class ConsultationRowMapper implements org.springframework.jdbc.core.RowMapper<ConsultationVO> {
+        public ConsultationVO mapRow(ResultSet rs, int rowNum) throws SQLException {
             ConsultationVO vo = new ConsultationVO();
             vo.setConsultationId(rs.getInt("consultation_id"));
             vo.setUserId(rs.getInt("user_id"));
@@ -37,33 +47,54 @@ public class ConsultationDAOImpl implements ConsultationDAO {
             vo.setStatus(rs.getString("status"));
             vo.setCreatedAt(rs.getTimestamp("created_at"));
             vo.setUpdatedAt(rs.getTimestamp("updated_at"));
+            vo.setUserName(rs.getString("user_name"));
+
+
             return vo;
         }
     }
+
     
-    public List getAllConsultations() {
-        String sql = "SELECT * FROM consultation_log ORDER BY created_at DESC";
+    public List<ConsultationVO> getAllConsultations() {
+        String sql = "SELECT cl.consultation_id, cl.user_id, cl.subject, cl.message, cl.reply, cl.status, cl.created_at, cl.updated_at, u.user_name " +
+                     "FROM consultation_log cl " +
+                     "JOIN users u ON cl.user_id = u.user_id " +
+                     "ORDER BY cl.created_at DESC";
         return jdbcTemplate.query(sql, new ConsultationRowMapper());
     }
-    
-    public List getConsultationsByUser(Integer userId) {
-        String sql = "SELECT * FROM consultation_log WHERE user_id = ? ORDER BY created_at DESC";
+
+    public List<ConsultationVO> getConsultationsByUser(Integer userId) {
+        String sql = "SELECT cl.consultation_id, cl.user_id, cl.subject, cl.message, cl.reply, cl.status, cl.created_at, cl.updated_at, u.user_name " +
+                     "FROM consultation_log cl " +
+                     "JOIN users u ON cl.user_id = u.user_id " +
+                     "WHERE cl.user_id = ? " +
+                     "ORDER BY cl.created_at DESC";
         return jdbcTemplate.query(sql, new Object[] { userId }, new ConsultationRowMapper());
     }
+
     
     public ConsultationVO getConsultation(int consultationId) {
         String sql = "SELECT * FROM consultation_log WHERE consultation_id = ?";
         return (ConsultationVO) jdbcTemplate.queryForObject(sql, new Object[] { consultationId }, new ConsultationRowMapper());
     }
     
+    @Transactional
     public void insertConsultation(ConsultationVO consultation) {
         String sql = "INSERT INTO consultation_log (user_id, subject, message) VALUES (?, ?, ?)";
-        jdbcTemplate.update(sql, new Object[] {
-            consultation.getUserId(),
-            consultation.getSubject(),
-            consultation.getMessage()
-        });
+        int rowsAffected = jdbcTemplate.update(sql, consultation.getUserId(), consultation.getSubject(), consultation.getMessage());
+
+        System.out.println("[DEBUG] insertConsultation - ë°˜ì˜ëœ í–‰ ìˆ˜: " + rowsAffected);
+
+        if (rowsAffected > 0) {
+            System.out.println("[DEBUG] insertConsultation - ë°ì´í„° ì‚½ì… ì„±ê³µ âœ…");
+        } else {
+            System.out.println("[ERROR] insertConsultation - ë°ì´í„° ì‚½ì… ì‹¤íŒ¨ âŒ (ë°˜ì˜ëœ í–‰ ì—†ìŒ)");
+        }
     }
+
+    
+
+
 
     
     public void updateConsultation(ConsultationVO consultation) {

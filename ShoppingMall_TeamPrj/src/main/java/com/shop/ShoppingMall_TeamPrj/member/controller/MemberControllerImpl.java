@@ -171,13 +171,10 @@ public class MemberControllerImpl implements MemberController {
 
 			// 세션에 로그인 관련 정보를 저장
 			session.setAttribute("memberInfo", memberVO);
-			session.setAttribute("user_id", memberVO.getUser_id()); // user_id 저장
-			session.setAttribute("role", memberVO.getRole());
+		
 			session.setAttribute("isLogOn", true);
 			System.out.println("[DEBUG] 세션에 로그인 정보 저장 완료:");
 			System.out.println("  - memberInfo: " + memberVO);
-			System.out.println("  - user_id: " + session.getAttribute("user_id"));
-			System.out.println("  - role: " + session.getAttribute("role"));
 			System.out.println("  - isLogOn: " + session.getAttribute("isLogOn"));
 
 			// 로그인 전에 세션에 저장된 action 값 확인

@@ -13,6 +13,9 @@ public class ConsultationVO {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     
+    // 수정된 사용자 이름 필드 (camelCase)
+    private String userName;
+    
     // 기본 생성자
     public ConsultationVO() {
     }
@@ -80,5 +83,14 @@ public class ConsultationVO {
     
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+    
+    // 수정된 userName 필드의 Getter / Setter
+    public String getUserName() {
+        return userName;
+    }
+    
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

@@ -6,21 +6,36 @@
 <mapper namespace="com.shop.ShoppingMall_TeamPrj.customerCenter.dao.ConsultationDAO">
 
   <!-- 상담 VO 결과 매핑 -->
-  <resultMap id="ConsultationResultMap" type="com.shop.ShoppingMall_TeamPrj.customerCenter.vo.ConsultationVO">
-    <id property="consultationId" column="consultation_id" />
-    <result property="userId" column="user_id" />
-    <result property="subject" column="subject" />
-    <result property="message" column="message" />
-    <result property="reply" column="reply" />
-    <result property="status" column="status" />
-    <result property="createdAt" column="created_at" />
-    <result property="updatedAt" column="updated_at" />
-  </resultMap>
+<resultMap id="ConsultationResultMap" type="com.shop.ShoppingMall_TeamPrj.customerCenter.vo.ConsultationVO">
+    <result property="consultationId" column="consultation_id"/>
+    <result property="userId" column="user_id"/>
+    <result property="subject" column="subject"/>
+    <result property="message" column="message"/>
+    <result property="reply" column="reply"/>
+    <result property="status" column="status"/>
+    <result property="createdAt" column="created_at"/>
+    <result property="updatedAt" column="updated_at"/>
+    <result property="userName" column="user_name"/>
+</resultMap>
 
-  <!-- 전체 상담 내역 조회 (관리자용) -->
-  <select id="getAllConsultations" resultMap="ConsultationResultMap">
-    SELECT * FROM consultation_log ORDER BY created_at DESC
-  </select>
+  
+  <!-- 다른 SQL 문들 -->
+<select id="getAllConsultations" resultMap="ConsultationResultMap">
+  SELECT 
+    cl.consultation_id,
+    cl.user_id,
+    cl.subject,
+    cl.message,
+    cl.reply,
+    cl.status,
+    cl.created_at,
+    cl.updated_at,
+    u.user_name  <!-- 사용자 이름 컬럼 -->
+  FROM consultation_log cl
+  JOIN users u ON cl.user_id = u.user_id
+  ORDER BY cl.created_at DESC
+</select>
+
 
   <!-- 특정 사용자 상담 내역 조회 -->
   <select id="getConsultationsByUser" resultMap="ConsultationResultMap" parameterType="int">
@@ -53,5 +68,6 @@
   <delete id="deleteConsultation" parameterType="int">
     DELETE FROM consultation_log WHERE consultation_id = #{consultationId}
   </delete>
+
 
 </mapper>
