@@ -17,26 +17,17 @@ public interface CartController {
             @RequestParam("quantity") int quantity,
             HttpServletRequest request, HttpServletResponse response) throws Exception;
 
- // 장바구니 상품 수량 수정
-    public ModelAndView updateCartQuantity(int cart_id, int quantity, int product_id, HttpServletRequest request,
-			HttpServletResponse response) throws Exception;
+    // 장바구니 상품 수량 수정
+    public ModelAndView updateCartQuantity(int cart_id, int quantity, int product_id,
+            HttpServletRequest request, HttpServletResponse response) throws Exception;
+    
     // 장바구니 상품 삭제
-    public ModelAndView deleteCartItem(@RequestParam("cart_id") int cart_id, HttpServletRequest request, HttpServletResponse response) throws Exception;
+    public ModelAndView deleteCartItem(@RequestParam("cart_id") int cart_id,
+            HttpServletRequest request, HttpServletResponse response) throws Exception;
     
     // 장바구니 내역 주문 페이지로 전달
     public ModelAndView checkout(HttpServletRequest request, HttpServletResponse response) throws Exception;
-	
+
+    // 주문 완료 후, 해당 사용자의 장바구니 항목 전체 삭제
+    public ModelAndView clearCartAfterOrder(HttpServletRequest request, HttpServletResponse response) throws Exception;
 }
-
-
-/*
- * public ResponseEntity addNewArticle(MultipartHttpServletRequest
- * multipartRequest,HttpServletResponse response) throws Exception;
- * 
- * public ModelAndView viewArticle(@RequestParam("articleNO") int articleNO,
- * HttpServletRequest request, HttpServletResponse response) throws Exception;
- * //public ResponseEntity modArticle(MultipartHttpServletRequest
- * multipartRequest, HttpServletResponse response) throws Exception; public
- * ResponseEntity removeArticle(@RequestParam("articleNO") int articleNO,
- * HttpServletRequest request, HttpServletResponse response) throws Exception;
- */

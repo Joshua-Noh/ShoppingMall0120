@@ -5,16 +5,27 @@
 
 <mapper namespace="mapper.order">
 <!-- 리절트 맵 정의 -->	
-	<resultMap id="orderGoodsResult" type="OrderVO">
-		<result property="order_id" column="order_id" />
-		<result property="user_id" column="user_id" />
-		<result property="product_id" column="product_id" />
-		<result property="quantity" column="quantity" />
-		<result property="order_date" column="order_date" />
-		<result property="total_price" column="total_price" />
-	</resultMap> 
+<resultMap id="orderResultMap" type="com.shop.ShoppingMall_TeamPrj.order.vo.OrderVO">
+    <result property="order_id" column="order_id"/>
+    <result property="user_id" column="user_id"/>
+    <result property="product_id" column="product_id"/>
+    <result property="product_name" column="product_name"/> <!-- 추가 -->
+    <result property="quantity" column="quantity"/>
+    <result property="order_date" column="order_date"/>
+    <result property="total_price" column="total_price"/>
+    <result property="delivery_state" column="delivery_state"/>
+    <result property="receiver_name" column="receiver_name"/>
+    <result property="receiver_hp" column="receiver_hp"/>
+    <result property="receiver_tel" column="receiver_tel"/>
+    <result property="delivery_address" column="delivery_address"/>
+    <result property="delivery_message" column="delivery_message"/>
+    <result property="pay_method" column="pay_method"/>
+    <result property="order_group_id" column="order_group_id"/>
+</resultMap>
+
 	
-	 <select id="selectMyOrderList" resultMap="orderGoodsResult"  parameterType="orderVO"  >
+	<select id="selectMyOrderList" resultMap="orderResultMap" parameterType="orderVO">
+
 	    <![CDATA[
 			select * from t_shopping_order
 			where to_char(pay_order_time,'yyyy-mm-dd')=to_char(sysdate,'yyyy-mm-dd') 
@@ -22,6 +33,27 @@
         	order by pay_order_time desc
 		]]>
 	</select>
+	
+<insert id="createOrder" parameterType="com.shop.ShoppingMall_TeamPrj.order.vo.OrderVO">
+  <![CDATA[
+    INSERT INTO orders 
+      (user_id, product_id, quantity, order_date, total_price, delivery_state,
+       receiver_name, receiver_hp, receiver_tel, delivery_address, delivery_message, pay_method, order_group_id)
+    VALUES 
+      (#{user_id}, #{product_id}, #{quantity}, #{order_date}, #{total_price}, #{delivery_state},
+       #{receiver_name}, #{receiver_hp}, #{receiver_tel}, #{delivery_address}, #{delivery_message}, #{pay_method}, #{order_group_id})
+  ]]>
+</insert>
+
+<select id="getOrderDetails" parameterType="int" resultMap="orderResultMap">
+    SELECT o.*, p.product_name
+    FROM orders o
+    JOIN products p ON o.product_id = p.product_id
+    WHERE o.order_id = #{order_id}
+</select>
+
+
+	
 	<!-- 
 	<insert id="insertOrderSequence" >
 		INSERT INTO order_sequence VALUES (NULL)

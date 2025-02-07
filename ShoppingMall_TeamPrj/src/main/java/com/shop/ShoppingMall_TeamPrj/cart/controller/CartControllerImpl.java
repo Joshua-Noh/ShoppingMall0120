@@ -2,11 +2,9 @@ package com.shop.ShoppingMall_TeamPrj.cart.controller;
 
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -26,11 +24,11 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.shop.ShoppingMall_TeamPrj.cart.service.CartService;
 import com.shop.ShoppingMall_TeamPrj.cart.vo.CartVO;
 import com.shop.ShoppingMall_TeamPrj.goods.vo.GoodsVO;
 import com.shop.ShoppingMall_TeamPrj.member.vo.MemberVO;
+import com.shop.ShoppingMall_TeamPrj.order.vo.OrderVO;
 
 @Controller("cartController")
 public class CartControllerImpl implements CartController {
@@ -44,187 +42,188 @@ public class CartControllerImpl implements CartController {
     @Autowired 
     private CartVO cartVO;
     
+    // ì¥ë°”êµ¬ë‹ˆ ëª©ë¡ ì¡°íšŒ
     @Override
     @RequestMapping(value = "/cart/myCartList.do", method = {RequestMethod.GET})
     public ModelAndView myCartList(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HttpSession session = request.getSession(false); // ±âÁ¸ ¼¼¼Ç °¡Á®¿À±â
+        HttpSession session = request.getSession(false);
         if (session == null) {
-            System.out.println("[DEBUG] ¼¼¼ÇÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            System.out.println("[DEBUG] myCartList: ì„¸ì…˜ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
             return new ModelAndView("redirect:/member/loginForm.do");
         }
 
-        // ¼¼¼Ç¿¡ ÀúÀåµÈ memberInfo È®ÀÎ
         memberVO = (MemberVO) session.getAttribute("memberInfo");
         if (memberVO == null) {
-            System.out.println("[DEBUG] memberInfo°¡ ¼¼¼Ç¿¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            System.out.println("[DEBUG] myCartList: memberInfoê°€ ì„¸ì…˜ì— ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
             return new ModelAndView("redirect:/member/loginForm.do");
         }
+        System.out.println("[DEBUG] myCartList: memberVO = " + memberVO);
 
         cartVO.setUser_id(memberVO.getUser_id());
+        System.out.println("[DEBUG] myCartList: cartVO.user_id ì„¤ì •ë¨ = " + cartVO.getUser_id());
 
-        // Àå¹Ù±¸´Ï Á¤º¸ Á¶È¸
         Map<String, List> cartMap = cartService.myCartList(cartVO);
         if (cartMap == null || cartMap.isEmpty()) {
+            System.out.println("[DEBUG] myCartList: ì¥ë°”êµ¬ë‹ˆê°€ ë¹„ì–´ ìˆìŠµë‹ˆë‹¤.");
             ModelAndView mav = new ModelAndView("cart/myCartList");
-            mav.addObject("message", "Àå¹Ù±¸´Ï°¡ ºñ¾î ÀÖ½À´Ï´Ù.");
+            mav.addObject("message", "ì¥ë°”êµ¬ë‹ˆê°€ ë¹„ì–´ ìˆìŠµë‹ˆë‹¤.");
             return mav;
         }
 
-        // ÃÑÇÕ °è»ê
-        double totalPrice = 0;
+        // cartMap ë‚´ë¶€ ë°ì´í„° ìƒì„¸ ì¶œë ¥
+        System.out.println("[DEBUG] myCartList: cartMap ë°ì´í„° = " + cartMap);
         List<CartVO> myCartList = cartMap.get("myCartList");
         List<GoodsVO> myGoodsList = cartMap.get("myGoodsList");
 
         for (int i = 0; i < myCartList.size(); i++) {
             CartVO cartItem = myCartList.get(i);
             GoodsVO goodsItem = myGoodsList.get(i);
-            totalPrice += cartItem.getQuantity() * goodsItem.getPrice(); // »óÇ° °¡°İ * ¼ö·®
+            System.out.println("[DEBUG] myCartList: Cart item " + i + " - product_id: " + cartItem.getProduct_id() +
+                               ", quantity: " + cartItem.getQuantity() +
+                               ", Goods product_id: " + goodsItem.getProduct_id() +
+                               ", Goods price: " + goodsItem.getPrice());
         }
 
-        // totalPrice¸¦ ¼¼¼Ç¿¡ º°µµ·Î ÀúÀå
+        double totalPrice = 0;
+        for (int i = 0; i < myCartList.size(); i++) {
+            CartVO cartItem = myCartList.get(i);
+            GoodsVO goodsItem = myGoodsList.get(i);
+            totalPrice += cartItem.getQuantity() * goodsItem.getPrice();
+        }
+        System.out.println("[DEBUG] myCartList: ì´í•©ê³„ = " + totalPrice);
+
         session.setAttribute("totalPrice", totalPrice);
-        session.setAttribute("cartMap", cartMap); // ¼¼¼Ç¿¡ Àå¹Ù±¸´Ï µ¥ÀÌÅÍ ÀúÀå
+        session.setAttribute("cartMap", cartMap);
         
-        System.out.println("[DEBUG] Àå¹Ù±¸´Ï Á¶È¸ ¿Ï·á. ÃÑÇÕ°è: " + totalPrice);
         return new ModelAndView("cart/myCartList");
     }
     
+    // ì¥ë°”êµ¬ë‹ˆì— ìƒí’ˆ ì¶”ê°€
     @RequestMapping(value = "/cart/addMyCart.do", method = RequestMethod.POST, produces = "text/plain; charset=utf-8")
     public @ResponseBody String addMyCart(@RequestParam("product_id") int product_id,
                                           @RequestParam("quantity") int quantity,
                                           HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
         memberVO = (MemberVO) session.getAttribute("memberInfo");
-
         if (memberVO == null) {
-            System.out.println("[DEBUG] addMyCart: ·Î±×ÀÎ Á¤º¸ ¾øÀ½");
-            return "login_required"; // ·Î±×ÀÎ ÇÊ¿ä
+            System.out.println("[DEBUG] addMyCart: ë¡œê·¸ì¸ ì •ë³´ ì—†ìŒ");
+            return "ë¡œê·¸ì¸ì„ í•´ì£¼ì„¸ìš”.";
         }
 
         int member_id = memberVO.getUser_id();
         cartVO.setUser_id(member_id);
         cartVO.setProduct_id(product_id);
+        System.out.println("[DEBUG] addMyCart: product_id = " + product_id + ", quantity = " + quantity);
 
         CartVO existingCartItem = cartService.findCartItem(cartVO);
         if (existingCartItem != null) {
             int updatedQuantity = existingCartItem.getQuantity() + quantity;
             cartVO.setQuantity(updatedQuantity);
             cartService.updateCartQuantity(cartVO);
-            System.out.println("[DEBUG] addMyCart: ±âÁ¸ »óÇ° ¼ö·® ¾÷µ¥ÀÌÆ®, »õ ¼ö·®: " + updatedQuantity);
-            return "quantity_updated";
+            System.out.println("[DEBUG] addMyCart: ê¸°ì¡´ ìƒí’ˆ ìˆ˜ëŸ‰ ì—…ë°ì´íŠ¸, ìƒˆ ìˆ˜ëŸ‰: " + updatedQuantity);
+            return "ìˆ˜ëŸ‰ì„ ì—…ë°ì´íŠ¸ í–ˆìŠµë‹ˆë‹¤.";
         } else {
             cartVO.setQuantity(quantity);
             cartService.addGoodsInCart(cartVO);
-            System.out.println("[DEBUG] addMyCart: »õ·Î¿î »óÇ° Ãß°¡, ¼ö·®: " + quantity);
-            return "add_success";
+            System.out.println("[DEBUG] addMyCart: ìƒˆë¡œìš´ ìƒí’ˆ ì¶”ê°€, ìˆ˜ëŸ‰: " + quantity);
+            return "ì¥ë°”êµ¬ë‹ˆì— ì¶”ê°€í–ˆìŠµë‹ˆë‹¤.";
         }
     }
 
+    // ì¥ë°”êµ¬ë‹ˆ ìƒí’ˆ ìˆ˜ëŸ‰ ìˆ˜ì •
     @Override
     @RequestMapping(value = "/cart/updateCartQuantity.do", method = RequestMethod.POST)
     public ModelAndView updateCartQuantity(@RequestParam("cart_id") int cart_id, 
                                            @RequestParam("quantity") int quantity, 
-                                           @RequestParam("product_id") int product_id, // product_id Ãß°¡
-                                           HttpServletRequest request, 
-                                           HttpServletResponse response) throws Exception {
+                                           @RequestParam("product_id") int product_id, 
+                                           HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
         memberVO = (MemberVO) session.getAttribute("memberInfo");
-
         if (memberVO == null) {
-            System.out.println("[DEBUG] updateCartQuantity: ·Î±×ÀÎ Á¤º¸ ¾øÀ½");
+            System.out.println("[DEBUG] updateCartQuantity: ë¡œê·¸ì¸ ì •ë³´ ì—†ìŒ");
             return new ModelAndView("redirect:/member/loginForm.do");
         }
 
-        // cartVO ¼³Á¤
         cartVO.setCart_id(cart_id);
         cartVO.setQuantity(quantity);
         cartVO.setUser_id(memberVO.getUser_id());
-        cartVO.setProduct_id(product_id); // product_id ¼³Á¤
-
+        cartVO.setProduct_id(product_id);
         System.out.println("[DEBUG] updateCartQuantity: Cart ID: " + cart_id + ", Quantity: " + quantity + ", Product ID: " + product_id);
 
-        // ¼ö·® ¾÷µ¥ÀÌÆ®
         cartService.updateCartQuantity(cartVO);
-
-        // DB¿¡¼­ °»½ÅµÈ Àå¹Ù±¸´Ï µ¥ÀÌÅÍ¸¦ ´Ù½Ã Á¶È¸ÇÏ¿© ¼¼¼Ç¿¡ ¾÷µ¥ÀÌÆ®
         Map<String, List> cartMap = cartService.myCartList(cartVO);
         session.setAttribute("cartMap", cartMap);
+        System.out.println("[DEBUG] updateCartQuantity: ì—…ë°ì´íŠ¸ í›„ cartMap = " + cartMap);
 
         return new ModelAndView("redirect:/cart/myCartList.do");
     }
 
+    // ì¥ë°”êµ¬ë‹ˆ ìƒí’ˆ ì‚­ì œ
     @Override
     @RequestMapping(value = "/cart/deleteCartItem.do", method = RequestMethod.POST)
     public ModelAndView deleteCartItem(@RequestParam("cart_id") int cart_id, HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
         memberVO = (MemberVO) session.getAttribute("memberInfo");
-
         cartVO.setCart_id(cart_id);
         cartVO.setUser_id(memberVO.getUser_id());
-
-        System.out.println("[DEBUG] deleteCartItem: Cart ID: " + cart_id);
+        System.out.println("[DEBUG] deleteCartItem: Cart ID = " + cart_id);
         cartService.deleteCartItem(cart_id);
-
-        return new ModelAndView("redirect:/myCartList.do");
+        return new ModelAndView("redirect:/cart/myCartList.do");
     }
 
+    // ì£¼ë¬¸ í˜ì´ì§€ë¡œ ì´ë™ (GET)
     @RequestMapping(value = "/cart/checkout.do", method = RequestMethod.GET)
     public ModelAndView toOrderPage(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession(false);
-        
         if (session == null) {
-            System.out.println("[DEBUG] toOrderPage: ¼¼¼Ç ¾øÀ½");
+            System.out.println("[DEBUG] toOrderPage: ì„¸ì…˜ ì—†ìŒ");
             return new ModelAndView("redirect:/member/loginForm.do");
         }
         
         @SuppressWarnings("unchecked")
         Map<String, List> cartMap = (Map<String, List>) session.getAttribute("cartMap");
         if (cartMap == null || cartMap.isEmpty()) {
-            System.out.println("[DEBUG] toOrderPage: Àå¹Ù±¸´Ï µ¥ÀÌÅÍ ¾øÀ½");
+            System.out.println("[DEBUG] toOrderPage: ì¥ë°”êµ¬ë‹ˆ ë°ì´í„° ì—†ìŒ");
             return new ModelAndView("redirect:/cart/myCartList.do");
         }
 
+        System.out.println("[!DEBUG!] toOrderPage: cartMap ë°ì´í„° = " + cartMap);
         return new ModelAndView("order/orderPage", "cartMap", cartMap);
     }
-    
-    /**
-     * ÁÖ¹® ¿Ï·á ÈÄ(POST) ÁÖ¹® È®ÀÎ ÆäÀÌÁö·Î ÀÌµ¿ÇÏ±â Àü¿¡,
-     * Ä«Ä«¿ÀÅå '³ª¿¡°Ô º¸³»±â' API¸¦ ÅëÇØ ÁÖ¹® ¿Ï·á ¸Ş½ÃÁö¸¦ Àü¼ÛÇÕ´Ï´Ù.
-     */
+
+    // ì£¼ë¬¸ ì™„ë£Œ í›„ (POST) ì¹´ì¹´ì˜¤í†¡ ë©”ì‹œì§€ ì „ì†¡ í›„ ì£¼ë¬¸ í™•ì¸ í˜ì´ì§€ë¡œ ì´ë™ (checkout)
     @RequestMapping(value = "/cart/checkout.do", method = RequestMethod.POST)
     public ModelAndView checkout(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
         ModelAndView mav = new ModelAndView();
-        
+
         @SuppressWarnings("unchecked")
         Map<String, Object> cartMap = (Map<String, Object>) session.getAttribute("cartMap");
         Double totalPrice = (Double) session.getAttribute("totalPrice");
         if (totalPrice == null) {
             totalPrice = 0.0;
         }
-        
+        System.out.println("[DEBUG] checkout: totalPrice = " + totalPrice);
         if (cartMap != null) {
+            System.out.println("[DEBUG] checkout: cartMap = " + cartMap);
             mav.addObject("myCartList", cartMap.get("myCartList"));
             mav.addObject("myGoodsList", cartMap.get("myGoodsList"));
             mav.addObject("totalPrice", totalPrice);
         }
         
-        // ÁÖ¹®¹øÈ£ »ı¼º(¿¹½Ã: ÇöÀç ½Ã°£ ±â¹İÀÇ ÀÓ½Ã ÁÖ¹®¹øÈ£)
         String orderNumber = "ORDER" + System.currentTimeMillis();
-        System.out.println("[DEBUG] ÁÖ¹®¹øÈ£ »ı¼º: " + orderNumber);
+        System.out.println("[DEBUG] checkout: ìƒì„±ëœ ì£¼ë¬¸ë²ˆí˜¸ = " + orderNumber);
         
-        // ·Î±×ÀÎÇÑ È¸¿ø Á¤º¸ ¹× ¾×¼¼½º ÅäÅ«
         memberVO = (MemberVO) session.getAttribute("memberInfo");
         if (memberVO != null) {
-            String accessToken = memberVO.getAccessToken(); // Ä«Ä«¿À ·Î±×ÀÎ ÈÄ ¹ß±Ş¹ŞÀº ¾×¼¼½º ÅäÅ«
-            System.out.println("[DEBUG] ¾×¼¼½º ÅäÅ«: " + accessToken);
+            String accessToken = memberVO.getAccessToken();
+            System.out.println("[DEBUG] checkout: ì•¡ì„¸ìŠ¤ í† í° = " + accessToken);
             
-            // Ä«Ä«¿ÀÅå ¸Ş½ÃÁö ÅÛÇÃ¸´ JSON ±¸¼º (UnsplashÀÇ ·£´ı ÀÌ¹ÌÁö »ç¿ë)
             String templateObjectJson = "{"
                     + "\"object_type\": \"feed\","
                     + "\"content\": {"
-                    + "    \"title\": \"ÁÖ¹®ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù!\","
-                    + "    \"description\": \"ÁÖ¹®¹øÈ£: " + orderNumber + "\\nÃÑ °áÁ¦±İ¾×: " + totalPrice + "¿ø\","
+                    + "    \"title\": \"ì£¼ë¬¸ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤!\","
+                    + "    \"description\": \"ì£¼ë¬¸ë²ˆí˜¸: " + orderNumber + "\\nì´ ê²°ì œê¸ˆì•¡: " + totalPrice + "ì›\","
                     + "    \"image_url\": \"https://source.unsplash.com/random/640x640\","
                     + "    \"image_width\": 640,"
                     + "    \"image_height\": 640,"
@@ -235,14 +234,14 @@ public class CartControllerImpl implements CartController {
                     + "},"
                     + "\"buttons\": ["
                     + "    {"
-                    + "        \"title\": \"ÁÖ¹® »ó¼¼º¸±â\","
+                    + "        \"title\": \"ì£¼ë¬¸ ìƒì„¸ë³´ê¸°\","
                     + "        \"link\": {"
                     + "            \"web_url\": \"http://yourwebsite.com/order/" + orderNumber + "\","
                     + "            \"mobile_web_url\": \"http://yourwebsite.com/order/" + orderNumber + "\""
                     + "        }"
                     + "    },"
                     + "    {"
-                    + "        \"title\": \"¼îÇÎ °è¼ÓÇÏ±â\","
+                    + "        \"title\": \"ì‡¼í•‘ ê³„ì†í•˜ê¸°\","
                     + "        \"link\": {"
                     + "            \"web_url\": \"http://yourwebsite.com/\","
                     + "            \"mobile_web_url\": \"http://yourwebsite.com/\""
@@ -250,48 +249,60 @@ public class CartControllerImpl implements CartController {
                     + "    }"
                     + "]"
                     + "}";
-            
-            System.out.println("[DEBUG] Àü¼ÛÇÒ ÅÛÇÃ¸´ JSON: " + templateObjectJson);
+            System.out.println("[DEBUG] checkout: ì „ì†¡í•  í…œí”Œë¦¿ JSON = " + templateObjectJson);
             
             try {
                 sendKakaoMemoMessage(accessToken, templateObjectJson);
             } catch (Exception e) {
-                System.out.println("[DEBUG] Ä«Ä«¿ÀÅå ¸Ş½ÃÁö Àü¼Û Áß ¿À·ù ¹ß»ı:");
+                System.out.println("[DEBUG] checkout: ì¹´ì¹´ì˜¤í†¡ ë©”ì‹œì§€ ì „ì†¡ ì¤‘ ì˜¤ë¥˜ ë°œìƒ:");
                 e.printStackTrace();
             }
         } else {
-            System.out.println("[DEBUG] checkout: memberVO°¡ null ÀÔ´Ï´Ù.");
+            System.out.println("[DEBUG] checkout: memberVOê°€ null ì…ë‹ˆë‹¤.");
         }
         
         mav.setViewName("order/myOrder");
         return mav;
     }
 
+    // ì£¼ë¬¸ ì™„ë£Œ í›„, í•´ë‹¹ ì‚¬ìš©ìì˜ ì¥ë°”êµ¬ë‹ˆ í•­ëª© ì „ì²´ ì‚­ì œ
+    @RequestMapping(value = "/cart/clearCartAfterOrder.do", method = RequestMethod.POST)
+    public ModelAndView clearCartAfterOrder(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
+        if (memberVO == null) {
+            System.out.println("[DEBUG] clearCartAfterOrder: ë¡œê·¸ì¸ ì •ë³´ ì—†ìŒ");
+            return new ModelAndView("redirect:/member/loginForm.do");
+        }
+        int user_id = memberVO.getUser_id();
+        cartService.clearCartForUser(user_id);
+        session.removeAttribute("cartMap");
+        System.out.println("[DEBUG] clearCartAfterOrder: ì‚¬ìš©ì(" + user_id + ")ì˜ ì¥ë°”êµ¬ë‹ˆê°€ ì‚­ì œë˜ì—ˆìŠµë‹ˆë‹¤.");
+        return new ModelAndView("redirect:/cart/myCartList.do");
+    }
+
     /**
-     * Ä«Ä«¿ÀÅå '³ª¿¡°Ô º¸³»±â' API¸¦ È£ÃâÇÏ¿© ¸Ş½ÃÁö¸¦ Àü¼ÛÇÏ´Â ¸Ş¼­µå.
+     * ì¹´ì¹´ì˜¤í†¡ 'ë‚˜ì—ê²Œ ë³´ë‚´ê¸°' APIë¥¼ í˜¸ì¶œí•˜ì—¬ ë©”ì‹œì§€ë¥¼ ì „ì†¡í•˜ëŠ” ë©”ì„œë“œ.
      * 
-     * @param accessToken  Ä«Ä«¿À ·Î±×ÀÎ ÈÄ ¹ß±Ş¹ŞÀº ¾×¼¼½º ÅäÅ«
-     * @param templateObjectJson  Àü¼ÛÇÒ ¸Ş½ÃÁö ÅÛÇÃ¸´ JSON ¹®ÀÚ¿­
+     * @param accessToken  ì¹´ì¹´ì˜¤ ë¡œê·¸ì¸ í›„ ë°œê¸‰ë°›ì€ ì•¡ì„¸ìŠ¤ í† í°
+     * @param templateObjectJson  ì „ì†¡í•  ë©”ì‹œì§€ í…œí”Œë¦¿ JSON ë¬¸ìì—´
      * @throws Exception
      */
     private void sendKakaoMemoMessage(String accessToken, String templateObjectJson) throws Exception {
         String kakaoApiUrl = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
         
-        // HTTP Çì´õ ¼³Á¤
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         
-        // ¿äÃ» ÆÄ¶ó¹ÌÅÍ ±¸¼º : template_object ÆÄ¶ó¹ÌÅÍ¿¡ JSON ¹®ÀÚ¿­ Àü´Ş
         MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("template_object", templateObjectJson);
         
-        System.out.println("[DEBUG] API È£Ãâ URL: " + kakaoApiUrl);
-        System.out.println("[DEBUG] ¿äÃ» Çì´õ: " + headers);
-        System.out.println("[DEBUG] ¿äÃ» ÆÄ¶ó¹ÌÅÍ: " + params);
+        System.out.println("[DEBUG] sendKakaoMemoMessage: API í˜¸ì¶œ URL = " + kakaoApiUrl);
+        System.out.println("[DEBUG] sendKakaoMemoMessage: ìš”ì²­ í—¤ë” = " + headers);
+        System.out.println("[DEBUG] sendKakaoMemoMessage: ìš”ì²­ íŒŒë¼ë¯¸í„° = " + params);
         
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
-        
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = restTemplate.exchange(
                 kakaoApiUrl,
@@ -299,8 +310,7 @@ public class CartControllerImpl implements CartController {
                 requestEntity,
                 String.class);
         
-        System.out.println("[DEBUG] Kakao API Response Status: " + responseEntity.getStatusCode());
-        System.out.println("[DEBUG] Kakao API Response Body: " + responseEntity.getBody());
+        System.out.println("[DEBUG] sendKakaoMemoMessage: Kakao API Response Status = " + responseEntity.getStatusCode());
+        System.out.println("[DEBUG] sendKakaoMemoMessage: Kakao API Response Body = " + responseEntity.getBody());
     }
-
 }
