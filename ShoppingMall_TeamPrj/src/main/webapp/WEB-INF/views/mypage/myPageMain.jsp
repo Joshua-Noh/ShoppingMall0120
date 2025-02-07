@@ -209,8 +209,8 @@
   <div class="container2" id="orderContainer">
     <h1>
       최근 주문내역 
-      <a href="${contextPath}/mypage/moreOrders.do" style="font-size:0.9rem; color:#000; text-decoration:none;">
-        더보기 <img src="${contextPath}/resources/image/btn_more_see.jpg" alt="더보기" style="vertical-align: middle;"/>
+      <a href="${contextPath}/mypage/listMyOrderHistory.do" style="font-size:0.9rem; color:#000; text-decoration:none;">
+        배송조회 <img src="${contextPath}/resources/image/btn_more_see.jpg" alt="더보기" style="vertical-align: middle;"/>
       </a>
     </h1>
     <table>
@@ -274,7 +274,7 @@
   <div class="container2" id="infoContainer">
     <h1>
       나의 정보 
-      <a href="${contextPath}/mypage/moreInfo.do" style="font-size:0.9rem; color:#000; text-decoration:none;">
+      <a href="${contextPath}/mypage/myDetailInfo.do" style="font-size:0.9rem; color:#000; text-decoration:none;">
         더보기 <img src="${contextPath}/resources/image/btn_more_see.jpg" alt="더보기" style="vertical-align: middle;"/>
       </a>
     </h1>

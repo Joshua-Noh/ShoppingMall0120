@@ -21,27 +21,25 @@ public class MyPageDAOImpl implements MyPageDAO{
 		List<OrderVO> orderGoodsList=(List)sqlSession.selectList("mapper.mypage.selectMyOrderGoodsList",member_id);
 		return orderGoodsList;
 	}
-//	
-//	public List selectMyOrderInfo(String order_id) throws DataAccessException{
-//		List myOrderList=(List)sqlSession.selectList("mapper.mypage.selectMyOrderInfo",order_id);
-//		return myOrderList;
-//	}	
-//
-//	public List<OrderVO> selectMyOrderHistoryList(Map dateMap) throws DataAccessException{
-//		List<OrderVO> myOrderHistList=(List)sqlSession.selectList("mapper.mypage.selectMyOrderHistoryList",dateMap);
-//		return myOrderHistList;
-//	}
-//	
-//	public void updateMyInfo(Map memberMap) throws DataAccessException{
-//		sqlSession.update("mapper.mypage.updateMyInfo",memberMap);
-//	}
-//	
-//	public MemberVO selectMyDetailInfo(String member_id) throws DataAccessException{
-//		MemberVO memberVO=(MemberVO)sqlSession.selectOne("mapper.mypage.selectMyDetailInfo",member_id);
-//		return memberVO;
-//		
-//	}
-//	
+	
+	public List selectMyOrderInfo(String order_id) throws DataAccessException{
+		List myOrderList=(List)sqlSession.selectList("mapper.mypage.selectMyOrderInfo",order_id);
+		return myOrderList;
+	}	
+
+	public List<OrderVO> selectMyOrderHistoryList(Map dateMap) throws DataAccessException{
+		List<OrderVO> myOrderHistList=(List)sqlSession.selectList("mapper.mypage.selectMyOrderHistoryList",dateMap);
+		return myOrderHistList;
+	}
+	
+
+	
+	public MemberVO selectMyDetailInfo(String member_id) throws DataAccessException{
+		MemberVO memberVO=(MemberVO)sqlSession.selectOne("mapper.mypage.selectMyDetailInfo",member_id);
+		return memberVO;
+		
+	}
+	
 	public void updateMyOrderCancel(int order_id) throws DataAccessException{
 		sqlSession.update("mapper.mypage.updateMyOrderCancel",order_id);
 	}

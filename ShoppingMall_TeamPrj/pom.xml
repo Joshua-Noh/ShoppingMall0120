@@ -28,6 +28,12 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- 최신 JSON 라이브러리 (org.json) -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20210307</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
@@ -128,12 +134,6 @@
 			<artifactId>httpclient</artifactId>
 			<version>4.2.5</version>
 		</dependency>
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20090211</version>
-		</dependency>
-
 		<!-- 마이바티스 -->
 		<dependency>
 			<groupId>commons-beanutils</groupId>
@@ -214,8 +214,7 @@
 			<artifactId>jaxb-api</artifactId>
 			<version>2.3.1</version>
 		</dependency>
-		<!-- AspectJ -->
-		<!-- (AspectJ 의존성은 필요 시 주석 해제) -->
+		<!-- AspectJ (필요 시 주석 해제) -->
 	</dependencies>
 	<build>
 		<plugins>
