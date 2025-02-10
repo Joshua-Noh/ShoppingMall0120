@@ -6,7 +6,7 @@
 <mapper namespace="com.shop.ShoppingMall_TeamPrj.customerCenter.dao.ConsultationDAO">
 
   <!-- 상담 VO 결과 매핑 -->
-<resultMap id="ConsultationResultMap" type="com.shop.ShoppingMall_TeamPrj.customerCenter.vo.ConsultationVO">
+  <resultMap id="ConsultationResultMap" type="com.shop.ShoppingMall_TeamPrj.customerCenter.vo.ConsultationVO">
     <result property="consultationId" column="consultation_id"/>
     <result property="userId" column="user_id"/>
     <result property="subject" column="subject"/>
@@ -16,45 +16,67 @@
     <result property="createdAt" column="created_at"/>
     <result property="updatedAt" column="updated_at"/>
     <result property="userName" column="user_name"/>
-</resultMap>
+  </resultMap>
 
-  
-  <!-- 다른 SQL 문들 -->
-<select id="getAllConsultations" resultMap="ConsultationResultMap">
-  SELECT 
-    cl.consultation_id,
-    cl.user_id,
-    cl.subject,
-    cl.message,
-    cl.reply,
-    cl.status,
-    cl.created_at,
-    cl.updated_at,
-    u.user_name  <!-- 사용자 이름 컬럼 -->
-  FROM consultation_log cl
-  JOIN users u ON cl.user_id = u.user_id
-  ORDER BY cl.created_at DESC
-</select>
+  <!-- 모든 상담 내역 조회 (조인을 사용하여 user_name 포함) -->
+  <select id="getAllConsultations" resultMap="ConsultationResultMap">
+    SELECT 
+      cl.consultation_id,
+      cl.user_id,
+      cl.subject,
+      cl.message,
+      cl.reply,
+      cl.status,
+      cl.created_at,
+      cl.updated_at,
+      u.user_name
+    FROM consultation_log cl
+    JOIN users u ON cl.user_id = u.user_id
+    ORDER BY cl.created_at DESC
+  </select>
 
-
-  <!-- 특정 사용자 상담 내역 조회 -->
+  <!-- 특정 사용자 상담 내역 조회 (조인을 사용하여 user_name 포함) -->
   <select id="getConsultationsByUser" resultMap="ConsultationResultMap" parameterType="int">
-    SELECT * FROM consultation_log WHERE user_id = #{userId} ORDER BY created_at DESC
+    SELECT 
+      cl.consultation_id,
+      cl.user_id,
+      cl.subject,
+      cl.message,
+      cl.reply,
+      cl.status,
+      cl.created_at,
+      cl.updated_at,
+      u.user_name
+    FROM consultation_log cl
+    JOIN users u ON cl.user_id = u.user_id
+    WHERE cl.user_id = #{userId}
+    ORDER BY cl.created_at DESC
   </select>
 
-  <!-- 상담 상세 조회 -->
+  <!-- 상담 상세 조회 (조인을 사용하여 user_name 포함) -->
   <select id="getConsultation" resultMap="ConsultationResultMap" parameterType="int">
-    SELECT * FROM consultation_log WHERE consultation_id = #{consultationId}
+    SELECT 
+      cl.consultation_id,
+      cl.user_id,
+      cl.subject,
+      cl.message,
+      cl.reply,
+      cl.status,
+      cl.created_at,
+      cl.updated_at,
+      u.user_name
+    FROM consultation_log cl
+    JOIN users u ON cl.user_id = u.user_id
+    WHERE cl.consultation_id = #{consultationId}
   </select>
 
-  <!-- 상담 내역 삽입 -->
+  <!-- 상담 내역 삽입 (조인 필요 없음) -->
   <insert id="insertConsultation" parameterType="com.shop.ShoppingMall_TeamPrj.customerCenter.vo.ConsultationVO">
-  INSERT INTO consultation_log (user_id, subject, message)
-  VALUES (#{userId}, #{subject}, #{message})
-</insert>
+    INSERT INTO consultation_log (user_id, subject, message)
+    VALUES (#{userId}, #{subject}, #{message})
+  </insert>
 
-
-  <!-- 상담 내역 수정 -->
+  <!-- 상담 내역 수정 (조인 필요 없음) -->
   <update id="updateConsultation" parameterType="com.shop.ShoppingMall_TeamPrj.customerCenter.vo.ConsultationVO">
     UPDATE consultation_log
     SET subject = #{subject},
@@ -64,10 +86,9 @@
     WHERE consultation_id = #{consultationId}
   </update>
 
-  <!-- 상담 내역 삭제 -->
+  <!-- 상담 내역 삭제 (조인 필요 없음) -->
   <delete id="deleteConsultation" parameterType="int">
     DELETE FROM consultation_log WHERE consultation_id = #{consultationId}
   </delete>
-
 
 </mapper>

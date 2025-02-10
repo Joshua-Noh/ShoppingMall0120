@@ -13,29 +13,21 @@ import java.sql.SQLException;
 import java.util.List;
 import com.shop.ShoppingMall_TeamPrj.customerCenter.vo.ConsultationVO;
 
-
-
 @Repository("consultationDAO")
 public class ConsultationDAOImpl implements ConsultationDAO {
 
     private JdbcTemplate jdbcTemplate;
+    
+    // DataSource는 setter를 통해 주입됨.
     private DataSource dataSource;
 
-    // 기본 생성자 (없으면 Spring이 기본 생성자를 호출할 수 없음)
-    public ConsultationDAOImpl() {
-        // 기본 생성자; DataSource는 setter로 주입받음.
-    }
-    
-    // DataSource 주입을 위한 setter
-    // DataSource 주입을 위한 setter
     @Autowired
     public void setDataSource(DataSource dataSource) {
-        System.out.println("ConsultationDAOImpl: setDataSource 호출됨, DataSource = " + dataSource);
-        this.dataSource = dataSource;  // 🔹 필드에 저장
+        System.out.println("ConsultationDAOImpl: setDataSource 호출, DataSource = " + dataSource);
+        this.dataSource = dataSource;
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    
     private static final class ConsultationRowMapper implements org.springframework.jdbc.core.RowMapper<ConsultationVO> {
         public ConsultationVO mapRow(ResultSet rs, int rowNum) throws SQLException {
             ConsultationVO vo = new ConsultationVO();
@@ -48,13 +40,10 @@ public class ConsultationDAOImpl implements ConsultationDAO {
             vo.setCreatedAt(rs.getTimestamp("created_at"));
             vo.setUpdatedAt(rs.getTimestamp("updated_at"));
             vo.setUserName(rs.getString("user_name"));
-
-
             return vo;
         }
     }
 
-    
     public List<ConsultationVO> getAllConsultations() {
         String sql = "SELECT cl.consultation_id, cl.user_id, cl.subject, cl.message, cl.reply, cl.status, cl.created_at, cl.updated_at, u.user_name " +
                      "FROM consultation_log cl " +
@@ -72,31 +61,27 @@ public class ConsultationDAOImpl implements ConsultationDAO {
         return jdbcTemplate.query(sql, new Object[] { userId }, new ConsultationRowMapper());
     }
 
-    
     public ConsultationVO getConsultation(int consultationId) {
-        String sql = "SELECT * FROM consultation_log WHERE consultation_id = ?";
-        return (ConsultationVO) jdbcTemplate.queryForObject(sql, new Object[] { consultationId }, new ConsultationRowMapper());
+        // 수정: 조인 쿼리를 사용하여 user_name을 포함하도록 변경
+        String sql = "SELECT cl.consultation_id, cl.user_id, cl.subject, cl.message, cl.reply, cl.status, cl.created_at, cl.updated_at, u.user_name " +
+                     "FROM consultation_log cl " +
+                     "JOIN users u ON cl.user_id = u.user_id " +
+                     "WHERE cl.consultation_id = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[] { consultationId }, new ConsultationRowMapper());
     }
-    
+
     @Transactional
     public void insertConsultation(ConsultationVO consultation) {
         String sql = "INSERT INTO consultation_log (user_id, subject, message) VALUES (?, ?, ?)";
         int rowsAffected = jdbcTemplate.update(sql, consultation.getUserId(), consultation.getSubject(), consultation.getMessage());
-
-        System.out.println("[DEBUG] insertConsultation - 반영된 행 수: " + rowsAffected);
-
+        System.out.println("[DEBUG] insertConsultation - 삽입된 행의 수: " + rowsAffected);
         if (rowsAffected > 0) {
-            System.out.println("[DEBUG] insertConsultation - 데이터 삽입 성공 ✅");
+            System.out.println("[DEBUG] insertConsultation - 상담 내역이 성공적으로 삽입되었습니다.");
         } else {
-            System.out.println("[ERROR] insertConsultation - 데이터 삽입 실패 ❌ (반영된 행 없음)");
+            System.out.println("[ERROR] insertConsultation - 상담 내역 삽입 실패 (삽입된 행 수가 0입니다).");
         }
     }
 
-    
-
-
-
-    
     public void updateConsultation(ConsultationVO consultation) {
         String sql = "UPDATE consultation_log SET subject=?, message=?, reply=?, status=? WHERE consultation_id=?";
         jdbcTemplate.update(sql, new Object[] { consultation.getSubject(), consultation.getMessage(), consultation.getReply(), consultation.getStatus(), consultation.getConsultationId() });

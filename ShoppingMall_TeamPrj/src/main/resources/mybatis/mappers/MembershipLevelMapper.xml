@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shop.ShoppingMall_TeamPrj.membership.mapper.MembershipLevelMapper">
+
+    <!-- 특정 멤버십 등급 조회 -->
+    <select id="getMembershipLevel" parameterType="string" resultType="com.shop.ShoppingMall_TeamPrj.membership.vo.MembershipLevelVO">
+        SELECT membership_level, discount_rate, required_points
+        FROM membership_levels
+        WHERE membership_level = #{membershipLevel}
+    </select>
+
+    <!-- 모든 멤버십 등급 조회 -->
+    <select id="getAllMembershipLevels" resultType="com.shop.ShoppingMall_TeamPrj.membership.vo.MembershipLevelVO">
+        SELECT membership_level, discount_rate, required_points FROM membership_levels
+    </select>
+
+    <!-- 새로운 멤버십 등급 삽입 -->
+    <insert id="insertMembershipLevel" parameterType="com.shop.ShoppingMall_TeamPrj.membership.vo.MembershipLevelVO">
+        INSERT INTO membership_levels (membership_level, discount_rate, required_points)
+        VALUES (#{membershipLevel}, #{discountRate}, #{requiredPoints})
+    </insert>
+
+    <!-- 멤버십 등급 업데이트 -->
+    <update id="updateMembershipLevel" parameterType="com.shop.ShoppingMall_TeamPrj.membership.vo.MembershipLevelVO">
+        UPDATE membership_levels
+        SET discount_rate = #{discountRate},
+            required_points = #{requiredPoints}
+        WHERE membership_level = #{membershipLevel}
+    </update>
+
+    <!-- 멤버십 등급 삭제 -->
+    <delete id="deleteMembershipLevel" parameterType="string">
+        DELETE FROM membership_levels WHERE membership_level = #{membershipLevel}
+    </delete>
+
+</mapper>

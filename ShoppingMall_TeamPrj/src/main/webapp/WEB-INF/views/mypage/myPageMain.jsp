@@ -204,7 +204,14 @@
 </head>
 <body>
   <!-- 헤더/푸터는 Tiles 레이아웃에서 처리된다고 가정 -->
-  
+    <!-- 상단 네비게이션 메뉴 영역 (원본 코드 외 추가) -->
+  <div class="nav-container" style="background-color:#000; padding:10px 0; text-align:center;">
+    <a href="${contextPath}/mypage/mypageMain.do?content=original" style="color:#fff; text-decoration:none; margin:0 15px; font-size:1.1rem; transition:color 0.3s;">주문내역 및 내 정보</a>
+    <a href="${contextPath}/mypage/mypageMain.do?content=event" style="color:#fff; text-decoration:none; margin:0 15px; font-size:1.1rem; transition:color 0.3s;">이벤트</a>
+    <a href="${contextPath}/mypage/mypageMain.do?content=coupon" style="color:#fff; text-decoration:none; margin:0 15px; font-size:1.1rem; transition:color 0.3s;">쿠폰</a>
+    <a href="${contextPath}/mypage/mypageMain.do?content=membership" style="color:#fff; text-decoration:none; margin:0 15px; font-size:1.1rem; transition:color 0.3s;">멤버십</a>
+    <a href="${contextPath}/mypage/mypageMain.do?content=statistics" style="color:#fff; text-decoration:none; margin:0 15px; font-size:1.1rem; transition:color 0.3s;">통계</a>
+  </div>
   <!-- 최근 주문내역 영역 (container2) -->
   <div class="container2" id="orderContainer">
     <h1>

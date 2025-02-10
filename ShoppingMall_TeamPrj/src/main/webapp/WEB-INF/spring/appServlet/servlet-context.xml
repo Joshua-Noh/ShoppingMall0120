@@ -22,6 +22,8 @@
 		view-name="company/privacy" />
 	<mvc:view-controller path="/customerCenter"
 		view-name="customerCenter/customerCenter" />
+		<mvc:view-controller path="/featureNavigation.do" view-name="featureNavigation" />
+		
 
 
 	<!-- 정적 리소스 매핑 -->
