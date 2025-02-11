@@ -60,4 +60,29 @@ public class FileDownloadController {
 	    out.close();
 	}
 
+	@RequestMapping("/common/largeImage.do")
+	protected void largeImage(@RequestParam("fileName") String fileName,
+	                          @RequestParam("product_id") String product_id,
+	                          HttpServletResponse response) throws Exception {
+	    // 메인에 표시할 큰 이미지의 컨텐츠 타입을 설정 (예: JPEG)
+	    response.setContentType("image/jpeg");
+	    OutputStream out = response.getOutputStream();
+	    
+	    // 이미지 파일 경로 구성 (예시 경로)
+	    String filePath = CURR_IMAGE_REPO_PATH + "\\" + product_id + "\\" + fileName;
+	    File image = new File(filePath);
+	    
+	    if (image.exists()) {
+	        // Thumbnailator를 사용하여 큰 이미지 (예: 800x600)로 리사이즈하여 출력
+	        Thumbnails.of(image)
+	                   .size(800, 600)  // 필요에 따라 원하는 사이즈로 조정
+	                   .outputFormat("jpeg")
+	                   .toOutputStream(out);
+	    } else {
+	        // 파일이 없으면 404 에러 전송
+	        response.sendError(HttpServletResponse.SC_NOT_FOUND, "이미지를 찾을 수 없습니다.");
+	    }
+	    out.close();
+	}
+
 }

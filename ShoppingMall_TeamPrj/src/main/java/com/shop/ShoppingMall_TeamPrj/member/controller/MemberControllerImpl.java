@@ -457,7 +457,7 @@ public class MemberControllerImpl implements MemberController {
         System.out.println("[DEBUG] 생성된 smsCode: " + smsCode);
 
         // COOLSMS API 관련 변수 (승인키 적용)
-        String apiKey = "devU01TX0FVVEgyMDI1MDIwNjE2MjkzMTExNTQ1MjM="; // 제공된 승인키 사용
+        String apiKey = "NCSFS9YEWRE4BX0K="; // 제공된 승인키 사용
         String apiSecret = "KNANEAV2RYUXBDJP59PYA0JVVNZHKLGO"; // 기존 API Secret 유지 (필요에 따라 수정)
         String sender = "01064811904"; // 사전에 등록된 발신번호
         String message = "Your verification code is: " + smsCode;

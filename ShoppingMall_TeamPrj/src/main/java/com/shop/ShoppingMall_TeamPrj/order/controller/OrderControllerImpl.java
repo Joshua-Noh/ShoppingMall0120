@@ -40,8 +40,7 @@ public class OrderControllerImpl implements OrderController {
     @Autowired
     private CartService cartService;
 
-
-    // í† ìŠ¤ ê²°ì œ ìš”ì²­ ë©”ì„œë“œ (ê²°ì œ ì§„í–‰ì„ ìœ„í•œ API í˜¸ì¶œ)
+    // °áÁ¦ ¿äÃ» Ã³¸® ¸Ş¼­µå (°áÁ¦ ¿äÃ» ½Ã Åä½º API È£Ãâ)
     public ModelAndView initiatePayment(
             java.util.Map<String, String> paymentDetails, 
             HttpServletRequest request, 
@@ -50,13 +49,13 @@ public class OrderControllerImpl implements OrderController {
         System.out.println("[DEBUG] initiatePayment called.");
         System.out.println("[DEBUG] Payment Details: " + paymentDetails);
         
-        String apiUrl = "https://api.toss.im/v1/transactions";  // ì‹¤ì œ API URLë¡œ ë³€ê²½
+        String apiUrl = "https://api.toss.im/v1/transactions";  // Åä½º API URL ¼³Á¤
         System.out.println("[DEBUG] API URL: " + apiUrl);
         
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer " + "test_ck_ALnQvDd2VJPDjX40XlGY8Mj7X41m");  // í´ë¼ì´ì–¸íŠ¸ í‚¤
-        headers.set("X-TOSS-SECRET-KEY", "test_sk_DLJOpm5Qrl12v9DZ9Qee8PNdxbWn");        // ì‹œí¬ë¦¿ í‚¤
+        headers.set("Authorization", "Bearer " + "test_ck_ALnQvDd2VJPDjX40XlGY8Mj7X41m");  // Å×½ºÆ® Å¬¶óÀÌ¾ğÆ® Å° ¼³Á¤
+        headers.set("X-TOSS-SECRET-KEY", "test_sk_DLJOpm5Qrl12v9DZ9Qee8PNdxbWn");        // Å×½ºÆ® ½ÃÅ©¸´ Å° ¼³Á¤
         System.out.println("[DEBUG] Headers: " + headers);
         
         MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
@@ -74,18 +73,18 @@ public class OrderControllerImpl implements OrderController {
         String paymentResponse = responseEntity.getBody();
         System.out.println("[DEBUG] Payment Response: " + paymentResponse);
         
-        // ê²°ì œ ìš”ì²­ ê²°ê³¼ë¥¼ ë³´ì—¬ì¤„ í˜ì´ì§€: order/paymentPage.jsp (ì›í•˜ëŠ” ë·° ì´ë¦„ìœ¼ë¡œ ìˆ˜ì • ê°€ëŠ¥)
+        // °áÁ¦ ÀÀ´ä °á°ú¸¦ º¸¿©ÁÙ ºä: order/paymentPage.jsp (°áÁ¦ ¿Ï·á ÈÄ º¸¿©ÁÙ ÆäÀÌÁö)
         ModelAndView mav = new ModelAndView("order/paymentPage");
         mav.addObject("paymentResponse", paymentResponse);
         System.out.println("[DEBUG] initiatePayment returning view 'order/paymentPage' with paymentResponse.");
         return mav;
     }
 
-    // í† ìŠ¤ ê²°ì œ ê²°ê³¼ í™•ì¸ ë©”ì„œë“œ (í…ŒìŠ¤íŠ¸ìš©)
+    // °áÁ¦ »óÅÂ È®ÀÎ Ã³¸® ¸Ş¼­µå (°áÁ¦ »óÅÂ Á¶È¸)
     public ModelAndView checkPaymentStatus(String paymentId, HttpServletRequest request, HttpServletResponse response) throws Exception {
         System.out.println("[DEBUG] checkPaymentStatus called with paymentId: " + paymentId);
         
-        String apiUrl = "https://api.toss.im/v1/transactions/" + paymentId;  // ì‹¤ì œ API URLë¡œ ë³€ê²½
+        String apiUrl = "https://api.toss.im/v1/transactions/" + paymentId;  // Åä½º API URL ¼³Á¤ (°áÁ¦ »óÅÂ Á¶È¸¿ë)
         System.out.println("[DEBUG] API URL for payment status: " + apiUrl);
         
         HttpHeaders headers = new HttpHeaders();
@@ -106,7 +105,7 @@ public class OrderControllerImpl implements OrderController {
         return mav;
     }
 
-    // ê°œë³„ ìƒí’ˆ ì£¼ë¬¸ ë©”ì„œë“œ (ê¸°ì¡´ ì£¼ë¬¸ ë¡œì§)
+    // °³º° »óÇ° ÁÖ¹® »ó¼¼ Á¤º¸¸¦ º¸¿©ÁÖ´Â ¸Ş¼­µå
     public ModelAndView orderEachGoods(OrderVO orderVO, HttpServletRequest request, HttpServletResponse response) throws Exception {
         System.out.println("[DEBUG] orderEachGoods called with OrderVO: " + orderVO);
         ModelAndView mav = new ModelAndView("orderDetailPage");
@@ -116,8 +115,8 @@ public class OrderControllerImpl implements OrderController {
     }
     
     /**
-     * [Phase 1] ê²°ì œ ì „ ë‹¨ê³„: ë°°ì†¡ì •ë³´ ë“± ì£¼ë¬¸ ì •ë³´ë¥¼ ì…ë ¥ë°›ì•„ ì„ì‹œë¡œ ì„¸ì…˜ì— ì €ì¥í•˜ëŠ” ë©”ì„œë“œ.
-     * ì´ ë‹¨ê³„ì—ì„œëŠ” ì£¼ë¬¸ ì •ë³´ë¥¼ DBì— ê¸°ë¡í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
+     * [Phase 1] ÁÖ¹® ¿äÃ» Ã³¸®: ÁÖ¹® Á¤º¸¸¦ ÀÓ½Ã·Î ¼¼¼Ç¿¡ ÀúÀåÇÏ¿© °áÁ¦ ¿äÃ» È­¸éÀ¸·Î Àü´ŞÇÑ´Ù.
+     * ÀÌÈÄ °áÁ¦ ¿äÃ» Á¤º¸¸¦ DB¿¡ ÀúÀåÇÒ ÁØºñ¸¦ ÇÑ´Ù.
      */
     @RequestMapping(value="/order/myOrder.do", method=RequestMethod.POST)
     public ModelAndView myOrder(OrderVO orderVO, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -125,39 +124,39 @@ public class OrderControllerImpl implements OrderController {
         
         HttpSession session = request.getSession(false);
         if (session == null) {
-            System.out.println("[DEBUG] myOrder: ì„¸ì…˜ì´ ì—†ìŠµë‹ˆë‹¤.");
+            System.out.println("[DEBUG] myOrder: ¼¼¼ÇÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
             return new ModelAndView("redirect:/member/loginForm.do");
         }
         
         MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
         if (memberVO == null) {
-            System.out.println("[DEBUG] myOrder: ë¡œê·¸ì¸ ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤.");
+            System.out.println("[DEBUG] myOrder: ·Î±×ÀÎµÈ È¸¿ø Á¤º¸°¡ ¾ø½À´Ï´Ù.");
             return new ModelAndView("redirect:/member/loginForm.do");
         }
         System.out.println("[DEBUG] myOrder: Retrieved memberInfo: " + memberVO);
         
-        // ë¡œê·¸ì¸í•œ íšŒì› ì •ë³´ ì„¤ì •
+        // ·Î±×ÀÎÇÑ È¸¿øÀÇ ¾ÆÀÌµğ¸¦ OrderVO¿¡ ¼³Á¤
         orderVO.setUser_id(memberVO.getUser_id());
         System.out.println("[DEBUG] myOrder: Set user_id in OrderVO: " + orderVO.getUser_id());
         
-        // í˜„ì¬ ì‹œê°„ì„ ì£¼ë¬¸ ë‚ ì§œë¡œ ì„¤ì •
+        // ÁÖ¹®ÀÏÀÚ¸¦ ÇöÀç ½Ã°£À¸·Î ¼³Á¤
         orderVO.setOrder_date(new java.sql.Date(System.currentTimeMillis()));
         System.out.println("[DEBUG] myOrder: Set order_date in OrderVO: " + orderVO.getOrder_date());
         
-        // ë°°ì†¡ ìƒíƒœ ê¸°ë³¸ê°’ ì„¤ì • (ì˜ˆ: "ì£¼ë¬¸ì ‘ìˆ˜")
+        // ¹è¼Û »óÅÂ ±âº»°ª ¼³Á¤ (¿¹: "ÁÖ¹®Á¢¼ö")
         if (orderVO.getDelivery_state() == null || orderVO.getDelivery_state().trim().equals("")) {
-            orderVO.setDelivery_state("ì£¼ë¬¸ì ‘ìˆ˜");
-            System.out.println("[DEBUG] myOrder: Set default delivery_state as 'ì£¼ë¬¸ì ‘ìˆ˜'.");
+            orderVO.setDelivery_state("ÁÖ¹®Á¢¼ö");
+            System.out.println("[DEBUG] myOrder: Set default delivery_state as 'ÁÖ¹®Á¢¼ö'.");
         }
         
-        // ë””ë²„ê·¸: OrderVO ì „ì²´ ë‚´ìš© ì¶œë ¥
+        // ÁÖ¹® Á¤º¸(OrderVO) ³»¿ë È®ÀÎ (µğ¹ö±ë¿ë)
         System.out.println("[DEBUG] myOrder: OrderVO details: " + orderVO);
         
-        // ì„ì‹œ ì£¼ë¬¸ ì •ë³´ë¥¼ ì„¸ì…˜ì— ì €ì¥ (DBì—ëŠ” ì•„ì§ ê¸°ë¡í•˜ì§€ ì•ŠìŒ)
+        // ÁÖ¹® Á¤º¸¸¦ ÀÓ½Ã ¼¼¼Ç¿¡ ÀúÀå (°áÁ¦ ÁøÇà Àü Á¤º¸ À¯Áö)
         session.setAttribute("tempOrder", orderVO);
         System.out.println("[DEBUG] myOrder: Saved OrderVO in session as 'tempOrder'.");
         
-        // ê²°ì œ ì§„í–‰ì„ ìœ„í•œ í˜ì´ì§€(ì˜ˆ: order/paymentPage.jsp)ë¡œ ì´ë™
+        // °áÁ¦ ¿äÃ» È­¸éÀ¸·Î ÀÌµ¿ (¿¹: order/paymentPage.jsp)
         ModelAndView mav = new ModelAndView("order/paymentPage");
         mav.addObject("orderDetails", orderVO);
         System.out.println("[DEBUG] myOrder: Redirecting to view 'order/paymentPage' with orderDetails.");
@@ -165,42 +164,40 @@ public class OrderControllerImpl implements OrderController {
     }
     
     /**
-     * [Phase 2] ìµœì¢… ì£¼ë¬¸ ì™„ë£Œ: ì¥ë°”êµ¬ë‹ˆì˜ ëª¨ë“  ìƒí’ˆ ì •ë³´ë¥¼ ê¸°ë°˜ìœ¼ë¡œ ì£¼ë¬¸ ë ˆì½”ë“œë¥¼ ìƒì„±í•©ë‹ˆë‹¤.
-     * ëª¨ë“  ìƒí’ˆì— ëŒ€í•´ ê°œë³„ ì£¼ë¬¸ ë ˆì½”ë“œë¥¼ ìƒì„±í•˜ë©°, ë™ì¼í•œ order_group_idë¥¼ ë¶€ì—¬í•©ë‹ˆë‹¤.
-     * ì£¼ë¬¸ ìƒì„± í›„ ì„¸ì…˜ì˜ ì„ì‹œ ì£¼ë¬¸ ì •ë³´ì™€ ì¥ë°”êµ¬ë‹ˆ ë°ì´í„°ë¥¼ ì •ë¦¬í•˜ê³ , ë§ˆì´í˜ì´ì§€ë¡œ ë¦¬ë””ë ‰ì…˜í•©ë‹ˆë‹¤.
+     * [Phase 2] ÁÖ¹® °áÁ¦ ¿Ï·á Ã³¸®: °¢ »óÇ°º° ÁÖ¹® Á¤º¸¸¦ DB¿¡ µî·ÏÇÏ°í,
+     * µ¿½Ã¿¡ ÁÖ¹® ±×·ì ¾ÆÀÌµğ¸¦ ºÎ¿©ÇÏ¿© ¿©·¯ »óÇ° ÁÖ¹®À» ÇÏ³ªÀÇ ±×·ìÀ¸·Î °ü¸®ÇÑ´Ù.
+     * ÁÖ¹® ¿Ï·á ÈÄ ¼¼¼Ç ¹× Àå¹Ù±¸´Ï Á¤º¸¸¦ Á¤¸®ÇÏ°í, ÁÖ¹® ¿Ï·á ¸Ş½ÃÁö¸¦ Àü´ŞÇÑ´Ù.
      */
-
-
     @RequestMapping(value="/order/completeOrder.do", method=RequestMethod.POST)
     public ModelAndView completeOrder(HttpServletRequest request, HttpServletResponse response) throws Exception {
         System.out.println("[DEBUG] completeOrder (Phase 2) called.");
         
         HttpSession session = request.getSession(false);
         if (session == null) {
-            System.out.println("[DEBUG] completeOrder: ì„¸ì…˜ì´ ì—†ìŠµë‹ˆë‹¤.");
+            System.out.println("[DEBUG] completeOrder: ¼¼¼ÇÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
             return new ModelAndView("redirect:/member/loginForm.do");
         }
         
         MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
         if (memberVO == null) {
-            System.out.println("[DEBUG] completeOrder: ë¡œê·¸ì¸ ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤.");
+            System.out.println("[DEBUG] completeOrder: ·Î±×ÀÎµÈ È¸¿ø Á¤º¸°¡ ¾ø½À´Ï´Ù.");
             return new ModelAndView("redirect:/member/loginForm.do");
         }
         System.out.println("[DEBUG] completeOrder: Retrieved memberInfo: " + memberVO);
         
-        // ê³µí†µ ë°°ì†¡/ê²°ì œ ì •ë³´ (tempOrder)
+        // ÁÖ¹®/°áÁ¦ Á¤º¸ (tempOrder) °¡Á®¿À±â
         OrderVO commonOrderInfo = (OrderVO) session.getAttribute("tempOrder");
         if (commonOrderInfo == null) {
-            System.out.println("[DEBUG] completeOrder: ì„ì‹œ ì£¼ë¬¸ ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤.");
+            System.out.println("[DEBUG] completeOrder: ÀÓ½Ã ÁÖ¹® Á¤º¸°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
             return new ModelAndView("redirect:/order/myOrder.do");
         }
         System.out.println("[DEBUG] completeOrder: Retrieved tempOrder from session: " + commonOrderInfo);
         
-        // ì¥ë°”êµ¬ë‹ˆ ë°ì´í„°
+        // Àå¹Ù±¸´Ï Á¤º¸(cartMap) °¡Á®¿À±â
         @SuppressWarnings("unchecked")
         Map<String, List> cartMap = (Map<String, List>) session.getAttribute("cartMap");
         if (cartMap == null || cartMap.isEmpty()) {
-            System.out.println("[DEBUG] completeOrder: ì¥ë°”êµ¬ë‹ˆ ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤.");
+            System.out.println("[DEBUG] completeOrder: Àå¹Ù±¸´Ï Á¤º¸°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
             return new ModelAndView("redirect:/cart/myCartList.do");
         }
         List<CartVO> myCartList = (List<CartVO>) cartMap.get("myCartList");
@@ -209,25 +206,25 @@ public class OrderControllerImpl implements OrderController {
         System.out.println("[DEBUG] completeOrder: myCartList size = " + myCartList.size());
         System.out.println("[DEBUG] completeOrder: myGoodsList size = " + myGoodsList.size());
         
-        // ìƒì„±í•  ì£¼ë¬¸ ê·¸ë£¹ ID (ëª¨ë“  ì£¼ë¬¸ í•­ëª©ì— ë™ì¼í•˜ê²Œ ë¶€ì—¬)
+        // ÁÖ¹® ±×·ì ID »ı¼º (°¢ ÁÖ¹®À» ÇÏ³ªÀÇ ±×·ìÀ¸·Î ¹­±â À§ÇÑ ÀÓ½Ã ID »ı¼º)
         int orderGroupId = (int)(System.currentTimeMillis() % Integer.MAX_VALUE);
         System.out.println("[DEBUG] completeOrder: Generated order_group_id = " + orderGroupId);
 
-        // ëª¨ë“  ì¥ë°”êµ¬ë‹ˆ ìƒí’ˆì— ëŒ€í•´ ì£¼ë¬¸ ìƒì„±
+        // °¢ »óÇ°º° ÁÖ¹® Á¤º¸¸¦ DB¿¡ µî·Ï
         for (int i = 0; i < myCartList.size(); i++) {
             CartVO cartItem = myCartList.get(i);
-            GoodsVO goodsItem = myGoodsList.get(i); // ì¸ë±ìŠ¤ê°€ ì¼ì¹˜í•œë‹¤ê³  ê°€ì •
+            GoodsVO goodsItem = myGoodsList.get(i); // Àå¹Ù±¸´Ï¿Í »óÇ° ¸ñ·ÏÀÇ ÀÎµ¦½º°¡ ÀÏÄ¡ÇÑ´Ù°í °¡Á¤
             OrderVO orderItem = new OrderVO();
 
             orderItem.setUser_id(commonOrderInfo.getUser_id());
             orderItem.setProduct_id(cartItem.getProduct_id());
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setOrder_date(new java.sql.Date(System.currentTimeMillis()));
-            // ìƒí’ˆ ê°€ê²©ê³¼ ìˆ˜ëŸ‰ì„ ê³±í•˜ì—¬ ì£¼ë¬¸ ê°œë³„ ì´ì•¡ ê³„ì‚°
+            // »óÇ°º° ÃÑ ±İ¾× °è»ê (»óÇ° °¡°İ * ¼ö·®)
             double itemTotalPrice = goodsItem.getPrice() * cartItem.getQuantity();
             orderItem.setTotal_price(itemTotalPrice);
             
-            // ê³µí†µ ë°°ì†¡/ê²°ì œ ì •ë³´ ì„¤ì •
+            // ÁÖ¹® Á¤º¸(¹è¼Û Á¤º¸ µî) ¼³Á¤
             orderItem.setDelivery_state(commonOrderInfo.getDelivery_state());
             orderItem.setReceiver_name(commonOrderInfo.getReceiver_name());
             orderItem.setReceiver_hp(commonOrderInfo.getReceiver_hp());
@@ -237,32 +234,32 @@ public class OrderControllerImpl implements OrderController {
             orderItem.setPay_method(commonOrderInfo.getPay_method());
             orderItem.setOrder_group_id(orderGroupId);
             
-            // ìƒí’ˆëª…ì€ GoodsVOì—ì„œ ê°€ì ¸ì˜¤ê¸°
+            // ÁÖ¹® »ó¼¼ ³»¿ª¿¡ »óÇ°¸í ¼³Á¤
             orderItem.setProduct_name(goodsItem.getProduct_name());
             
             System.out.println("[DEBUG] completeOrder: Processing orderItem " + i + " -> product_id: " + 
                 orderItem.getProduct_id() + ", product_name: " + orderItem.getProduct_name() +
                 ", quantity: " + orderItem.getQuantity() + ", itemTotalPrice: " + orderItem.getTotal_price());
             
-            // ì£¼ë¬¸ DBì— ì €ì¥
+            // ÁÖ¹® Á¤º¸¸¦ DB¿¡ µî·Ï
             orderService.createOrder(orderItem);
             System.out.println("[DEBUG] completeOrder: Order item " + i + " created in DB.");
         }
         
-        // ì£¼ë¬¸ ìƒì„± í›„ ì„¸ì…˜ ì •ë¦¬
+        // ÁÖ¹® ¿Ï·á ÈÄ ¼¼¼ÇÀÇ ÀÓ½Ã ÁÖ¹® Á¤º¸¿Í Àå¹Ù±¸´Ï Á¤º¸ »èÁ¦
         session.removeAttribute("tempOrder");
         session.removeAttribute("cartMap");
         System.out.println("[DEBUG] completeOrder: Cleared tempOrder and cartMap from session.");
         
-        // ì¥ë°”êµ¬ë‹ˆ ë°ì´í„°ë„ ì‚­ì œ (CartServiceì— êµ¬í˜„ëœ ë©”ì„œë“œ í˜¸ì¶œ)
+        // Àå¹Ù±¸´Ï ³»¿ª Á¤¸® (CartService¸¦ ÅëÇØ Àå¹Ù±¸´Ï ºñ¿ì±â)
         cartService.clearCartForUser(memberVO.getUser_id());
         System.out.println("[DEBUG] completeOrder: Cleared cart for user: " + memberVO.getUser_id());
         
-        // ìµœì¢… ì£¼ë¬¸ ì™„ë£Œ í›„ ë§ˆì´í˜ì´ì§€ë¡œ ë¦¬ë””ë ‰ì…˜
+        // ÁÖ¹® ¿Ï·á ÈÄ °á°ú ¸Ş½ÃÁö¿Í ÇÔ²² ¸¶ÀÌÆäÀÌÁö·Î ÀÌµ¿
         System.out.println("[DEBUG] completeOrder: Redirecting to 'myPageMain' with success message.");
         
-        // URLì— í¬í•¨ë˜ëŠ” í•œê¸€ ë©”ì‹œì§€ëŠ” URL ì¸ì½”ë”© ì²˜ë¦¬ í•„ìš”
-        String message = "ì£¼ë¬¸ì´ ì„±ê³µì ìœ¼ë¡œ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.";
+        // URL¿¡ ÇÑ±Û ¸Ş½ÃÁö¸¦ Æ÷ÇÔÇÏ¿© ¸®´ÙÀÌ·ºÆ® URL ±¸¼º
+        String message = "ÁÖ¹®ÀÌ Á¤»óÀûÀ¸·Î ¿Ï·áµÇ¾ú½À´Ï´Ù.";
         String encodedMessage = URLEncoder.encode(message, StandardCharsets.UTF_8.toString());
         
         return new ModelAndView("redirect:/mypage/myPageMain.do?message=" + encodedMessage);
