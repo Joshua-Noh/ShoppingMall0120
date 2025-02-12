@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE configuration 	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
 	<typeAliases>
-	<!-- 
+		<!-- 
 		<typeAlias type="com.myspring.pro30.member.vo.MemberVO"  alias="memberVO" />
 		<typeAlias type="com.myspring.pro30.board.vo.ArticleVO"  alias="articleVO" />
 		<typeAlias type="com.myspring.pro30.board.vo.ImageVO"  alias="imageVO" />
-	 -->	
-	 
-
-    <!-- 기존 VO 등록 -->
-    <typeAlias type="com.shop.ShoppingMall_TeamPrj.goods.vo.GoodsVO" alias="goodsVO" />
-    <typeAlias type="com.shop.ShoppingMall_TeamPrj.cart.vo.CartVO" alias="cartVO" />
-    <typeAlias type="com.shop.ShoppingMall_TeamPrj.member.vo.MemberVO" alias="memberVO" />
-    <typeAlias type="com.shop.ShoppingMall_TeamPrj.mypage.vo.MyPageVO" alias="mypageVO" />
-    <typeAlias type="com.shop.ShoppingMall_TeamPrj.admin.vo.AdminVO" alias="AdminVO" />
-    <typeAlias type="com.shop.ShoppingMall_TeamPrj.order.vo.OrderVO" alias="orderVO" />
-    <typeAlias type="com.shop.ShoppingMall_TeamPrj.admin.vo.ProductVO" alias="ProductVO" />
-    
-    <!-- 고객센터 VO 추가 -->
-    <typeAlias type="com.shop.ShoppingMall_TeamPrj.customerCenter.vo.ConsultationVO" alias="consultationVO" />
-    <typeAlias type="com.shop.ShoppingMall_TeamPrj.customerCenter.vo.FaqVO" alias="faqVO" />
-    <typeAlias type="com.shop.ShoppingMall_TeamPrj.customerCenter.vo.ChatVO" alias="chatVO" />
-</typeAliases>
-
+		-->
+		
+		<!-- 기존 VO 등록 -->
+		<typeAlias type="com.shop.ShoppingMall_TeamPrj.goods.vo.GoodsVO" alias="goodsVO" />
+		<typeAlias type="com.shop.ShoppingMall_TeamPrj.cart.vo.CartVO" alias="cartVO" />
+		<typeAlias type="com.shop.ShoppingMall_TeamPrj.member.vo.MemberVO" alias="memberVO" />
+		<typeAlias type="com.shop.ShoppingMall_TeamPrj.mypage.vo.MyPageVO" alias="mypageVO" />
+		<typeAlias type="com.shop.ShoppingMall_TeamPrj.admin.vo.AdminVO" alias="AdminVO" />
+		<typeAlias type="com.shop.ShoppingMall_TeamPrj.order.vo.OrderVO" alias="orderVO" />
+		<typeAlias type="com.shop.ShoppingMall_TeamPrj.admin.vo.ProductVO" alias="ProductVO" />
+		
+		<!-- 고객센터 VO 추가 -->
+		<typeAlias type="com.shop.ShoppingMall_TeamPrj.customerCenter.vo.ConsultationVO" alias="consultationVO" />
+		<typeAlias type="com.shop.ShoppingMall_TeamPrj.customerCenter.vo.FaqVO" alias="faqVO" />
+		<typeAlias type="com.shop.ShoppingMall_TeamPrj.customerCenter.vo.ChatVO" alias="chatVO" />
+		
+		<!-- 새로 추가: DetailImageVO 등록 -->
+		<typeAlias type="com.shop.ShoppingMall_TeamPrj.admin.vo.DetailImageVO" alias="DetailImageVO" />
+	</typeAliases>
 </configuration>

@@ -4,7 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="mapper.product">
-<resultMap id="ProductResult" type="productVO">
+  <resultMap id="ProductResult" type="ProductVO">
     <result property="productId" column="productId" />
     <result property="productName" column="productName" />
     <result property="categoryId" column="categoryId" />
@@ -13,9 +13,8 @@
     <result property="createdAt" column="createdAt" />
   </resultMap> 
 
-
-<select id="selectAllProductList" resultMap="ProductResult">
- <![CDATA[
+  <select id="selectAllProductList" resultMap="ProductResult">
+   <![CDATA[
     SELECT 
         product_id AS productId,
         product_name AS productName,
@@ -23,22 +22,23 @@
         price,
         size,
         created_at AS createdAt
-    FROM products LIMIT 5
+    FROM products LIMIT 20
     ]]>
-</select>
+  </select>
 
-<select id="updateProductFormData"  parameterType="Integer" resultMap="ProductResult">
- <![CDATA[
+  <select id="updateProductFormData" parameterType="Integer" resultMap="ProductResult">
+   <![CDATA[
     SELECT product_id AS productId, 
            product_name AS productName,
            category_id AS categoryId,
-           price ,size
+           price, size
     FROM products
     WHERE product_id = #{productId}
     ]]>
-</select>
+  </select>
 
-  <insert id="insertProduct" parameterType="productVO">
+  <!-- 수정: useGeneratedKeys 추가 -->
+  <insert id="insertProduct" parameterType="ProductVO" useGeneratedKeys="true" keyProperty="productId">
     INSERT INTO products (
       product_name,
       category_id,
@@ -52,21 +52,30 @@
     )
   </insert>
     
-<delete id="deleteProduct" parameterType="productVO">
-    DELETE FROM products WHERE product_Id = #{productId}
-</delete>
+  <delete id="deleteProduct" parameterType="ProductVO">
+    DELETE FROM products WHERE product_id = #{productId}
+  </delete>
 
-  <update id="updateProduct" parameterType="productVO">
+  <update id="updateProduct" parameterType="ProductVO">
     UPDATE products
     SET 
-    	product_id = #{productId},
         product_name = #{productName},
         category_id = #{categoryId},
         price = #{price},
         size = #{size}
     WHERE product_id = #{productId}
-</update>
+  </update>
   
-
-
+  <!-- detail_image 테이블에 이미지 정보를 삽입하는 SQL 구문 -->
+  <insert id="insertDetailImage" parameterType="DetailImageVO">
+    INSERT INTO detail_image (
+      product_id,
+      fileName,
+      fileType
+    ) VALUES (
+      #{productId},
+      #{fileName},
+      #{fileType}
+    )
+  </insert>
 </mapper>
